@@ -3,16 +3,7 @@ package com.medteamb.medteamb.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "appointment")
@@ -33,21 +24,21 @@ public class Appointment {
 	
 	@Column
 	private String place;
-	
-	@Column
+
+	@JoinColumn(name="medic id")
 	@ManyToOne
 	private Medic medic;
 	
-	@Column
+	@JoinColumn(name="secretary id")
 	@ManyToOne
 	private Secretary secretary;
-	
-	@Column
+
+	@JoinColumn(name="patient id")
 	@ManyToOne
 	private Patient patient;
 	
-	@Column
-	@OneToOne
+
+
 	private String taxCode; //codice fiscale
 
 	public LocalDateTime getAppointmentDateTime() {
