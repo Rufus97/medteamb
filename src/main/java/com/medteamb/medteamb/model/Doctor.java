@@ -5,7 +5,7 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-public class Medic {
+public class Doctor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
