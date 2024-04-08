@@ -1,8 +1,6 @@
 package com.medteamb.medteamb.model;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -12,19 +10,29 @@ public class Appointment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer appointmentID;
+	
 	@Column(unique = true, nullable = false)
 	private LocalDateTime appointmentDateTime;
+	
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
+	
+	@Column(nullable = false)
 	private String medicalProvision; //prestazione medica
+	
+	@Column(nullable = false)
 	private String place;
 
-	//da qui si aggiungono le relazioni per adesso
+	@Column(nullable = false)
+	private String taxCode; //codice fiscale
+	
+	//db relations from here on...
+	
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
 
-	private String taxCode; //codice fiscale
+	//TODO add the rest of the fields
 
 	public void setAppointmentID(Integer appointmentID) {
 		this.appointmentID = appointmentID;
@@ -82,5 +90,6 @@ public class Appointment {
 		return appointmentID;
 	}
 
+	//TODO hashcode and equals
 	
 }
