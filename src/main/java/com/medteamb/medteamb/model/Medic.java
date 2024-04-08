@@ -2,10 +2,9 @@ package com.medteamb.medteamb.model;
 
 import java.util.Objects;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
 public class Medic {
 	
 	@Id
@@ -16,21 +15,7 @@ public class Medic {
 		return medicID;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(medicID);
+	public void setMedicID(Integer medicID) {
+		this.medicID = medicID;
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Medic other = (Medic) obj;
-		return Objects.equals(medicID, other.medicID);
-	}
-	
 }
