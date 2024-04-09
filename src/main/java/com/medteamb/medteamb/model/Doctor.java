@@ -10,23 +10,24 @@ public class Doctor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer doctorID;
-
-	private String fCode;
+	
+	@Column(nullable = false)
 	private String name;
+	
+	@Column(nullable = false)
 	private String surname;
+	
+	@Column(nullable = false)
 	private String phoneNumber;
+	
+	@Column(unique = true)
 	private String email;
+	
+	@Enumerated(EnumType.STRING)
+	private Specialization specialization;
+	
 	public Integer getDoctorID() {
 		return doctorID;
-	}
-	public void setDoctorID(Integer doctorID) {
-		this.doctorID = doctorID;
-	}
-	public String getfCode() {
-		return fCode;
-	}
-	public void setfCode(String fCode) {
-		this.fCode = fCode;
 	}
 	public String getName() {
 		return name;
@@ -52,6 +53,27 @@ public class Doctor {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	
+	public Specialization getSpecialization() {
+		return specialization;
+	}
+	public void setSpecialization(Specialization specialization) {
+		this.specialization = specialization;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(doctorID, email, name, phoneNumber, specialization, surname);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Doctor other = (Doctor) obj;
+		return Objects.equals(doctorID, other.doctorID) && Objects.equals(email, other.email)
+				&& Objects.equals(name, other.name) && Objects.equals(phoneNumber, other.phoneNumber)
+				&& specialization == other.specialization && Objects.equals(surname, other.surname);
+	}	
 }
