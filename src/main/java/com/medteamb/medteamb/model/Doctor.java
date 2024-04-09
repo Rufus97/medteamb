@@ -29,29 +29,29 @@ public class Doctor {
 	public Integer getDoctorID() {
 		return doctorID;
 	}
-	public String getName() {
+	public String getDoctorName() {
 		return doctorName;
 	}
-	public void setName(String name) {
-		this.doctorName = name;
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
 	}
-	public String getSurname() {
+	public String getDoctorSurname() {
 		return doctorSurname;
 	}
-	public void setSurname(String surname) {
-		this.doctorSurname = surname;
+	public void setDoctorSurname(String doctorSurname) {
+		this.doctorSurname = doctorSurname;
 	}
-	public String getPhoneNumber() {
+	public String getDoctorPhoneNumber() {
 		return doctorPhoneNumber;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.doctorPhoneNumber = phoneNumber;
+	public void setDoctorPhoneNumber(String doctorPhoneNumber) {
+		this.doctorPhoneNumber = doctorPhoneNumber;
 	}
-	public String getEmail() {
+	public String getDoctorEmail() {
 		return doctorEmail;
 	}
-	public void setEmail(String email) {
-		this.doctorEmail = email;
+	public void setDoctorEmail(String doctorEmail) {
+		this.doctorEmail = doctorEmail;
 	}
 	public Specialization getSpecialization() {
 		return specialization;
