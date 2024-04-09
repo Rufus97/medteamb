@@ -1,6 +1,8 @@
 package com.medteamb.medteamb.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,26 +20,34 @@ public class Appointment {
 	private AppointmentStatus status;
 	
 	@Column(nullable = false)
-	private String medicalProvision; //prestazione medica
+	private String medicalService;
 	
 	@Column(nullable = false)
-	private String place;
-
-	@Column(nullable = false)
-	private String taxCode; //codice fiscale
+	private String location;
 	
-	//db relations from here on...
+	//database relations from here on...
 	
 	@ManyToOne
-	@JoinColumn(name = "patient_id")
+	@JoinColumn(name = "taxCode" ,nullable = false)
+	@Column(length = 16)
+	private String taxCode;
+	
+	@ManyToOne
+	@JoinColumn(name = "doctorID", nullable = false)
+	private Doctor doctor;
+	
+	@ManyToOne
+	@JoinColumn(name = "secretaryID", nullable = false)
+	private Secretary secretary;
+	
+	@ManyToOne
+	@JoinColumn(name = "patientID", nullable = false)
 	private Patient patient;
 
-	//TODO add the rest of the fields
-
-	public void setAppointmentID(Integer appointmentID) {
-		this.appointmentID = appointmentID;
+	public Integer getAppointmentID() {
+		return appointmentID;
 	}
-
+	
 	public Patient getPatient() {
 		return patient;
 	}
@@ -63,19 +73,19 @@ public class Appointment {
 	}
 
 	public String getMedicalProvision() {
-		return medicalProvision;
+		return medicalService;
 	}
 
 	public void setMedicalProvision(String medicalProvision) {
-		this.medicalProvision = medicalProvision;
+		this.medicalService = medicalProvision;
 	}
 
 	public String getPlace() {
-		return place;
+		return location;
 	}
 
 	public void setPlace(String place) {
-		this.place = place;
+		this.location = place;
 	}
 
 	public String getTaxCode() {
@@ -86,10 +96,58 @@ public class Appointment {
 		this.taxCode = taxCode;
 	}
 
-	public Integer getAppointmentID() {
-		return appointmentID;
+
+	public String getMedicalService() {
+		return medicalService;
 	}
 
-	//TODO hashcode and equals
-	
+	public void setMedicalService(String medicalService) {
+		this.medicalService = medicalService;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public Secretary getSecretary() {
+		return secretary;
+	}
+
+	public void setSecretary(Secretary secretary) {
+		this.secretary = secretary;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(appointmentDateTime, appointmentID, doctor, location, medicalService, patient, secretary,
+				status, taxCode);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Appointment other = (Appointment) obj;
+		return Objects.equals(appointmentDateTime, other.appointmentDateTime)
+				&& Objects.equals(appointmentID, other.appointmentID) && Objects.equals(doctor, other.doctor)
+				&& Objects.equals(location, other.location) && Objects.equals(medicalService, other.medicalService)
+				&& Objects.equals(patient, other.patient) && Objects.equals(secretary, other.secretary)
+				&& status == other.status && Objects.equals(taxCode, other.taxCode);
+	}	
 }
