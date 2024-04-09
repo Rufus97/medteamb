@@ -20,6 +20,6 @@ public class Secretary {
 	private String secretaryName;
 	private String secretarySurname;
 	private String secretaryPhoneNumber;
-	private String secretaryEMail;
+	private String secretaryEmail;
 
 }

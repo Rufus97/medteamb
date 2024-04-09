@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SecretaryRepository extends JpaRepository<Secretary, Integer> {
-    Secretary findByEmail (String email);
+    Secretary findBySecretaryEmail (String SecretaryEmail);
 }
