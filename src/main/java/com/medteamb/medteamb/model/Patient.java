@@ -20,11 +20,12 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer patientID;
-	
-	private String username;
-	private String surname;
-	private String phoneNumber;
-	private String email;
+
+	private String patientName;
+	private String patientSurname;
+	private String taxCode;
+	private String patientPhoneNumber;
+	private String patientEmail;
 
 
 }
