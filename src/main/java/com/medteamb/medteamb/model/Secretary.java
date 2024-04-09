@@ -1,38 +1,25 @@
 package com.medteamb.medteamb.model;
 
-import java.util.Objects;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
+@Entity //annotazione per dire a spring "questa è una classe tabella"
+@Table(name = "secretary") //generare tabella e nome della tabella
+@Data //generare getter e setter, to string, hash, equals
+@AllArgsConstructor //costruttore popolato
+@NoArgsConstructor //costruttore vuoto
+@Builder //genera tutto il codice builder
 public class Secretary {
+	@Id //ID numero unico per ogni elemento
+	@GeneratedValue(strategy = GenerationType.IDENTITY) /*istruzioni per generare Id*/
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer secretaryID;
-	
-	public Integer getSecretaryID() {
-		return secretaryID;
-	}
+	private Integer secretaryId;
+	private String secretaryName;
+	private String secretarySurname;
+	private String secretaryPhoneNumber;
+	private String secretaryEMail;
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(secretaryID);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Secretary other = (Secretary) obj;
-		return Objects.equals(secretaryID, other.secretaryID);
-	}
-	
 }
