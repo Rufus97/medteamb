@@ -27,20 +27,15 @@ public class Appointment {
 	
 	//database relations from here on...
 	
-	@ManyToOne
-	@JoinColumn(name = "taxCode" ,nullable = false)
 	private String taxCode;
 	
 	@ManyToOne
-	@JoinColumn(name = "doctorID", nullable = false)
 	private Doctor doctor;
 	
 	@ManyToOne
-	@JoinColumn(name = "secretaryID", nullable = false)
 	private Secretary secretary;
 	
 	@ManyToOne
-	@JoinColumn(name = "patientID", nullable = false)
 	private Patient patient;
 
 	public Integer getAppointmentID() {
