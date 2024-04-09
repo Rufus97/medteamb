@@ -12,16 +12,16 @@ public class Doctor {
 	private Integer doctorID;
 	
 	@Column(nullable = false)
-	private String name;
+	private String doctorName;
 	
 	@Column(nullable = false)
-	private String surname;
+	private String doctorSurname;
 	
 	@Column(nullable = false)
-	private String phoneNumber;
+	private String doctorPhoneNumber;
 	
 	@Column(unique = true)
-	private String email;
+	private String doctorEmail;
 	
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
@@ -30,28 +30,28 @@ public class Doctor {
 		return doctorID;
 	}
 	public String getName() {
-		return name;
+		return doctorName;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.doctorName = name;
 	}
 	public String getSurname() {
-		return surname;
+		return doctorSurname;
 	}
 	public void setSurname(String surname) {
-		this.surname = surname;
+		this.doctorSurname = surname;
 	}
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return doctorPhoneNumber;
 	}
 	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+		this.doctorPhoneNumber = phoneNumber;
 	}
 	public String getEmail() {
-		return email;
+		return doctorEmail;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		this.doctorEmail = email;
 	}
 	public Specialization getSpecialization() {
 		return specialization;
@@ -61,7 +61,7 @@ public class Doctor {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(doctorID, email, name, phoneNumber, specialization, surname);
+		return Objects.hash(doctorID, doctorEmail, doctorName, doctorPhoneNumber, specialization, doctorSurname);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -72,8 +72,8 @@ public class Doctor {
 		if (getClass() != obj.getClass())
 			return false;
 		Doctor other = (Doctor) obj;
-		return Objects.equals(doctorID, other.doctorID) && Objects.equals(email, other.email)
-				&& Objects.equals(name, other.name) && Objects.equals(phoneNumber, other.phoneNumber)
-				&& specialization == other.specialization && Objects.equals(surname, other.surname);
+		return Objects.equals(doctorID, other.doctorID) && Objects.equals(doctorEmail, other.doctorEmail)
+				&& Objects.equals(doctorName, other.doctorName) && Objects.equals(doctorPhoneNumber, other.doctorPhoneNumber)
+				&& specialization == other.specialization && Objects.equals(doctorSurname, other.doctorSurname);
 	}	
 }
