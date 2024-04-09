@@ -29,7 +29,6 @@ public class Appointment {
 	
 	@ManyToOne
 	@JoinColumn(name = "taxCode" ,nullable = false)
-	@Column(length = 16)
 	private String taxCode;
 	
 	@ManyToOne
