@@ -10,48 +10,70 @@ public class Doctor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer doctorID;
-
-	private String fCode;
-	private String name;
-	private String surname;
-	private String phoneNumber;
-	private String email;
+	
+	@Column(nullable = false)
+	private String doctorName;
+	
+	@Column(nullable = false)
+	private String doctorSurname;
+	
+	@Column(nullable = false)
+	private String doctorPhoneNumber;
+	
+	@Column(unique = true)
+	private String doctorEmail;
+	
+	@Enumerated(EnumType.STRING)
+	private Specialization specialization;
+	
 	public Integer getDoctorID() {
 		return doctorID;
 	}
-	public void setDoctorID(Integer doctorID) {
-		this.doctorID = doctorID;
+	public String getDoctorName() {
+		return doctorName;
 	}
-	public String getfCode() {
-		return fCode;
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
 	}
-	public void setfCode(String fCode) {
-		this.fCode = fCode;
+	public String getDoctorSurname() {
+		return doctorSurname;
 	}
-	public String getName() {
-		return name;
+	public void setDoctorSurname(String doctorSurname) {
+		this.doctorSurname = doctorSurname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public String getDoctorPhoneNumber() {
+		return doctorPhoneNumber;
 	}
-	public String getSurname() {
-		return surname;
+	public void setDoctorPhoneNumber(String doctorPhoneNumber) {
+		this.doctorPhoneNumber = doctorPhoneNumber;
 	}
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public String getDoctorEmail() {
+		return doctorEmail;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public void setDoctorEmail(String doctorEmail) {
+		this.doctorEmail = doctorEmail;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public Specialization getSpecialization() {
+		return specialization;
 	}
-	public String getEmail() {
-		return email;
+	public void setSpecialization(Specialization specialization) {
+		this.specialization = specialization;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	@Override
+	public int hashCode() {
+		return Objects.hash(doctorID, doctorEmail, doctorName, doctorPhoneNumber, specialization, doctorSurname);
 	}
-
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Doctor other = (Doctor) obj;
+		return Objects.equals(doctorID, other.doctorID) && Objects.equals(doctorEmail, other.doctorEmail)
+				&& Objects.equals(doctorName, other.doctorName) && Objects.equals(doctorPhoneNumber, other.doctorPhoneNumber)
+				&& specialization == other.specialization && Objects.equals(doctorSurname, other.doctorSurname);
+	}	
 }
