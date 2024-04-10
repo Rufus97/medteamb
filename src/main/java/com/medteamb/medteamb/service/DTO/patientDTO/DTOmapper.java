@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class DTOmapper {
 
 
-    public Patient mapFromRequestPatientDTO(PatientRequestBodyDTO requestDTO){
+    public Patient mapFromRequestToPatient(PatientRequestBodyDTO requestDTO){
         Patient patient = new Patient();
 
         patient.setPatientName(requestDTO.getPatientName());
@@ -16,5 +16,15 @@ public class DTOmapper {
         patient.setTaxCode(requestDTO.getTaxCode());
 
         return patient;
+    }
+
+    public PatientResponseDTO mapFromPatientToResponse(Patient response){
+        PatientResponseDTO responseDTO = new PatientResponseDTO();
+
+        responseDTO.setPatientName(response.getPatientName());
+        responseDTO.setPatientSurname(response.getPatientSurname());
+        responseDTO.setTaxCode(response.getTaxCode());
+
+        return responseDTO;
     }
 }
