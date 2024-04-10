@@ -25,6 +25,10 @@ public class Doctor {
 	
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
+
+	@OneToOne
+	@JoinColumn(name = "pippo")
+	private User user;
 	
 	public Integer getDoctorID() {
 		return doctorID;

@@ -22,4 +22,8 @@ public class Secretary {
 	private String secretaryPhoneNumber;
 	private String secretaryEmail;
 
+	@OneToOne
+	@JoinColumn(name = "pippo")
+	private User user;
+
 }
