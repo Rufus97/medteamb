@@ -1,5 +1,6 @@
 package com.medteamb.medteamb.service;
 
+
 import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.repository.AppointmentRepository;

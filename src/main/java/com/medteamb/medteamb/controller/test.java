@@ -34,7 +34,7 @@ public class test {
         return service.getPatientsById(ids);
     }
     @DeleteMapping("/patient")
-    public GenericResponse<PatientResponseDTO> getAllPatientsId(@RequestParam Integer id){
+    public GenericResponse<PatientResponseDTO> deletePatientById(@RequestParam Integer id){
         return service.deletePatientById(id);
     }
 
