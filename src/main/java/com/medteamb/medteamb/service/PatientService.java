@@ -6,7 +6,7 @@ import com.medteamb.medteamb.repository.AppointmentRepository;
 import com.medteamb.medteamb.repository.PatientRepository;
 import com.medteamb.medteamb.service.DTO.patientDTO.DTOmapper;
 import com.medteamb.medteamb.service.DTO.patientDTO.PatientResponseDTO;
-import com.medteamb.medteamb.service.ExceptionHandler.ObjectNotFoundException;
+import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotSavedException;
 import com.medteamb.medteamb.service.ResponseHandler.GenericResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,25 +20,17 @@ public class PatientService {
     PatientRepository patientRepo;
     DTOmapper mapper;
 
-
-
-
     public PatientService(PatientRepository patientRepo, DTOmapper mapper, AppointmentRepository appointmentRepo){
         this.patientRepo = patientRepo;
         this.mapper = mapper;
         this.appointmentRepo = appointmentRepo;
     }
+
     //CREATE
     public GenericResponse<PatientResponseDTO> newPatient(Patient newPatient){
-        patientRepo.save(newPatient);
-        GenericResponse<PatientResponseDTO> response = new GenericResponse<>();
-        if (patientRepo.count() > 0){
-        response.setBody(mapper.mapFromPatientToResponse(newPatient));
-        } else {
-        throw new ObjectNotFoundException("paziente non salvato");
-        }
-        return response;
+       return new GenericResponse<>(mapper.mapFromPatientToResponse(patientRepo.save(newPatient)));
     }
+
     //READ
     // get all appointment history
     public GenericResponse<Iterable<Appointment>> getAllAppointment(Integer id){
@@ -48,7 +40,7 @@ public class PatientService {
         response.setBody(appointmentRepo.getAllPatientAppointments(id));
         response.setHttpStatus(HttpStatus.OK);
         } else {
-            throw new ObjectNotFoundException("appuntamenti paziente vuoti");
+            throw new PatientNotSavedException("appuntamenti paziente vuoti");
         }
         return response;
     }
@@ -60,7 +52,7 @@ public class PatientService {
            response.setHttpStatus(HttpStatus.OK);
            response.setBody(mapper.mapFromPatientToResponse(found.get()));
         } else {
-            throw new ObjectNotFoundException("paziente non trovato");
+            throw new PatientNotSavedException("paziente non trovato");
         }
         return response;
     }
@@ -71,7 +63,7 @@ public class PatientService {
         if (patients.iterator().hasNext()){
             response.setBody(patients);
         } else {
-            throw new ObjectNotFoundException("lista pazienti vuota");
+            throw new PatientNotSavedException("lista pazienti vuota");
         }
         return response;
     }
@@ -81,15 +73,16 @@ public class PatientService {
         Optional<Patient> found = patientRepo.findById(id);
         if (found.isPresent()){
             response.setBody(mapper.mapFromPatientToResponse(found.get()));
+            patientRepo.delete(found.get());
         } else {
-            throw new ObjectNotFoundException("paziente non trovato");
+            throw new PatientNotSavedException("paziente non trovato");
         }
         return response;
     }
 
-
-
-
-
-
 }
+
+
+
+
+
