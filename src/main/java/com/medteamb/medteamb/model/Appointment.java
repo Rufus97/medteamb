@@ -6,7 +6,6 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "appointment")
 public class Appointment {
 	
 	@Id
@@ -29,13 +28,16 @@ public class Appointment {
 	
 	private String taxCode;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "secretary_id")
 	private Secretary secretary;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "patient_id")
 	private Patient patient;
 
 	public Integer getAppointmentID() {
@@ -65,29 +67,13 @@ public class Appointment {
 	public void setStatus(AppointmentStatus status) {
 		this.status = status;
 	}
-
-	public String getMedicalProvision() {
-		return medicalService;
-	}
-
-	public void setMedicalProvision(String medicalProvision) {
-		this.medicalService = medicalProvision;
-	}
-
-	public String getPlace() {
-		return location;
-	}
-
-	public void setPlace(String place) {
-		this.location = place;
-	}
-
+	
 	public String getTaxCode() {
 		return taxCode;
 	}
 
-	public void setTaxCode(String taxCode) {
-		this.taxCode = taxCode;
+	public void setTaxCode() {
+		this.taxCode = getPatient().getTaxCode();
 	}
 
 

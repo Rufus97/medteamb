@@ -1,5 +1,7 @@
 package com.medteamb.medteamb.model;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,5 +23,8 @@ public class Secretary {
 	private String secretarySurname;
 	private String secretaryPhoneNumber;
 	private String secretaryEmail;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID", orphanRemoval = true)
+	private Set<Appointment> appointments;
 
 }

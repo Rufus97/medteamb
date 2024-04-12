@@ -1,6 +1,7 @@
 package com.medteamb.medteamb.model;
 
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -25,6 +26,9 @@ public class Doctor {
 	
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID", orphanRemoval = true)
+	private Set<Appointment> appointments;
 	
 	public Integer getDoctorID() {
 		return doctorID;
