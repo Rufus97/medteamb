@@ -1,20 +1,16 @@
 package com.medteamb.medteamb.service.DTO.patientDTO;
 
 import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.repository.PatientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class PatientResponseDTO {
-    @Autowired
-    private PatientRepository repo;
+public class PatientDTO {
 
     private String patientName;
     private String patientSurname;
     private String taxCode;
 
-    public PatientResponseDTO(){}
+    public PatientDTO(){}
 
-    public PatientResponseDTO(Patient patient){
+    public PatientDTO(Patient patient){
         this.patientName = patient.getPatientName();
         this.patientSurname = patient.getPatientSurname();
         this.taxCode = patient.getTaxCode();

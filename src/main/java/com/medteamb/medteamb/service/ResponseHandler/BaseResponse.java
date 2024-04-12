@@ -1,39 +1,23 @@
 package com.medteamb.medteamb.service.ResponseHandler;
 
+import org.antlr.v4.runtime.misc.ObjectEqualityComparator;
+import org.apache.el.stream.Optional;
 import org.springframework.http.HttpStatus;
 
-
-public class GenericResponse<T>  {
+public class BaseResponse{
 
     private HttpStatus httpStatus = HttpStatus.OK;
 
     private String message = "no message";
 
-    private T body;
+    public BaseResponse(){}
 
-   public GenericResponse(){}
-
-    public GenericResponse(T body) {
-        this.body = body;
-    }
-
-    public GenericResponse(HttpStatus httpStatus, String message) {
-        this.httpStatus = httpStatus;
+    public BaseResponse(String message){
         this.message = message;
     }
-
-    public GenericResponse(HttpStatus httpStatus, String message, T body) {
+    public BaseResponse(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
-        this.body = body;
-    }
-
-    public T getBody() {
-        return body;
-    }
-
-    public void setBody(T dto){
-        this.body = dto;
     }
 
     public HttpStatus getHttpStatus() {

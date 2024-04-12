@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -16,15 +13,20 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer patientID;
-
+    @Column(nullable = false)
 	private String patientName;
 	private String patientSurname;
 	private String taxCode;
 	private String patientPhoneNumber;
 	private String patientEmail;
+    public Patient(){};
+	public Patient(String patientName, String patientSurname) {
+		this.patientName = patientName;
+		this.patientSurname = patientSurname;
+	}
 
 	@OneToOne
-	@JoinColumn(name = "pippo")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public String getPatientName() {
@@ -77,5 +79,13 @@ public class Patient {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public void updateThisPatient(Patient newPatient){
+		this.patientEmail = newPatient.getPatientEmail();
+		this.patientName = newPatient.getPatientName();
+		this.patientSurname = newPatient.getPatientSurname();
+		this.patientPhoneNumber = newPatient.getPatientPhoneNumber();
+		this.taxCode = newPatient.getTaxCode();
 	}
 }

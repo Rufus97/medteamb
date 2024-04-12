@@ -11,4 +11,8 @@ MedteambApplication {
 		SpringApplication.run(MedteambApplication.class, args);
 	}
 
+
+
+
+
 }

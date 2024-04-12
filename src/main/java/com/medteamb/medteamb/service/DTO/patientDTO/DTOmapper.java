@@ -18,8 +18,8 @@ public class DTOmapper {
         return patient;
     }
 
-    public PatientResponseDTO mapFromPatientToResponse(Patient response){
-        PatientResponseDTO responseDTO = new PatientResponseDTO();
+    public PatientDTO mapFromPatientToResponse(Patient response){
+        PatientDTO responseDTO = new PatientDTO();
 
         responseDTO.setPatientName(response.getPatientName());
         responseDTO.setPatientSurname(response.getPatientSurname());
