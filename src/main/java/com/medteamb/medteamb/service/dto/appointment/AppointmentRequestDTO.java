@@ -3,9 +3,6 @@ package com.medteamb.medteamb.service.dto.appointment;
 import java.time.LocalDateTime;
 
 import com.medteamb.medteamb.model.AppointmentStatus;
-import com.medteamb.medteamb.model.Doctor;
-import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.model.Secretary;
 
 public class AppointmentRequestDTO {
 	
@@ -14,9 +11,9 @@ public class AppointmentRequestDTO {
 	private String medicalService;
 	private String location;
 	private String taxCode;
-	private Doctor doctor;
-	private Secretary secretary;
-	private Patient patient;
+	private Integer doctor;
+	private Integer secretary;
+	private Integer patient;
 	
 	public LocalDateTime getAppointmentDateTime() {
 		return appointmentDateTime;
@@ -58,27 +55,27 @@ public class AppointmentRequestDTO {
 		this.taxCode = taxCode;
 	}
 
-	public Doctor getDoctor() {
+	public Integer getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(Integer doctor) {
 		this.doctor = doctor;
 	}
 
-	public Secretary getSecretary() {
+	public Integer getSecretary() {
 		return secretary;
 	}
 
-	public void setSecretary(Secretary secretary) {
+	public void setSecretary(Integer secretary) {
 		this.secretary = secretary;
 	}
 
-	public Patient getPatient() {
+	public Integer getPatient() {
 		return patient;
 	}
 
-	public void setPatient(Patient patient) {
+	public void setPatient(Integer patient) {
 		this.patient = patient;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Table;
 public class Patient {
 
 	@Id
+	@Column(name = "patient_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer patientID;
 	private String patientName;
@@ -24,7 +26,7 @@ public class Patient {
 	private String patientPhoneNumber;
 	private String patientEmail;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID")
 	private Set<Appointment> appointments;
 
 	public Integer getPatientID() {

@@ -3,6 +3,9 @@ package com.medteamb.medteamb.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +15,7 @@ public class Appointment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer appointmentID;
 	
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	private LocalDateTime appointmentDateTime;
 	
 	@Enumerated(EnumType.STRING)
@@ -28,15 +31,18 @@ public class Appointment {
 	
 	private String taxCode;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
+	@Cascade(CascadeType.ALL)
 	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
+	@Cascade(CascadeType.ALL)
 	@JoinColumn(name = "secretary_id")
 	private Secretary secretary;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
+	@Cascade(CascadeType.ALL)
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
 
@@ -72,8 +78,8 @@ public class Appointment {
 		return taxCode;
 	}
 
-	public void setTaxCode() {
-		this.taxCode = getPatient().getTaxCode();
+	public void setTaxCode(String taxCode) {
+		this.taxCode = taxCode;
 	}
 
 

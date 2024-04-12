@@ -24,7 +24,7 @@ public class Secretary {
 	private String secretaryPhoneNumber;
 	private String secretaryEmail;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID")
 	private Set<Appointment> appointments;
 
 }

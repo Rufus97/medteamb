@@ -6,6 +6,7 @@ import java.util.Set;
 import jakarta.persistence.*;
 
 @Entity
+@Table()
 public class Doctor {
 
 	@Id
@@ -27,7 +28,7 @@ public class Doctor {
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID", orphanRemoval = true)
+	@OneToMany(mappedBy="appointmentID")
 	private Set<Appointment> appointments;
 	
 	public Integer getDoctorID() {
@@ -63,9 +64,16 @@ public class Doctor {
 	public void setSpecialization(Specialization specialization) {
 		this.specialization = specialization;
 	}
+	public Set<Appointment> getAppointments() {
+		return appointments;
+	}
+	public void setAppointments(Set<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(doctorID, doctorEmail, doctorName, doctorPhoneNumber, specialization, doctorSurname);
+		return Objects.hash(appointments, doctorEmail, doctorID, doctorName, doctorPhoneNumber, doctorSurname,
+				specialization);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -76,8 +84,9 @@ public class Doctor {
 		if (getClass() != obj.getClass())
 			return false;
 		Doctor other = (Doctor) obj;
-		return Objects.equals(doctorID, other.doctorID) && Objects.equals(doctorEmail, other.doctorEmail)
-				&& Objects.equals(doctorName, other.doctorName) && Objects.equals(doctorPhoneNumber, other.doctorPhoneNumber)
-				&& specialization == other.specialization && Objects.equals(doctorSurname, other.doctorSurname);
+		return Objects.equals(appointments, other.appointments) && Objects.equals(doctorEmail, other.doctorEmail)
+				&& Objects.equals(doctorID, other.doctorID) && Objects.equals(doctorName, other.doctorName)
+				&& Objects.equals(doctorPhoneNumber, other.doctorPhoneNumber)
+				&& Objects.equals(doctorSurname, other.doctorSurname) && specialization == other.specialization;
 	}	
 }
