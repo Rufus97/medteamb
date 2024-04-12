@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Data //generare getter e setter, to string, hash, equals
 @AllArgsConstructor //costruttore popolato
 @NoArgsConstructor //costruttore vuoto
-@Builder //genera tutto il codice builder
 public class Secretary {
 	@Id //ID numero unico per ogni elemento
 	@GeneratedValue(strategy = GenerationType.IDENTITY) /*istruzioni per generare Id*/
