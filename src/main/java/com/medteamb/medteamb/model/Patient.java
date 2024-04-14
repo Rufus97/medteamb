@@ -15,8 +15,11 @@ public class Patient {
 	private Integer patientID;
     @Column(nullable = false)
 	private String patientName;
+	@Column(nullable = false)
 	private String patientSurname;
+	@Column(nullable = false)
 	private String taxCode;
+	@Column(nullable = false)
 	private String patientPhoneNumber;
 	private String patientEmail;
     public Patient(){};

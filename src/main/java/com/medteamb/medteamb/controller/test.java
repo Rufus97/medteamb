@@ -33,7 +33,7 @@ public class test {
         return service.getPatient(id);
     }
     @GetMapping("/patients/byIds")
-    public PatientResponseIterables getPatientsIds(@RequestBody Iterable<Integer> ids){
+    public Iterable<Patient> getPatientsIds(@RequestBody Iterable<Integer> ids){
         return service.getPatientsByIds(ids);
     }
     @GetMapping("/patient/appointments")

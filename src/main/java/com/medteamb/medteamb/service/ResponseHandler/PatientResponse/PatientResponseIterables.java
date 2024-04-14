@@ -14,18 +14,11 @@ import java.util.List;
 public class PatientResponseIterables extends BaseResponse {
 
    List<PatientDTO> body = new ArrayList<>();
-    @Autowired
-    DTOmapper mapper;
-
 
     public PatientResponseIterables(){}
 
-    public PatientResponseIterables(Iterable<Patient> body){
-
-       while (body.iterator().hasNext()){
-            this.body.add(mapper.mapFromPatientToResponse(body.iterator().next()));
-       }
-
+    public PatientResponseIterables(List<PatientDTO> body){
+     this.body = body;
     }
 
     public List<PatientDTO> getBody() {

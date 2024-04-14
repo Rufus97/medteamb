@@ -3,7 +3,7 @@ package com.medteamb.medteamb.service.dto.patient;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
 
-public class PatientDTO extends BaseResponse {
+public class PatientDTO {
 
     private String patientName;
     private String patientSurname;

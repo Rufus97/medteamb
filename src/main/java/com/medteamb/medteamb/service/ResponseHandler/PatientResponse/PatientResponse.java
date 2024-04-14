@@ -5,7 +5,7 @@ import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
 import com.medteamb.medteamb.service.dto.patient.PatientDTO;
 
 
-public class PatientResponse extends BaseResponse {
+public class PatientResponse extends BaseResponse{
 
     PatientDTO body;
 

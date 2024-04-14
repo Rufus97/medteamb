@@ -21,7 +21,7 @@ public class SingleDay {
         initializeHours(today);
     }
     @PostConstruct
-    public void initializeHours( LocalDate today){
+    public void initializeHours(LocalDate today){
         LocalTime hourSlot = LocalTime.of(10,0);
         for (int i = 1; i <= 8*2; i++){
             AppointmentSlot slot = new AppointmentSlot(today, hourSlot, hourSlot.plusMinutes(30));
