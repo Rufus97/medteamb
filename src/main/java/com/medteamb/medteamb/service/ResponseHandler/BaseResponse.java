@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatus;
 public class BaseResponse{
 
     private HttpStatus httpStatus = HttpStatus.OK;
-
     private String message = "no message";
+
+    private Throwable cause;
 
     public BaseResponse(){}
 
@@ -18,6 +19,12 @@ public class BaseResponse{
     public BaseResponse(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
+    }
+
+    public BaseResponse(HttpStatus httpStatus, String message, Throwable cause) {
+        this.httpStatus = httpStatus;
+        this.message = message;
+        this.cause = cause;
     }
 
     public HttpStatus getHttpStatus() {
@@ -34,5 +41,13 @@ public class BaseResponse{
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public void setCause(Throwable cause) {
+        this.cause = cause;
     }
 }

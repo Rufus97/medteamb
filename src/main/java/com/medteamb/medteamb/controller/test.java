@@ -2,10 +2,9 @@ package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.service.DTO.patientDTO.PatientDTO;
-import com.medteamb.medteamb.service.DTO.patientDTO.PatientDTOList;
+
 import com.medteamb.medteamb.service.PatientService;
-import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
+
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
 import org.springframework.beans.factory.annotation.Autowired;

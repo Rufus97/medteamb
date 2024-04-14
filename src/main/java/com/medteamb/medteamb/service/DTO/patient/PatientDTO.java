@@ -1,8 +1,9 @@
-package com.medteamb.medteamb.service.DTO.patientDTO;
+package com.medteamb.medteamb.service.dto.patient;
 
 import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
 
-public class PatientDTO {
+public class PatientDTO extends BaseResponse {
 
     private String patientName;
     private String patientSurname;
