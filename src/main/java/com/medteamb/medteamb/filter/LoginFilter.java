@@ -42,7 +42,7 @@ public class LoginFilter extends OncePerRequestFilter {
         Map<String, String[]> params = request.getParameterMap();
         Assert.notEmpty(params.get("username"), "Username required");
         Assert.notEmpty(params.get("password"), "Password required");
-        User userDetails = UserService.checkUserCredentials(params.get("username")[0],
+        User userDetails = userService.checkUserCredentials(params.get("username")[0],
                 params.get("password")[0]);
         if (userDetails != null && passwordEncoder.matches(params.get("password")[0], userDetails.getPassword())) {
             String jws = "Bearer " + jwtUtils.getJws(userDetails.getUsername(), userDetails.getUserId(), userDetails.getRoles());

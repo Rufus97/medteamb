@@ -1,19 +1,23 @@
 package com.medteamb.medteamb.repository.impl;
 
-import com.medteamb.medteamb.model.User;
-import com.medteamb.medteamb.service.UserService;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
+
+import com.medteamb.medteamb.model.User;
+import com.medteamb.medteamb.service.UserService;
+import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
+
 @Service
-public class DefaultUserRepositoryImpl implements UserService, InitializingBean {
+public class DefaultUserServiceImpl implements UserService, InitializingBean {
 
     Map<String, User> users = new HashMap<>();
 
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    
     @Override
     public void afterPropertiesSet() throws Exception {
         users.put("admin", User.builder().withClearPassword("password").withUsername("admin")
@@ -28,6 +32,21 @@ public class DefaultUserRepositoryImpl implements UserService, InitializingBean 
         users.put("patient", User.builder().withClearPassword("password").withUsername("patient")
                 .withRoles(Arrays.asList("ROLE_PATIENT")).withUserId(4l).build());
     }
+
+	@Override
+	public User checkUserCredentials(String username, String password) {
+		User user = users.get(username);
+		if(user != null ) {
+			if(encoder.matches(password, user.getPassword())) {
+				return user;
+			} else {
+				throw new RuntimeException("Invalid password for user " + username);
+			}
+		} else {
+			throw new RuntimeException("Username " + username + " not found");
+		}
+		
+	}
 
 
 }
