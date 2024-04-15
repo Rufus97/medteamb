@@ -6,11 +6,11 @@ public class Mapper {
 
 	public DoctorRequestDTO mapTo(Doctor doctor) {
 		DoctorRequestDTO doctorDto = DoctorRequestDTO.builder()
-				.doctorID(doctor.getDoctorID())
-				.doctorName(doctor.getDoctorName())
-				.doctorSurname(doctor.getDoctorSurname())
-				.doctorEmail(doctor.getDoctorEmail())
-				.doctorPhoneNumber(doctor.getDoctorPhoneNumber())
+				.withDoctorID(doctor.getDoctorID())
+				.withDoctorEmail(doctor.getDoctorName())
+				.withDoctorSurname(doctor.getDoctorSurname())
+				.withDoctorEmail(doctor.getDoctorEmail())
+				.withDoctorPhoneNumber(doctor.getDoctorPhoneNumber())
 				.build();
 		return doctorDto;
 		
