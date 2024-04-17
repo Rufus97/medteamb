@@ -31,7 +31,6 @@ public class PatientHandler {
     @ExceptionHandler(PropertyValueException.class)
     public ResponseEntity<String> patientNotSaved(PropertyValueException e) {
 
-
         String exMessage = e.getPropertyName() + " cannot be null";
        return new ResponseEntity<>(exMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }

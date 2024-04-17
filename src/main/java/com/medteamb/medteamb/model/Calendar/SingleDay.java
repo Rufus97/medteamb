@@ -13,19 +13,20 @@ import java.util.Map;
 
 public class SingleDay {
 
-    private CalendarRepo calendar;
+
+    CalendarRepo calendarRepo;
     private LocalDate today;
 
-    public SingleDay(CalendarRepo calendar,  LocalDate today) {
-        this.calendar = calendar;
-        initializeHours(today);
+    public SingleDay(LocalDate today, SingleAgenda month, CalendarRepo calendarRepo) {
+        this.calendarRepo = calendarRepo;
+        initializeHours(today, month);
     }
-    @PostConstruct
-    public void initializeHours(LocalDate today){
+
+    public void initializeHours(LocalDate today,  SingleAgenda agenda_id){
         LocalTime hourSlot = LocalTime.of(10,0);
         for (int i = 1; i <= 8*2; i++){
-            AppointmentSlot slot = new AppointmentSlot(today, hourSlot, hourSlot.plusMinutes(30));
-            calendar.save(slot);
+            AppointmentSlot slot = new AppointmentSlot(today, hourSlot, hourSlot.plusMinutes(30),  agenda_id);
+            calendarRepo.save(slot);
             hourSlot = hourSlot.plusMinutes(30);
         }
     }

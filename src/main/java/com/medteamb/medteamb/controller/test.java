@@ -1,8 +1,11 @@
 package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.model.Appointment;
+import com.medteamb.medteamb.model.Calendar.SingleAgenda;
+import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.Patient;
 
+import com.medteamb.medteamb.service.AgendService;
 import com.medteamb.medteamb.service.PatientService;
 
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
@@ -16,6 +19,9 @@ import java.util.Optional;
 public class test {
     @Autowired
     private PatientService service;
+
+    @Autowired
+    private AgendService service2;
     @PostMapping("/patient")
     public PatientResponse savePatient(@RequestBody Patient patient){
         return service.newPatient(patient);
@@ -41,6 +47,11 @@ public class test {
         return service.getAllAppointment(id);
     }
 
+
+    @PostMapping("/newAgend")
+    public SingleAgenda newAgend(@RequestBody Doctor doc){
+        return service2.saveNewAgend(doc);
+    }
 
 
 

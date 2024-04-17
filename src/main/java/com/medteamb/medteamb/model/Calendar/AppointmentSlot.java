@@ -17,13 +17,19 @@ public class AppointmentSlot {
     private LocalTime maxHour;
     @Column(name = "giorno ")
     private LocalDate today;
-    private Boolean isPrenotated = false;
+    private Boolean IsBooked = false;
+
+    @ManyToOne
+    @JoinColumn(name = "id_agenda")
+    private SingleAgenda agenda;
 
 
-    public AppointmentSlot(  LocalDate today, LocalTime orarioMinimo, LocalTime maxHour) {
+
+    public AppointmentSlot(  LocalDate today, LocalTime orarioMinimo, LocalTime maxHour,  SingleAgenda idAgenda) {
         this.minHour = orarioMinimo;
         this.maxHour = maxHour;
         this.today = today;
+        this.agenda = idAgenda;
     }
 
     public Integer getId() {
@@ -55,18 +61,18 @@ public class AppointmentSlot {
     }
 
     public Boolean getPrenotated() {
-        return isPrenotated;
+        return IsBooked;
     }
 
     public void setPrenotated(Boolean prenotated) {
-        isPrenotated = prenotated;
+        IsBooked = prenotated;
     }
 
     public void setAppointment(){
-        this.isPrenotated = true;
+        this.IsBooked = true;
     }
     public void cancelAppointment(){
-        this.isPrenotated = false;
+        this.IsBooked = false;
     }
 
     @Override
