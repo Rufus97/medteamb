@@ -34,7 +34,7 @@ public class JwtUtils {
         this.key = Keys.hmacShaKeyFor(hsKey.getBytes());
     }
 
-    public String getJws(String user, Long userId, List<String> roles) {
+    public String getJws(String user, Long userId, String roles) {
         return Jwts.builder().setSubject(user).setAudience(audience)
                 .setExpiration(new Date(System.currentTimeMillis() + ttl)).setId(UUID.randomUUID().toString())
                 .setIssuedAt(new Date()).setNotBefore(new Date()).addClaims(new HashMap<>() {
