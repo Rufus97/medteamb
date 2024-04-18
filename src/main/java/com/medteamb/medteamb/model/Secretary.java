@@ -21,9 +21,9 @@ public class Secretary {
 	@Column(nullable = false, unique = true)
 	private String secretaryEmail;
 
-	@OneToOne
-	@JoinColumn(name = "user")
-	private User user;
+//	@OneToOne
+//	@JoinColumn(name = "user")
+//	private User user;
 
 	public Integer getSecretaryID() {
 		return secretaryID;
