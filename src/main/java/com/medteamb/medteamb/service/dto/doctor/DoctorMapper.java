@@ -2,7 +2,7 @@ package com.medteamb.medteamb.service.dto.doctor;
 
 import com.medteamb.medteamb.model.Doctor;
 
-public class Mapper {
+public class DoctorMapper {
 
 	public DoctorRequestDTO mapTo(Doctor doctor) {
 		DoctorRequestDTO doctorDto = DoctorRequestDTO.builder()
@@ -11,6 +11,7 @@ public class Mapper {
 				.withDoctorSurname(doctor.getDoctorSurname())
 				.withDoctorEmail(doctor.getDoctorEmail())
 				.withDoctorPhoneNumber(doctor.getDoctorPhoneNumber())
+				.withSpecialization(doctor.getSpecialization())
 				.build();
 		return doctorDto;
 		

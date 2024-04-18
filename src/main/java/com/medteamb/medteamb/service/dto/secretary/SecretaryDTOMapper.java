@@ -7,7 +7,7 @@ public class SecretaryDTOMapper {
 
     public SecretaryRequestDTO mapTo(Secretary secretary) {
         SecretaryRequestDTO secretaryDTO = SecretaryRequestDTO.builder()
-                .withSecretaryID(secretary.getSecretaryId())
+                .withSecretaryID(secretary.getSecretaryID())
                 .withSecretaryName(secretary.getSecretaryName())
                 .withSecretaryPhoneNumber(secretary.getSecretarySurname())
                 .withSecretaryPhoneNumber(secretary.getSecretaryPhoneNumber())
