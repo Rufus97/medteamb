@@ -2,20 +2,26 @@ package com.medteamb.medteamb.model;
 
 
 import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Entity
+@Table (name = "user")
 public class User {
 
 
     private String username;
 
-    private List<String> roles;
+    private String roles;
 
     private String password;
 
+    @Id
     private Long userId;
 
     public String getUsername() {
@@ -26,11 +32,11 @@ public class User {
         this.username = username;
     }
 
-    public List<String> getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 
@@ -86,7 +92,7 @@ public class User {
             return this;
         }
 
-        public UserBuilder withRoles(List<String> roles) {
+        public UserBuilder withRoles(String roles) {
             user.setRoles(roles);
             return this;
         }
