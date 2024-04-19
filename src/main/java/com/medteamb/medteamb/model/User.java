@@ -1,7 +1,7 @@
 package com.medteamb.medteamb.model;
 
 
-import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
+// import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -63,7 +63,9 @@ public class User {
 
     public static class UserBuilder {
 
-        private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+/*        private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+ */
 
         private User user = new User();
 
@@ -87,10 +89,12 @@ public class User {
         }
 
 
-        public UserBuilder withClearPassword(String password) {
+/*        public UserBuilder withClearPassword(String password) {
             user.setPassword(encoder.encode(password));
             return this;
         }
+
+ */
 
         public UserBuilder withRoles(String roles) {
             user.setRoles(roles);
