@@ -1,5 +1,8 @@
 package com.medteamb.medteamb.model.Calendar;
 
+import com.medteamb.medteamb.model.AppointmentStatus;
+import com.medteamb.medteamb.model.Doctor;
+import com.medteamb.medteamb.model.Patient;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,25 +14,30 @@ public class AppointmentSlot {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "orario iniziale", nullable = false)
+    @Column(name = "orario_iniziale", nullable = false)
     private LocalTime minHour;
-    @Column(name = "orario finale", nullable = false)
+    @Column(name = "orario_finale", nullable = false)
     private LocalTime maxHour;
-    @Column(name = "giorno ")
-    private LocalDate today;
-    private Boolean IsBooked = false;
-
+    @JoinColumn(name = "doctor_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "id_agenda")
-    private SingleAgenda agenda;
+    private Doctor doctor_id;
+    @JoinColumn(name = "patient_id")
+    @ManyToOne
+    private Patient patient_id;
+    @Column(name = "giorno")
+    private LocalDate today;
+    @Enumerated(EnumType.STRING)
+    private AppointmentStatus status;
 
 
+    public AppointmentSlot(){};
 
-    public AppointmentSlot(  LocalDate today, LocalTime orarioMinimo, LocalTime maxHour,  SingleAgenda idAgenda) {
+
+    public AppointmentSlot(  LocalDate today, LocalTime orarioMinimo, LocalTime maxHour, Doctor doctor_id) {
         this.minHour = orarioMinimo;
         this.maxHour = maxHour;
         this.today = today;
-        this.agenda = idAgenda;
+        this.doctor_id = doctor_id;
     }
 
     public Integer getId() {
@@ -60,24 +68,28 @@ public class AppointmentSlot {
         this.today = today;
     }
 
-    public Boolean getPrenotated() {
-        return IsBooked;
+    public Doctor getDoctor_id() {
+        return doctor_id;
     }
 
-    public void setPrenotated(Boolean prenotated) {
-        IsBooked = prenotated;
+    public Patient getPatient_id() {
+        return patient_id;
     }
 
-    public void setAppointment(){
-        this.IsBooked = true;
-    }
-    public void cancelAppointment(){
-        this.IsBooked = false;
+    public AppointmentStatus getStatus() {
+        return status;
     }
 
     @Override
     public String toString() {
-        return " da:" + minHour +
-                " a:" + maxHour;
+        return "AppointmentSlot{" +
+                "id=" + id +
+                ", minHour=" + minHour +
+                ", maxHour=" + maxHour +
+                ", doctor_id=" + doctor_id +
+                ", patient_id=" + patient_id +
+                ", today=" + today +
+                ", status=" + status +
+                '}';
     }
 }

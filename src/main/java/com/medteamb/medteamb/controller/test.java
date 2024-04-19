@@ -1,19 +1,15 @@
 package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.model.Appointment;
-import com.medteamb.medteamb.model.Calendar.SingleAgenda;
 import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.Patient;
 
-import com.medteamb.medteamb.service.AgendService;
+import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.PatientService;
 
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 public class test {
@@ -21,7 +17,9 @@ public class test {
     private PatientService service;
 
     @Autowired
-    private AgendService service2;
+    private DoctorService serviceDoc;
+
+
     @PostMapping("/patient")
     public PatientResponse savePatient(@RequestBody Patient patient){
         return service.newPatient(patient);
@@ -46,11 +44,9 @@ public class test {
     public Iterable<Appointment> getAllAppointments(@RequestParam Integer id){
         return service.getAllAppointment(id);
     }
-
-
-    @PostMapping("/newAgend")
-    public SingleAgenda newAgend(@RequestBody Doctor doc){
-        return service2.saveNewAgend(doc);
+    @PostMapping("/doctor")
+    public Doctor postDoctor(@RequestBody Doctor doc){
+        return serviceDoc.saveCoc(doc);
     }
 
 
