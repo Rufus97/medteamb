@@ -46,29 +46,18 @@ public class CalendarUtility {
     }
     @Scheduled(fixedRate = 2000L)
     public void getAllNoAgends(){
-        Iterable<Integer> medicsNoAgend = calendarRepo.getAllDcotorWhoDontHaveAgenda();
+        /*Iterable<Integer> medicsNoAgend = calendarRepo.getAllDcotorWhoDontHaveAgenda();
         System.out.println(medicsNoAgend + " sta girando da solo !!!");
          medicsNoAgend.forEach(
                  id -> {
                     initializeMonth(LocalDate.now(), LocalDate.now().plusMonths(1), doctorRepository.findById(id).get());
                  }
-         );
+         ); */
          List<Integer> docsWithAgenda = new ArrayList<>();
          calendarRepo.getAllDocsWithAgenda().forEach(docsWithAgenda::add);
-         updateAgenda(calendarRepo.getDocLastSlot(docsWithAgenda.size()));
 
+         docsWithAgenda.forEach( id ->
+                 System.out.println(calendarRepo.updateDoc(id)));
     }
-
-    public void updateAgenda(Iterable<AppointmentSlot> slots){
-
-
-        for (AppointmentSlot slot : slots){
-            if (!slot.getToday().plusMonths(1).equals(slot.getToday().plusMonths(1))){
-                initializeMonth(LocalDate.now(), LocalDate.now().plusMonths(1), slot.getDoctor_id());
-            }
-        }
-    }
-
-
 
 }
