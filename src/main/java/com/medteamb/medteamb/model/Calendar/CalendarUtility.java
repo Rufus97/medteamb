@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Component
@@ -25,10 +28,9 @@ public class CalendarUtility {
         this.doctorRepository = doctorRepository;
     }
 
-    public void initializeMonth(Doctor docID){
-        LocalDate initialDate = LocalDate.now();
-        LocalDate finalDate = initialDate.plusMonths(1);
+    public void initializeMonth(LocalDate initialDate, LocalDate finalDate, Doctor docID){
         while(initialDate.isBefore(finalDate)){
+            System.out.println("faccio un giro" + initialDate + " " + finalDate);
             initializeHours(initialDate, docID);
             initialDate = initialDate.plusDays(1);
         }
@@ -48,17 +50,25 @@ public class CalendarUtility {
         System.out.println(medicsNoAgend + " sta girando da solo !!!");
          medicsNoAgend.forEach(
                  id -> {
-                    initializeMonth(doctorRepository.findById(id).get());
+                    initializeMonth(LocalDate.now(), LocalDate.now().plusMonths(1), doctorRepository.findById(id).get());
                  }
          );
-
-        System.out.println(calendarRepo.getDocLastSlot(2));
-
-    }
-
-    public void checkDocAgends(){
+         List<Integer> docsWithAgenda = new ArrayList<>();
+         calendarRepo.getAllDocsWithAgenda().forEach(docsWithAgenda::add);
+         updateAgenda(calendarRepo.getDocLastSlot(docsWithAgenda.size()));
 
     }
+
+    public void updateAgenda(Iterable<AppointmentSlot> slots){
+
+
+        for (AppointmentSlot slot : slots){
+            if (!slot.getToday().plusMonths(1).equals(slot.getToday().plusMonths(1))){
+                initializeMonth(LocalDate.now(), LocalDate.now().plusMonths(1), slot.getDoctor_id());
+            }
+        }
+    }
+
 
 
 }
