@@ -1,13 +1,11 @@
-package com.medteamb.medteamb.service.dto;
+package com.medteamb.medteamb.service.dto.appointment;
 
 import org.springframework.stereotype.Component;
 
 import com.medteamb.medteamb.model.Appointment;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 
 @Component
-public class DTOMapper {
+public class DTOAppointmentMapper {
 	
 	public Appointment requestToAppointmentMapping(AppointmentRequestDTO appointmentRequest) {
 		Appointment appointment = new Appointment();

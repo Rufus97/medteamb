@@ -3,28 +3,28 @@ package com.medteamb.medteamb.model;
 import java.util.Set;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Entity //annotazione per dire a spring "questa è una classe tabella"
-@Table(name = "secretary") //generare tabella e nome della tabella
-@Data //generare getter e setter, to string, hash, equals
-@AllArgsConstructor //costruttore popolato
-@NoArgsConstructor //costruttore vuoto
-@Builder //genera tutto il codice builder
+@Entity
+@Table(name = "secretary")
 public class Secretary {
-	@Id //ID numero unico per ogni elemento
-	@GeneratedValue(strategy = GenerationType.IDENTITY) /*istruzioni per generare Id*/
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer secretaryId;
+	
+	@Column(nullable = false)
 	private String secretaryName;
+	
+	@Column(nullable = false)
 	private String secretarySurname;
+	
+	@Column(nullable = false)
 	private String secretaryPhoneNumber;
+	
+	@Column(nullable = false, unique = false)
 	private String secretaryEmail;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID")
-	private Set<Appointment> appointments;
+	private Appointment appointments;
 
 }

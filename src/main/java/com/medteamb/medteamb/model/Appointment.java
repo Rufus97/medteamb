@@ -13,6 +13,7 @@ public class Appointment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "appointment_id")
 	private Integer appointmentID;
 	
 	@Column(nullable = false)
