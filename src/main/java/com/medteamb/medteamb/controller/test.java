@@ -8,6 +8,7 @@ import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.PatientService;
 
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
+import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,8 +46,8 @@ public class test {
         return service.getAllAppointment(id);
     }
     @PostMapping("/doctor")
-    public Doctor postDoctor(@RequestBody Doctor doc){
-        return serviceDoc.saveCoc(doc);
+    public DoctorRequestDTO postDoctor(@RequestBody DoctorRequestDTO docDto){
+        return serviceDoc.saveDoctor(docDto);
     }
 
 

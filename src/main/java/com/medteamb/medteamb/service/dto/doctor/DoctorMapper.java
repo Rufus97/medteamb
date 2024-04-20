@@ -1,10 +1,12 @@
 package com.medteamb.medteamb.service.dto.doctor;
 
 import com.medteamb.medteamb.model.Doctor;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DoctorMapper {
 
-	public DoctorRequestDTO mapTo(Doctor doctor) {
+	public DoctorRequestDTO mapFromDocToDTO(Doctor doctor) {
 		DoctorRequestDTO doctorDto = DoctorRequestDTO.builder()
 				.withDoctorID(doctor.getDoctorID())
 				.withDoctorEmail(doctor.getDoctorName())

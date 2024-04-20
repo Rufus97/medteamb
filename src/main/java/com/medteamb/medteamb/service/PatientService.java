@@ -50,6 +50,7 @@ public class PatientService {
        Patient patient = patientRepo.findById(id).
                orElseThrow(() -> new PatientNotFound("patient not found"));
        patient.updateThisPatient(newPatient);
+       patientRepo.save(patient);
        return new PatientResponse(mapper.mapFromPatientToResponse(patient));
     }
     //DELETE

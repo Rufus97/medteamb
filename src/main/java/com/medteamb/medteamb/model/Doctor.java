@@ -28,9 +28,21 @@ public class Doctor {
 	private Specialization specialization;
 
 	@OneToOne
-	@JoinColumn(name = "pippo")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
+
+	public void setDoctorID(Integer doctorID) {
+		this.doctorID = doctorID;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public Integer getDoctorID() {
 		return doctorID;
 	}
@@ -68,17 +80,11 @@ public class Doctor {
 	public int hashCode() {
 		return Objects.hash(doctorID, doctorEmail, doctorName, doctorPhoneNumber, specialization, doctorSurname);
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Doctor other = (Doctor) obj;
-		return Objects.equals(doctorID, other.doctorID) && Objects.equals(doctorEmail, other.doctorEmail)
-				&& Objects.equals(doctorName, other.doctorName) && Objects.equals(doctorPhoneNumber, other.doctorPhoneNumber)
-				&& specialization == other.specialization && Objects.equals(doctorSurname, other.doctorSurname);
-	}	
+
+	public void updateThisDocto(Doctor newDoc){
+		this.doctorEmail = newDoc.getDoctorEmail();
+		this.doctorName = newDoc.getDoctorName();
+		this.doctorSurname = newDoc.getDoctorSurname();
+		this.doctorPhoneNumber = newDoc.getDoctorPhoneNumber();
+	}
 }

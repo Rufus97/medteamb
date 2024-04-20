@@ -94,8 +94,6 @@ public class Patient {
 		this.patientSurname = newPatient.getPatientSurname();
 		this.patientPhoneNumber = newPatient.getPatientPhoneNumber();
 		this.taxCode = newPatient.getTaxCode();
-
-
 	}
 }
 
