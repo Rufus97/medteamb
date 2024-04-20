@@ -2,7 +2,6 @@ package com.medteamb.medteamb.model;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
 
 @Entity
 @Table(name = "patient")
@@ -11,16 +10,24 @@ public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer patientID;
-
+    @Column(nullable = false)
 	private String patientName;
+	@Column(nullable = false)
 	private String patientSurname;
+	@Column(nullable = false)
 	private String taxCode;
+	@Column(nullable = false)
 	private String patientPhoneNumber;
 	private String patientEmail;
+    public Patient(){};
+	public Patient(String patientName, String patientSurname) {
+		this.patientName = patientName;
+		this.patientSurname = patientSurname;
+	}
 
-//	@OneToOne
-//	@JoinColumn(name = "user_id")
-//	private User user;
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	public Integer getPatientID() {
 		return patientID;
@@ -30,6 +37,7 @@ public class Patient {
 		this.patientID = patientID;
 	}
 
+
 	public String getPatientName() {
 		return patientName;
 	}
@@ -37,6 +45,7 @@ public class Patient {
 	public void setPatientName(String patientName) {
 		this.patientName = patientName;
 	}
+
 
 	public String getPatientSurname() {
 		return patientSurname;
@@ -70,16 +79,21 @@ public class Patient {
 		this.patientEmail = patientEmail;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Patient patient)) return false;
-		return Objects.equals(getPatientID(), patient.getPatientID()) && Objects.equals(getPatientName(), patient.getPatientName()) && Objects.equals(getPatientSurname(), patient.getPatientSurname()) && Objects.equals(getTaxCode(), patient.getTaxCode()) && Objects.equals(getPatientPhoneNumber(), patient.getPatientPhoneNumber()) && Objects.equals(getPatientEmail(), patient.getPatientEmail());
+
+	public User getUser() {
+		return user;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(getPatientID(), getPatientName(), getPatientSurname(), getTaxCode(), getPatientPhoneNumber(), getPatientEmail());
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public void updateThisPatient(Patient newPatient){
+		this.patientEmail = newPatient.getPatientEmail();
+		this.patientName = newPatient.getPatientName();
+		this.patientSurname = newPatient.getPatientSurname();
+		this.patientPhoneNumber = newPatient.getPatientPhoneNumber();
+		this.taxCode = newPatient.getTaxCode();
 	}
 }
 

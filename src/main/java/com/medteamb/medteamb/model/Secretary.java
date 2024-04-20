@@ -21,6 +21,11 @@ public class Secretary {
 	@Column(nullable = false, unique = true)
 	private String secretaryEmail;
 
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+
 //	@OneToOne
 //	@JoinColumn(name = "user")
 //	private User user;
@@ -72,4 +77,5 @@ public class Secretary {
 	public int hashCode() {
 		return Objects.hash(getSecretaryID(), getSecretaryName(), getSecretarySurname(), getSecretaryPhoneNumber(), getSecretaryEmail());
 	}
+
 }
