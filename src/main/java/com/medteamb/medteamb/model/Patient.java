@@ -1,10 +1,7 @@
 package com.medteamb.medteamb.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 @Entity
 @Table(name = "patient")
@@ -32,6 +29,15 @@ public class Patient {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	public Integer getPatientID() {
+		return patientID;
+	}
+
+	public void setPatientID(Integer patientID) {
+		this.patientID = patientID;
+	}
+
+
 	public String getPatientName() {
 		return patientName;
 	}
@@ -40,9 +46,6 @@ public class Patient {
 		this.patientName = patientName;
 	}
 
-	public Integer getPatientID() {
-		return patientID;
-	}
 
 	public String getPatientSurname() {
 		return patientSurname;
@@ -76,6 +79,7 @@ public class Patient {
 		this.patientEmail = patientEmail;
 	}
 
+
 	public User getUser() {
 		return user;
 	}
@@ -90,5 +94,8 @@ public class Patient {
 		this.patientSurname = newPatient.getPatientSurname();
 		this.patientPhoneNumber = newPatient.getPatientPhoneNumber();
 		this.taxCode = newPatient.getTaxCode();
+
+
 	}
 }
+

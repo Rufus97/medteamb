@@ -54,6 +54,8 @@ public class CalendarUtility {
                  }
          );
          List<Integer> docsWithAgenda = new ArrayList<>();
+
+
          calendarRepo.getAllDocsWithAgenda().forEach(docsWithAgenda::add);
          docsWithAgenda.forEach( id ->
                 updateAgendas(calendarRepo.updateDoc(id)));
@@ -62,7 +64,8 @@ public class CalendarUtility {
     public void updateAgendas(Optional<AppointmentSlot> appointments){
         LocalDate initialDate = appointments.get().getToday().plusMonths(1);
         LocalDate finalDate = LocalDate.now().plusMonths(1);
-         if (!initialDate.equals(finalDate)){
+         if (initialDate.isBefore(finalDate)){
+             System.out.println("sto aggiornando l'agenda da: " + appointments.get().getToday() + " a " + finalDate);
              initializeMonth(initialDate, finalDate, appointments.get().getDoctor_id());
          }
     }
