@@ -18,9 +18,6 @@ public class Patient {
 	private String patientPhoneNumber;
 	private String patientEmail;
 
-//	@OneToOne
-//	@JoinColumn(name = "user_id")
-//	private User user;
 
 	public Integer getPatientID() {
 		return patientID;

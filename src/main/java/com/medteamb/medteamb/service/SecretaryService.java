@@ -29,8 +29,8 @@ public class SecretaryService {
                 .collect(Collectors.toList());
     }
 
-    public SecretaryResponseDTO getSecretaryById(Integer id) {
-        Secretary secretary = secretaryRepository.findById(id).orElseThrow();
+    public SecretaryResponseDTO getSecretaryById(Integer secretaryId) {
+        Secretary secretary = secretaryRepository.findById(secretaryId).orElseThrow();
         return secretaryDTOMapper.mapToResponseDTO(secretary);
     }
 
@@ -40,8 +40,8 @@ public class SecretaryService {
         return secretaryDTOMapper.mapToResponseDTO(savedSecretary);
     }
 
-    public SecretaryResponseDTO updateSecretary(Integer id, SecretaryRequestDTO secretaryDTO) {
-        Secretary existingSecretary = secretaryRepository.findById(id).orElseThrow();
+    public SecretaryResponseDTO updateSecretary(Integer secretaryId, SecretaryRequestDTO secretaryDTO) {
+        Secretary existingSecretary = secretaryRepository.findById(secretaryId).orElseThrow();
 
         existingSecretary.setSecretaryName(secretaryDTO.getSecretaryName());
         existingSecretary.setSecretarySurname(secretaryDTO.getSecretarySurname());
@@ -52,8 +52,8 @@ public class SecretaryService {
         return secretaryDTOMapper.mapToResponseDTO(updatedSecretary);
     }
 
-    public void deleteSecretary(Integer id) {
-        secretaryRepository.deleteById(id);
+    public void deleteSecretary(Integer secretaryId) {
+        secretaryRepository.deleteById(secretaryId);
     }
 
 

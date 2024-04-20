@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/secretaries")
+@RequestMapping("/secretaries")
 public class SecretaryController {
 
     private final SecretaryService secretaryService;
@@ -21,33 +21,33 @@ public class SecretaryController {
         this.secretaryService = secretaryService;
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<List<SecretaryResponseDTO>> getAllSecretaries() {
         List<SecretaryResponseDTO> secretaries = secretaryService.getAllSecretaries();
         return new ResponseEntity<>(secretaries, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SecretaryResponseDTO> getSecretaryById(@PathVariable Long id) {
-        SecretaryResponseDTO secretary = secretaryService.getSecretaryById(id.intValue());
+    @GetMapping("/get/{secretaryId}")
+    public ResponseEntity<SecretaryResponseDTO> getSecretaryById(@PathVariable Integer secretaryId) {
+        SecretaryResponseDTO secretary = secretaryService.getSecretaryById(secretaryId);
         return new ResponseEntity<>(secretary, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<SecretaryResponseDTO> createSecretary(@RequestBody SecretaryRequestDTO secretaryDTO) {
         SecretaryResponseDTO createdSecretary = secretaryService.createSecretary(secretaryDTO);
         return new ResponseEntity<>(createdSecretary, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Long id, @RequestBody SecretaryRequestDTO secretaryDTO) {
-        SecretaryResponseDTO updatedSecretary = secretaryService.updateSecretary(id.intValue(), secretaryDTO);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Integer secretaryId, @RequestBody SecretaryRequestDTO secretaryDTO) {
+        SecretaryResponseDTO updatedSecretary = secretaryService.updateSecretary(secretaryId, secretaryDTO);
         return new ResponseEntity<>(updatedSecretary, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSecretary(@PathVariable Long id) {
-        secretaryService.deleteSecretary(id.intValue());
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteSecretary(@PathVariable Integer secretaryId) {
+        secretaryService.deleteSecretary(secretaryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
