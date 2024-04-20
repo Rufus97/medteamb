@@ -21,7 +21,7 @@ public interface CalendarRepo extends JpaRepository<AppointmentSlot, Integer> {
            " on sa.doctor_id  = d.doctor_id group by d.doctor_id", nativeQuery = true)
     Iterable<Integer> getAllDocsWithAgenda();
 
-   @Query(value =  "select sa.giorno  from slot_appuntamento sa join doctor d on d.doctor_id = sa.doctor_id where d.doctor_id = ?1 order by sa.giorno desc limit 1", nativeQuery = true)
-   Optional<Object> updateDoc(Integer id);
+   @Query(value =  "select sa.* from slot_appuntamento sa join doctor d on d.doctor_id = sa.doctor_id where d.doctor_id = ?1 order by sa.giorno desc limit 1", nativeQuery = true)
+   Optional<AppointmentSlot> updateDoc(Integer id);
 
 }

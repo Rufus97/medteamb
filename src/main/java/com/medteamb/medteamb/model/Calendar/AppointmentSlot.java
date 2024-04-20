@@ -16,8 +16,6 @@ public class AppointmentSlot {
     private Integer id;
     @Column(name = "orario_iniziale", nullable = false)
     private LocalTime minHour;
-    @Column(name = "orario_finale", nullable = false)
-    private LocalTime maxHour;
     @JoinColumn(name = "doctor_id", nullable = false)
     @ManyToOne
     private Doctor doctor_id;
@@ -33,9 +31,8 @@ public class AppointmentSlot {
     public AppointmentSlot(){};
 
 
-    public AppointmentSlot(  LocalDate today, LocalTime orarioMinimo, LocalTime maxHour, Doctor doctor_id) {
+    public AppointmentSlot(  LocalDate today, LocalTime orarioMinimo,  Doctor doctor_id) {
         this.minHour = orarioMinimo;
-        this.maxHour = maxHour;
         this.today = today;
         this.doctor_id = doctor_id;
     }
@@ -50,14 +47,6 @@ public class AppointmentSlot {
 
     public void setMinHour(LocalTime minHour) {
         this.minHour = minHour;
-    }
-
-    public LocalTime getMaxHour() {
-        return maxHour;
-    }
-
-    public void setMaxHour(LocalTime maxHour) {
-        this.maxHour = maxHour;
     }
 
     public LocalDate getToday() {
@@ -85,7 +74,6 @@ public class AppointmentSlot {
         return "AppointmentSlot{" +
                 "id=" + id +
                 ", minHour=" + minHour +
-                ", maxHour=" + maxHour +
                 ", doctor_id=" + doctor_id +
                 ", patient_id=" + patient_id +
                 ", today=" + today +
