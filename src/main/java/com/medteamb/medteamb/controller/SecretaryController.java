@@ -39,13 +39,13 @@ public class SecretaryController {
         return new ResponseEntity<>(createdSecretary, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{secretaryId}")
     public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Integer secretaryId, @RequestBody SecretaryRequestDTO secretaryDTO) {
         SecretaryResponseDTO updatedSecretary = secretaryService.updateSecretary(secretaryId, secretaryDTO);
         return new ResponseEntity<>(updatedSecretary, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{secretaryId}")
     public ResponseEntity<Void> deleteSecretary(@PathVariable Integer secretaryId) {
         secretaryService.deleteSecretary(secretaryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
