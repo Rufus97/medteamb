@@ -2,7 +2,6 @@ package com.medteamb.medteamb.service.dto.secretary;
 
 public class SecretaryRequestDTO {
 
-    private Integer secretaryID;
     private String secretaryName;
     private String secretarySurname;
     private String secretaryPhoneNumber;
@@ -10,20 +9,12 @@ public class SecretaryRequestDTO {
 
     public SecretaryRequestDTO() {}
     private SecretaryRequestDTO(Builder builder) {
-        this.secretaryID = builder.secretaryID;
         this.secretaryName = builder.secretaryName;
         this.secretarySurname = builder.secretarySurname;
         this.secretaryPhoneNumber = builder.secretaryPhoneNumber;
         this.secretaryEmail = builder.secretaryEmail;
     }
 
-    public Integer getSecretaryID() {
-        return secretaryID;
-    }
-
-    public void setSecretaryID(Integer secretaryID) {
-        this.secretaryID = secretaryID;
-    }
 
     public String getSecretaryName() {
         return secretaryName;
@@ -62,7 +53,6 @@ public class SecretaryRequestDTO {
     }
 
     public static final class Builder {
-        private Integer secretaryID;
         private String secretaryName;
         private String secretarySurname;
         private String secretaryPhoneNumber;
@@ -71,11 +61,11 @@ public class SecretaryRequestDTO {
         private Builder() {
         }
 
-        public Builder withSecretaryID(Integer secretaryID) {
-            this.secretaryID = secretaryID;
-            return this;
-        }
 
+
+
+
+        //poi servira' per lo user
         public Builder withSecretaryName(String secretaryName) {
             this.secretaryName = secretaryName;
             return this;
