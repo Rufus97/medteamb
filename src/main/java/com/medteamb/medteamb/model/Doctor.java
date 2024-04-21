@@ -5,6 +5,7 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
+@Table()
 public class Doctor {
 
 	@Id
@@ -78,7 +79,8 @@ public class Doctor {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(doctorID, doctorEmail, doctorName, doctorPhoneNumber, specialization, doctorSurname);
+		return Objects.hash(doctorEmail, doctorID, doctorName, doctorPhoneNumber, doctorSurname,
+				specialization);
 	}
 
 	public void updateThisDocto(Doctor newDoc){
@@ -86,5 +88,20 @@ public class Doctor {
 		this.doctorName = newDoc.getDoctorName();
 		this.doctorSurname = newDoc.getDoctorSurname();
 		this.doctorPhoneNumber = newDoc.getDoctorPhoneNumber();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Doctor other = (Doctor) obj;
+		return Objects.equals(doctorEmail, other.doctorEmail)
+				&& Objects.equals(doctorID, other.doctorID) && Objects.equals(doctorName, other.doctorName)
+				&& Objects.equals(doctorPhoneNumber, other.doctorPhoneNumber)
+				&& Objects.equals(doctorSurname, other.doctorSurname) && specialization == other.specialization;
 	}
 }

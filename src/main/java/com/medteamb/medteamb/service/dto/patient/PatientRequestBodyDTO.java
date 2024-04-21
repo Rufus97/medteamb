@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.DTO.patientDTO;
+package com.medteamb.medteamb.service.dto.patient;
 
 public class PatientRequestBodyDTO {
     private String patientName;

@@ -3,7 +3,6 @@ package com.medteamb.medteamb.controller;
 import com.medteamb.medteamb.service.SecretaryService;
 import com.medteamb.medteamb.service.dto.secretary.SecretaryRequestDTO;
 import com.medteamb.medteamb.service.dto.secretary.SecretaryResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ public class SecretaryController {
 
     private final SecretaryService secretaryService;
 
-    @Autowired
     public SecretaryController(SecretaryService secretaryService) {
         this.secretaryService = secretaryService;
     }

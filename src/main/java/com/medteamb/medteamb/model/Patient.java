@@ -1,13 +1,22 @@
 package com.medteamb.medteamb.model;
 
-import jakarta.persistence.*;
 
+import java.util.Objects;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "patient")
 public class Patient {
 
 	@Id
+	@Column(name = "patient_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer patientID;
     @Column(nullable = false)
@@ -19,6 +28,7 @@ public class Patient {
 	@Column(nullable = false)
 	private String patientPhoneNumber;
 	private String patientEmail;
+	
     public Patient(){};
 	public Patient(String patientName, String patientSurname) {
 		this.patientName = patientName;
@@ -33,11 +43,6 @@ public class Patient {
 		return patientID;
 	}
 
-	public void setPatientID(Integer patientID) {
-		this.patientID = patientID;
-	}
-
-
 	public String getPatientName() {
 		return patientName;
 	}
@@ -45,7 +50,6 @@ public class Patient {
 	public void setPatientName(String patientName) {
 		this.patientName = patientName;
 	}
-
 
 	public String getPatientSurname() {
 		return patientSurname;
@@ -79,13 +83,9 @@ public class Patient {
 		this.patientEmail = patientEmail;
 	}
 
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	@Override
+	public int hashCode() {
+		return Objects.hash(patientEmail, patientID, patientName, patientPhoneNumber, patientSurname, taxCode);
 	}
 
 	public void updateThisPatient(Patient newPatient){
@@ -94,6 +94,21 @@ public class Patient {
 		this.patientSurname = newPatient.getPatientSurname();
 		this.patientPhoneNumber = newPatient.getPatientPhoneNumber();
 		this.taxCode = newPatient.getTaxCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Patient other = (Patient) obj;
+		return Objects.equals(patientEmail, other.patientEmail) && Objects.equals(patientID, other.patientID)
+				&& Objects.equals(patientName, other.patientName)
+				&& Objects.equals(patientPhoneNumber, other.patientPhoneNumber)
+				&& Objects.equals(patientSurname, other.patientSurname) && Objects.equals(taxCode, other.taxCode);
 	}
 }
 

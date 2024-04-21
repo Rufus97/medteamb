@@ -1,52 +1,24 @@
-package com.medteamb.medteamb.model;
+package com.medteamb.medteamb.service.dto.appointment;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import com.medteamb.medteamb.model.AppointmentStatus;
+import com.medteamb.medteamb.model.Doctor;
+import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.model.Secretary;
 
-import jakarta.persistence.*;
-
-@Entity
-public class Appointment {
+public class AppointmentResponseDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "appointment_id")
 	private Integer appointmentID;
-	
-	@Column(nullable = false)
 	private LocalDateTime appointmentDateTime;
-	
-	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
-	
-	@Column(nullable = false)
 	private String medicalService;
-	
-	@Column(nullable = false)
 	private String location;
-	
-	//database relations from here on...
-	
 	private String taxCode;
-	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
-	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
-	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
-	@JoinColumn(name = "secretary_id")
 	private Secretary secretary;
-	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
-	@JoinColumn(name = "patient_id")
 	private Patient patient;
-
+	
 	public Integer getAppointmentID() {
 		return appointmentID;
 	}
@@ -83,7 +55,6 @@ public class Appointment {
 		this.taxCode = taxCode;
 	}
 
-
 	public String getMedicalService() {
 		return medicalService;
 	}
@@ -115,26 +86,4 @@ public class Appointment {
 	public void setSecretary(Secretary secretary) {
 		this.secretary = secretary;
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(appointmentDateTime, appointmentID, doctor, location, medicalService, patient, secretary,
-				status, taxCode);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Appointment other = (Appointment) obj;
-		return Objects.equals(appointmentDateTime, other.appointmentDateTime)
-				&& Objects.equals(appointmentID, other.appointmentID) && Objects.equals(doctor, other.doctor)
-				&& Objects.equals(location, other.location) && Objects.equals(medicalService, other.medicalService)
-				&& Objects.equals(patient, other.patient) && Objects.equals(secretary, other.secretary)
-				&& status == other.status && Objects.equals(taxCode, other.taxCode);
-	}	
 }

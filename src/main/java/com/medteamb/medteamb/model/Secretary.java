@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 
 import java.util.Objects;
-
 @Entity
 @Table(name = "secretary")
 public class Secretary {
@@ -20,6 +19,9 @@ public class Secretary {
 	private String secretaryPhoneNumber;
 	@Column(nullable = false, unique = true)
 	private String secretaryEmail;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID")
+	private Appointment appointments;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")

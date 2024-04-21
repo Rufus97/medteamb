@@ -1,14 +1,10 @@
 package com.medteamb.medteamb.model;
 
 
-// import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
+//import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Entity
 @Table (name = "user")
