@@ -20,9 +20,11 @@ public class Patient {
 	private String patientPhoneNumber;
 	private String patientEmail;
     public Patient(){};
-	public Patient(String patientName, String patientSurname) {
+	public Patient(String patientName, String patientSurname, String taxCode, String patientPhoneNumber) {
 		this.patientName = patientName;
 		this.patientSurname = patientSurname;
+		this.patientPhoneNumber = patientPhoneNumber;
+		this.taxCode = taxCode;
 	}
 
 	@OneToOne

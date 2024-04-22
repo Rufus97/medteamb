@@ -10,7 +10,7 @@ import java.util.List;
 public class ListOfDTOmapper{
 
     public PatientResponseIterables mapPatientsToDTOList(Iterable<Patient> list, DTOmapper mapper){
-        List<PatientDTO> dtoList = new ArrayList<>();
+        List<PatientResponseDTO> dtoList = new ArrayList<>();
         while (list.iterator().hasNext()){
             dtoList.add(mapper.mapFromPatientToResponse(list.iterator().next()));
         }

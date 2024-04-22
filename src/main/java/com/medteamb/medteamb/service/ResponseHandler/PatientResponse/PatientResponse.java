@@ -2,23 +2,23 @@ package com.medteamb.medteamb.service.ResponseHandler.PatientResponse;
 
 
 import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
-import com.medteamb.medteamb.service.dto.patient.PatientDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 
 
 public class PatientResponse extends BaseResponse{
 
-    PatientDTO body;
+    PatientResponseDTO body;
 
 
-    public PatientResponse(PatientDTO body) {
+    public PatientResponse(PatientResponseDTO body) {
         this.body = body;
     }
 
-    public PatientDTO getBody() {
+    public PatientResponseDTO getBody() {
         return body;
     }
 
-    public void setBody(PatientDTO body) {
+    public void setBody(PatientResponseDTO body) {
         this.body = body;
     }
 }

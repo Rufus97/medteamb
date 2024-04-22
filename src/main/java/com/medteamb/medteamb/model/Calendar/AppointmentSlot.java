@@ -26,7 +26,7 @@ public class AppointmentSlot {
     @Column(name = "giorno")
     private LocalDate today;
     @Enumerated(EnumType.STRING)
-    private AppointmentStatus status;
+    private AppointmentStatus status = AppointmentStatus.AVAIBLE;
 
 
     public AppointmentSlot(){};

@@ -1,21 +1,10 @@
 package com.medteamb.medteamb.service.dto.patient;
 
-import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
-
-public class PatientDTO {
-
+public class PatientRequestDTO implements GenericDTO {
     private String patientName;
     private String patientSurname;
     private String taxCode;
-
-    public PatientDTO(){}
-
-    public PatientDTO(Patient patient){
-        this.patientName = patient.getPatientName();
-        this.patientSurname = patient.getPatientSurname();
-        this.taxCode = patient.getTaxCode();
-    }
+    private String patientPhoneNumber;
 
     public String getPatientName() {
         return patientName;
@@ -39,5 +28,13 @@ public class PatientDTO {
 
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
+    }
+
+    public String getPatientPhoneNumber() {
+        return patientPhoneNumber;
+    }
+
+    public void setPatientPhoneNumber(String patientPhoneNumber) {
+        this.patientPhoneNumber = patientPhoneNumber;
     }
 }

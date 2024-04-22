@@ -1,13 +1,14 @@
 package com.medteamb.medteamb.service;
 
-import com.medteamb.medteamb.model.Appointment;
+import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.repository.PatientRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
 import com.medteamb.medteamb.service.dto.patient.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PatientService {
@@ -24,18 +25,21 @@ public class PatientService {
     }
 
     //CREATE
+    public PatientResponse newPatient(PatientRequestDTO newPatient){
+       return new PatientResponse(mapper.mapFromPatientToResponse(
+               patientRepo.save(mapper.mapFromRequestToPatient(newPatient))
+       ));
+    }
+    // overload newPatient with no dto
     public PatientResponse newPatient(Patient newPatient){
-       return new PatientResponse(mapper.mapFromPatientToResponse(patientRepo.save(newPatient))) ;
+        return new PatientResponse(mapper.mapFromPatientToResponse(patientRepo.save(newPatient)));
     }
 
     //READ
-    // get all appointment history
-    public Iterable<Appointment> getAllAppointment(Integer id){
-        return patientRepo.getAllPatientAppointments(id);
-    }
+
     // get patient by id
     public PatientResponse getPatient(Integer id){
-       PatientDTO response =  mapper.mapFromPatientToResponse(patientRepo.findById(id).
+       PatientResponseDTO response =  mapper.mapFromPatientToResponse(patientRepo.findById(id).
                orElseThrow(() -> new PatientNotFound("patient not found")));
        return new PatientResponse(response);
     }
@@ -43,6 +47,28 @@ public class PatientService {
     public Iterable<Patient> getPatientsByIds(Iterable<Integer> ids){
         return patientRepo.findAllById(ids);
     }
+
+    // verificare disponibilità mio dottore
+    // possibili più metodi di ricerca, per id, per nome e cognome, per email, per telefono ecc ecc
+    public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDoc(Integer docID){
+        return patientRepo.getALlAvaibleAppointmentsOfOneDoctor(docID);
+    }
+   /* public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDoc(PatientAppointmentRequestDTO dto){
+
+    }*/
+
+    public Iterable<AppointmentSlot>  getAllAppointmentsOfOnePatient(Integer id){
+        return patientRepo.getAllPatientAppointments(id);
+    }
+
+    public AppointmentSlot  getOneAppointmentFromPatientID(PatientAppointmentRequestDTO request, Integer id){
+        return patientRepo.getOneAppointmentFromPatientIdAndDate(request.getData(), request.getHour(), id).get();
+    }
+
+
+
+
+
     //UPDATE
 
     // update 1 patient by id with a newPatientIstance
