@@ -19,33 +19,33 @@ public class SecretaryController {
         this.secretaryService = secretaryService;
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<List<SecretaryResponseDTO>> getAllSecretaries() {
         List<SecretaryResponseDTO> secretaries = secretaryService.getAllSecretaries();
         return new ResponseEntity<>(secretaries, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SecretaryResponseDTO> getSecretaryById(@PathVariable Long id) {
-        SecretaryResponseDTO secretary = secretaryService.getSecretaryById(id.intValue());
+    @GetMapping("/get/{secretaryID}")
+    public ResponseEntity<SecretaryResponseDTO> getSecretaryById(@PathVariable Integer secretaryID) {
+        SecretaryResponseDTO secretary = secretaryService.getSecretaryById(secretaryID);
         return new ResponseEntity<>(secretary, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<SecretaryResponseDTO> createSecretary(@RequestBody SecretaryRequestDTO secretaryDTO) {
         SecretaryResponseDTO createdSecretary = secretaryService.createSecretary(secretaryDTO);
         return new ResponseEntity<>(createdSecretary, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Long id, @RequestBody SecretaryRequestDTO secretaryDTO) {
-        SecretaryResponseDTO updatedSecretary = secretaryService.updateSecretary(id.intValue(), secretaryDTO);
+    @PutMapping("/update/{secretaryID}")
+    public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Integer secretaryID, @RequestBody SecretaryRequestDTO secretaryDTO) {
+        SecretaryResponseDTO updatedSecretary = secretaryService.updateSecretary(secretaryID, secretaryDTO);
         return new ResponseEntity<>(updatedSecretary, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSecretary(@PathVariable Long id) {
-        secretaryService.deleteSecretary(id.intValue());
+    @DeleteMapping("/delete/{secretaryID}")
+    public ResponseEntity<Void> deleteSecretary(@PathVariable Integer secretaryID) {
+        secretaryService.deleteSecretary(secretaryID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
