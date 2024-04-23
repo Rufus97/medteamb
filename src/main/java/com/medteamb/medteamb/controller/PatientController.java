@@ -1,6 +1,10 @@
 package com.medteamb.medteamb.controller;
 
+import com.medteamb.medteamb.service.dto.patient.PatientDTO;
+import com.medteamb.medteamb.service.dto.secretary.SecretaryResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,49 +22,43 @@ import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/patients")
 public class PatientController {
     @Autowired
     private PatientService service;
 
-    @Autowired
-    private DoctorService serviceDoc;
-
 
     @PostMapping("/create")
     public PatientResponse savePatient(@RequestBody Patient patient){
         return service.newPatient(patient);
     }
-    @DeleteMapping("/delete/{patientID}")
-    public PatientResponse deletePatientById(@RequestParam Integer patientID){
-        return service.deletePatientById(patientID);
+    @GetMapping("/get/{patientID}")
+    public PatientResponse getPatient(@PathVariable Integer patientID){
+        return service.getPatient(patientID);
+    }
+    @GetMapping("/getMultiple")
+    public Iterable<Patient> getPatientsIds(@RequestBody Iterable<Integer> patientIDs){
+        return service.getPatientsByIds(patientIDs);
+    }
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PatientDTO>> getAllPatients() {
+        List<PatientDTO> patients = service.getAllPatients();
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+    @GetMapping("/get/{patientID}/appointments")
+    public Iterable<Appointment> getAllAppointments(@PathVariable Integer patientID) {
+        return service.getAllAppointment(patientID);
     }
     @PutMapping("/update/{patientID}")
     public PatientResponse updatePatientById(@RequestBody Patient newPatient, @PathVariable Integer patientID){
         return service.updatePatientById(newPatient, patientID);
     }
-    @GetMapping("/get/{patientID}")
-    public PatientResponse getPatient(@RequestParam Integer patientID){
-        return service.getPatient(patientID);
+    @DeleteMapping("/delete/{patientID}")
+    public PatientResponse deletePatientById(@PathVariable Integer patientID){
+        return service.deletePatientById(patientID);
     }
-    @GetMapping("/getAll")
-    public Iterable<Patient> getPatientsIds(@RequestBody Iterable<Integer> patientIDs){
-        return service.getPatientsByIds(patientIDs);
-    }
-    @GetMapping("/get/{patientID}/appointments")
-    public Iterable<Appointment> getAllAppointments(@RequestParam Integer patientID){
-        return service.getAllAppointment(patientID);
-    }
-
-
-    // perche' c'e' un doctor in questo controller?
-
-    @PostMapping("/doctor")
-    public DoctorRequestDTO postDoctor(@RequestBody DoctorRequestDTO docDto){
-        return serviceDoc.saveDoctor(docDto);
-    }
-
-
 
 }

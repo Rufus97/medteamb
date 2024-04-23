@@ -9,7 +9,7 @@ public class DoctorMapper {
 	public DoctorRequestDTO mapFromDocToDTO(Doctor doctor) {
 		DoctorRequestDTO doctorDto = DoctorRequestDTO.builder()
 				.withDoctorID(doctor.getDoctorID())
-				.withDoctorEmail(doctor.getDoctorName())
+				.withDoctorName(doctor.getDoctorName())
 				.withDoctorSurname(doctor.getDoctorSurname())
 				.withDoctorEmail(doctor.getDoctorEmail())
 				.withDoctorPhoneNumber(doctor.getDoctorPhoneNumber())
