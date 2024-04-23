@@ -33,14 +33,14 @@ public class DoctorController {
 		return new ResponseEntity<>(docService.saveDoctor(doctorDto), HttpStatus.CREATED) ;
 	}
 	
-	@GetMapping(path ="/get")
+	@GetMapping(path ="/getAll")
 	public List<DoctorRequestDTO> showAllDoctors(){
 		return docService.showAllDocs();
 	}
 	
-	@GetMapping(path ="/get/{id}")
-	public ResponseEntity<DoctorRequestDTO>showById(@PathVariable ("id")Integer doctorID){
-		Optional<DoctorRequestDTO> foundDoctor = docService.findDocById(doctorID);
+	@GetMapping(path ="/get/{doctorId}")
+	public ResponseEntity<DoctorRequestDTO>showById(@PathVariable Integer doctorId){
+		Optional<DoctorRequestDTO> foundDoctor = docService.findDocById(doctorId);
 		if(foundDoctor.isPresent()) {
 			DoctorRequestDTO doctorDto = foundDoctor.get();
 			return new ResponseEntity<>(doctorDto, 
@@ -49,20 +49,20 @@ public class DoctorController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@PutMapping(path = "/update/{id}")
-	public ResponseEntity<DoctorRequestDTO>updateById(@PathVariable("id") Integer doctorID,
+	@PutMapping(path = "/update/{doctorId}")
+	public ResponseEntity<DoctorRequestDTO>updateById(@PathVariable Integer doctorId,
 			@RequestBody DoctorRequestDTO doctorDto) {
-		if(!docService.exists(doctorID)) {
+		if(!docService.exists(doctorId)) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		doctorDto.setDoctorID(doctorID);
+		doctorDto.setDoctorID(doctorId);
 		return new ResponseEntity<>(docService.saveDoctor(doctorDto),
 				HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping(path = "/delete/{id}")
-	public ResponseEntity<DoctorRequestDTO>deleteDoctor(@PathVariable("id") Integer doctorID){
-		docService.deleteDoc(doctorID);
+	@DeleteMapping(path = "/delete/{doctorId}")
+	public ResponseEntity<DoctorRequestDTO>deleteDoctor(@PathVariable Integer doctorId){
+		docService.deleteDoc(doctorId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

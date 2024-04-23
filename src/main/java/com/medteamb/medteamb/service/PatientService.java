@@ -5,9 +5,11 @@ import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.repository.PatientRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
 import com.medteamb.medteamb.service.dto.patient.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
@@ -38,6 +40,13 @@ public class PatientService {
        PatientDTO response =  mapper.mapFromPatientToResponse(patientRepo.findById(id).
                orElseThrow(() -> new PatientNotFound("patient not found")));
        return new PatientResponse(response);
+    }
+    // get all patients
+    public List<PatientDTO> getAllPatients() {
+        List<Patient> patients = patientRepo.findAll();
+        return patients.stream()
+                .map(mapper::mapFromPatientToResponse)
+                .collect(Collectors.toList());
     }
     // get more patients from ids
     public Iterable<Patient> getPatientsByIds(Iterable<Integer> ids){
