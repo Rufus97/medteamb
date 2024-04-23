@@ -2,7 +2,6 @@ package com.medteamb.medteamb.controller;
 
 
 import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
-import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.Patient;
 
 import com.medteamb.medteamb.service.DoctorService;
@@ -10,7 +9,6 @@ import com.medteamb.medteamb.service.PatientService;
 
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +22,13 @@ public class test {
     private DoctorService serviceDoc;
 
     //CREATE
-    @PostMapping("/patientDTO")
+    @PostMapping("/patient")
     public PatientResponse savePatient(@RequestBody PatientRequestDTO patient){
+
         return service.newPatient(patient);
     }
 
-    @PostMapping("/patient")
-    public PatientResponse savePatient(@RequestBody Patient patient){
-        return service.newPatient(patient);
-    }
+
     @PostMapping("/doctor")
     public DoctorRequestDTO postDoctor(@RequestBody DoctorRequestDTO docDto){return serviceDoc.saveDoctor(docDto);}
     //READ

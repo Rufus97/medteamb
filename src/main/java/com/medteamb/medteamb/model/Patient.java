@@ -14,10 +14,11 @@ public class Patient {
 	private String patientName;
 	@Column(nullable = false)
 	private String patientSurname;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String taxCode;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String patientPhoneNumber;
+	@Column(unique = true)
 	private String patientEmail;
     public Patient(){};
 	public Patient(String patientName, String patientSurname, String taxCode, String patientPhoneNumber) {

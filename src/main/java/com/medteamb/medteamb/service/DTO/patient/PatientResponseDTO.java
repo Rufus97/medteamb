@@ -2,8 +2,9 @@ package com.medteamb.medteamb.service.dto.patient;
 
 import com.medteamb.medteamb.model.Patient;
 
-public class PatientResponseDTO implements GenericDTO {
+public class PatientResponseDTO {
 
+    private Integer id;
     private String patientName;
     private String patientSurname;
     private String taxCode;
@@ -11,6 +12,7 @@ public class PatientResponseDTO implements GenericDTO {
     public PatientResponseDTO(){}
 
     public PatientResponseDTO(Patient patient){
+        this.id = patient.getPatientID();
         this.patientName = patient.getPatientName();
         this.patientSurname = patient.getPatientSurname();
         this.taxCode = patient.getTaxCode();

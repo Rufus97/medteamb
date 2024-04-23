@@ -17,7 +17,8 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
 
 
-    // da cambiare
+
+
     @Query(value = "select * from slot_appuntamento sa join doctor d " +
             "on d.doctor_id = sa.doctor_id " +
             "where d.doctor_id = ?1 and sa.status = 'AVAIBLE'", nativeQuery = true)
@@ -33,8 +34,15 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     Optional<AppointmentSlot> getOneAppointmentFromPatientIdAndDate(@Param("day") LocalDate day,
                                                                     @Param("hour")LocalTime hour,
                                                                     @Param("id")Integer id);
+    @Query(value = "update slot_appuntamento sa " +
+            "set sa.patient_id = ?1, sa.status = 'TO_DO' " +
+            "where sa.giorno = ?2 and sa.orario_iniziale = ?3 ")
+            Optional<AppointmentSlot> createAppointmentWithDateAndHour(Integer id, LocalDate day, LocalTime hour);
 
-
+    // MethodName queries
     Optional<Patient> findByPatientEmail(String patientEmail);
-
+    Optional<Patient> findBypatientName(String patientName);
+    Optional<Patient> findBypatientSurname(String patientSurname);
+    Optional<Patient> findBytaxCode(String taxCode);
+    Optional<Patient> findBypatientPhoneNumber(String phoneNumber);
 }

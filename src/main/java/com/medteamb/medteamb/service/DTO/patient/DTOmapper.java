@@ -20,6 +20,7 @@ public class DTOmapper<GenericDTO>{
 
     public Patient mapFromRequestToPatient(PatientRequestDTO request){
        return new Patient(request.getPatientName(),
+
                request.getPatientSurname(),
                request.getPatientPhoneNumber(),
                request.getTaxCode());

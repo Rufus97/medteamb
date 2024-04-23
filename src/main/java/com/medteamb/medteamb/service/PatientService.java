@@ -3,12 +3,17 @@ package com.medteamb.medteamb.service;
 import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.repository.PatientRepository;
+import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.patient.*;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -26,14 +31,17 @@ public class PatientService {
 
     //CREATE
     public PatientResponse newPatient(PatientRequestDTO newPatient){
-       return new PatientResponse(mapper.mapFromPatientToResponse(
-               patientRepo.save(mapper.mapFromRequestToPatient(newPatient))
-       ));
+        checkIfExists(newPatient);
+        return new PatientResponse(mapper.mapFromPatientToResponse
+                (patientRepo.save(mapper.mapFromRequestToPatient(newPatient))));
     }
-    // overload newPatient with no dto
-    public PatientResponse newPatient(Patient newPatient){
-        return new PatientResponse(mapper.mapFromPatientToResponse(patientRepo.save(newPatient)));
+
+    public Optional<AppointmentSlot> newAppointmentByDate(PatientRequestAppointmentDTO request){
+
+        return patientRepo.createAppointmentWithDateAndHour(request.getPatientID(), request.getAppointmentDate().toLocalDate(),
+                request.getAppointmentDate().toLocalTime());
     }
+
 
     //READ
 
@@ -61,8 +69,10 @@ public class PatientService {
         return patientRepo.getAllPatientAppointments(id);
     }
 
-    public AppointmentSlot  getOneAppointmentFromPatientID(PatientAppointmentRequestDTO request, Integer id){
-        return patientRepo.getOneAppointmentFromPatientIdAndDate(request.getData(), request.getHour(), id).get();
+    public AppointmentSlot  getOneAppointmentFromPatientID(PatientRequestAppointmentDTO request, Integer id){
+        return patientRepo.getOneAppointmentFromPatientIdAndDate(
+                request.getAppointmentDate().toLocalDate(),
+                request.getAppointmentDate().toLocalTime(), id).get();
     }
 
 
@@ -89,6 +99,22 @@ public class PatientService {
         return new PatientResponse(mapper.mapFromPatientToResponse(patient));
     }
 
+
+    // UTILITIES
+
+    public void checkIfExists(PatientRequestDTO request){
+        Optional<Patient> optionalPhone = patientRepo.findBypatientPhoneNumber(request.getPatientPhoneNumber());
+        if (optionalPhone.isPresent()){
+            throw new PatientConflictException("patient phone number " + request.getPatientPhoneNumber()
+            + " already exists");
+        }
+        Optional<Patient> optionalTaxCode = patientRepo.findBytaxCode(request.getTaxCode());
+        if (optionalTaxCode.isPresent()){
+            throw new PatientConflictException("patient taxCode " + request.getTaxCode()
+            + " already exists");
+        }
+
+    }
 }
 
 

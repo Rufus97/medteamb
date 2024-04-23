@@ -1,6 +1,6 @@
 package com.medteamb.medteamb.service.dto.patient;
 
-public class PatientRequestDTO implements GenericDTO {
+public class PatientRequestDTO {
     private String patientName;
     private String patientSurname;
     private String taxCode;
