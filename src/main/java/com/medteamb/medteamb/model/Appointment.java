@@ -3,9 +3,6 @@ package com.medteamb.medteamb.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -30,32 +27,26 @@ public class Appointment {
 	
 	//database relations from here on...
 	
-	private String taxCode;
+	//private String taxCode;
 	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
-	@JoinColumn(name = "doctor_id")
-	private Doctor doctor;
+	@Column(name = "doctor_id")
+	private Integer doctor;
 	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
-	@JoinColumn(name = "secretary_id")
-	private Secretary secretary;
-	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
-	@JoinColumn(name = "patient_id")
-	private Patient patient;
+	@Column(name = "secretary_id")
+	private Integer secretary;
+
+	@Column(name = "patient_id")
+	private Integer patient;
 
 	public Integer getAppointmentID() {
 		return appointmentID;
 	}
 	
-	public Patient getPatient() {
+	public Integer getPatient() {
 		return patient;
 	}
 
-	public void setPatient(Patient patient) {
+	public void setPatient(Integer patient) {
 		this.patient = patient;
 	}
 
@@ -75,13 +66,13 @@ public class Appointment {
 		this.status = status;
 	}
 	
-	public String getTaxCode() {
-		return taxCode;
-	}
-
-	public void setTaxCode(String taxCode) {
-		this.taxCode = taxCode;
-	}
+//	public String getTaxCode() {
+//		return taxCode;
+//	}
+//
+//	public void setTaxCode(String taxCode) {
+//		this.taxCode = taxCode;
+//	}
 
 
 	public String getMedicalService() {
@@ -100,26 +91,26 @@ public class Appointment {
 		this.location = location;
 	}
 
-	public Doctor getDoctor() {
+	public Integer getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(Integer doctor) {
 		this.doctor = doctor;
 	}
 
-	public Secretary getSecretary() {
+	public Integer getSecretary() {
 		return secretary;
 	}
 
-	public void setSecretary(Secretary secretary) {
+	public void setSecretary(Integer secretary) {
 		this.secretary = secretary;
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(appointmentDateTime, appointmentID, doctor, location, medicalService, patient, secretary,
-				status, taxCode);
+				status);
 	}
 
 	@Override
@@ -135,6 +126,6 @@ public class Appointment {
 				&& Objects.equals(appointmentID, other.appointmentID) && Objects.equals(doctor, other.doctor)
 				&& Objects.equals(location, other.location) && Objects.equals(medicalService, other.medicalService)
 				&& Objects.equals(patient, other.patient) && Objects.equals(secretary, other.secretary)
-				&& status == other.status && Objects.equals(taxCode, other.taxCode);
+				&& status == other.status;
 	}	
 }

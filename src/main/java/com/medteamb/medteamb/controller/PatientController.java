@@ -1,8 +1,9 @@
 package com.medteamb.medteamb.controller;
 
+import com.medteamb.medteamb.service.dto.patient.DTOmapper;
 import com.medteamb.medteamb.service.dto.patient.PatientDTO;
-import com.medteamb.medteamb.service.dto.secretary.SecretaryResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.medteamb.medteamb.service.dto.patient.PatientRequestBodyDTO;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,24 +13,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
-import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/patients")
 public class PatientController {
-    @Autowired
+	
+	private DTOmapper dtoMapper;
     private PatientService service;
 
+    public PatientController (PatientService service, DTOmapper dtoMapper) {
+    	this.dtoMapper = dtoMapper; 
+    	this.service = service;
+    }
 
     @PostMapping("/create")
     public PatientResponse savePatient(@RequestBody Patient patient){
@@ -53,8 +56,8 @@ public class PatientController {
         return service.getAllAppointment(patientID);
     }
     @PutMapping("/update/{patientID}")
-    public PatientResponse updatePatientById(@RequestBody Patient newPatient, @PathVariable Integer patientID){
-        return service.updatePatientById(newPatient, patientID);
+    public PatientResponse updatePatientById(@RequestBody PatientRequestBodyDTO newPatient, @PathVariable Integer patientID){
+        return service.updatePatientById(dtoMapper.requestToPatientMapping(newPatient) , patientID);
     }
     @DeleteMapping("/delete/{patientID}")
     public PatientResponse deletePatientById(@PathVariable Integer patientID){

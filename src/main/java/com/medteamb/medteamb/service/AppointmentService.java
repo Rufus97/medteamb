@@ -6,9 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.repository.AppointmentRepository;
-import com.medteamb.medteamb.repository.DoctorRepository;
-import com.medteamb.medteamb.repository.PatientRepository;
-import com.medteamb.medteamb.repository.SecretaryRepository;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentIterableDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
@@ -19,30 +16,18 @@ public class AppointmentService {
 	
 	private DTOAppointmentMapper dtoMapper;
 	private AppointmentRepository appointmentRepository;
-	private DoctorRepository doctorRepository;
-	private PatientRepository patientRepository;
-	private SecretaryRepository secretaryRepository;
 	
-	public AppointmentService() {}
-	
-	public AppointmentService(DTOAppointmentMapper dtoMapper, AppointmentRepository appointmentRepository,
-			DoctorRepository doctorRepository, PatientRepository patientRepository,
-			SecretaryRepository secretaryRepository) {
+	public AppointmentService(DTOAppointmentMapper dtoMapper, AppointmentRepository appointmentRepository) {
 		this.dtoMapper = dtoMapper;
 		this.appointmentRepository = appointmentRepository;
-		this.doctorRepository = doctorRepository;
-		this.patientRepository = patientRepository;
-		this.secretaryRepository = secretaryRepository;
 	}
 
 	public AppointmentResponseDTO createAppointment(AppointmentRequestDTO appointmentRequest) {
 		Appointment appointment = dtoMapper.requestToAppointmentMapping(appointmentRequest);
-		appointment.setDoctor(doctorRepository.findById(appointmentRequest.getDoctor()).get());
-		appointment.setSecretary(secretaryRepository.findById(appointmentRequest.getSecretary()).get());
-		appointment.setPatient(patientRepository.findById(appointmentRequest.getPatient()).get());
-		appointment.setTaxCode(patientRepository.findById(appointmentRequest.getPatient()).get().getTaxCode());
-		Appointment newAppointment = appointmentRepository.save(appointment);
-		return dtoMapper.appointmentToResponse(newAppointment);
+//		appointment.setDoctor(doctorRepository.findById(appointmentRequest.getDoctor()).get());
+//		appointment.setSecretary(secretaryRepository.findById(appointmentRequest.getSecretary()).get());
+//		appointment.setPatient(patientRepository.findById(appointmentRequest.getPatient()).get());
+		return dtoMapper.appointmentToResponse(appointmentRepository.save(appointment));
 	}
 	
 	public AppointmentIterableDTO getAllAppointments() {
@@ -61,10 +46,9 @@ public class AppointmentService {
 			appointment.setLocation(appointmentRequest.getLocation());
 			appointment.setMedicalService(appointmentRequest.getMedicalService());
 			appointment.setStatus(appointmentRequest.getStatus());
-			appointment.setDoctor(doctorRepository.findById(appointmentRequest.getDoctor()).get());
-			appointment.setSecretary(secretaryRepository.findById(appointmentRequest.getSecretary()).get());
-			appointment.setPatient(patientRepository.findById(appointmentRequest.getPatient()).get());
-			appointment.setTaxCode(patientRepository.findById(appointmentRequest.getPatient()).get().getTaxCode());
+			appointment.setDoctor(appointmentRequest.getDoctor());
+			appointment.setSecretary(appointmentRequest.getSecretary());
+			appointment.setPatient(appointmentRequest.getPatient());
 			appointment = appointmentRepository.save(appointment);
 			return dtoMapper.appointmentToResponse(appointment);
 		}

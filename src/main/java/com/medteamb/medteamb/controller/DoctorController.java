@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medteamb.medteamb.service.DoctorService;
+import com.medteamb.medteamb.service.dto.doctor.DoctorMapper;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
+import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+
 import org.springframework.web.bind.annotation.PutMapping;
 
 
@@ -22,9 +25,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/v1/doctor")
 public class DoctorController {
 
+	private DoctorMapper doctorMapper;
 	private DoctorService docService;
 
-	public DoctorController(DoctorService docService) {
+	public DoctorController(DoctorService docService, DoctorMapper doctorMapper) {
+		this.doctorMapper = doctorMapper;
 		this.docService = docService;
 	}
 	
@@ -50,19 +55,17 @@ public class DoctorController {
 	}
 	
 	@PutMapping(path = "/update/{doctorId}")
-	public ResponseEntity<DoctorRequestDTO>updateById(@PathVariable Integer doctorId,
+	public DoctorResponseDTO updateById(@PathVariable Integer doctorId,
 			@RequestBody DoctorRequestDTO doctorDto) {
 		if(!docService.exists(doctorId)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return null;
 		}
 		doctorDto.setDoctorID(doctorId);
-		return new ResponseEntity<>(docService.saveDoctor(doctorDto),
-				HttpStatus.ACCEPTED);
+		return docService.updateDoctorById(doctorMapper.mapFrom(doctorDto), doctorId);
 	}
 	
 	@DeleteMapping(path = "/delete/{doctorId}")
-	public ResponseEntity<DoctorRequestDTO>deleteDoctor(@PathVariable Integer doctorId){
+	public void deleteDoctor(@PathVariable Integer doctorId){
 		docService.deleteDoc(doctorId);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

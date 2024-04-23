@@ -5,7 +5,7 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-@Table()
+@Table(name = "doctor")
 public class Doctor {
 
 	@Id
@@ -28,22 +28,14 @@ public class Doctor {
 	@Enumerated(EnumType.STRING)
 	private Specialization specialization;
 
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	private Integer user;
 
-	public void setDoctorID(Integer doctorID) {
-		this.doctorID = doctorID;
-	}
-
-	public User getUser() {
+	public Integer getUser() {
 		return user;
 	}
-
-	public void setUser(User user) {
+	public void setUser(Integer user) {
 		this.user = user;
 	}
-
 	public Integer getDoctorID() {
 		return doctorID;
 	}
@@ -81,13 +73,6 @@ public class Doctor {
 	public int hashCode() {
 		return Objects.hash(doctorEmail, doctorID, doctorName, doctorPhoneNumber, doctorSurname,
 				specialization);
-	}
-
-	public void updateThisDocto(Doctor newDoc){
-		this.doctorEmail = newDoc.getDoctorEmail();
-		this.doctorName = newDoc.getDoctorName();
-		this.doctorSurname = newDoc.getDoctorSurname();
-		this.doctorPhoneNumber = newDoc.getDoctorPhoneNumber();
 	}
 	
 	@Override

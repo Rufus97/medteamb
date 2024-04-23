@@ -5,13 +5,11 @@ public class PatientRequestBodyDTO {
     private String patientSurname;
     private String taxCode;
     private String patientPhoneNumber;
+    private String patientEmail;
+    private Integer user;
 
     public String getPatientName() {
         return patientName;
-    }
-
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
     }
 
     public String getPatientSurname() {
@@ -37,4 +35,20 @@ public class PatientRequestBodyDTO {
     public void setPatientPhoneNumber(String patientPhoneNumber) {
         this.patientPhoneNumber = patientPhoneNumber;
     }
+
+	public String getPatientEmail() {
+		return patientEmail;
+	}
+
+	public void setPatientEmail(String patientEmail) {
+		this.patientEmail = patientEmail;
+	}
+
+	public Integer getUser() {
+		return user;
+	}
+
+	public void setUser(Integer user) {
+		this.user = user;
+	}
 }

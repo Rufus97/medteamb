@@ -10,7 +10,6 @@ public class AppointmentRequestDTO {
 	private AppointmentStatus status;
 	private String medicalService;
 	private String location;
-	private String taxCode;
 	private Integer doctor;
 	private Integer secretary;
 	private Integer patient;
@@ -45,14 +44,6 @@ public class AppointmentRequestDTO {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-	public String getTaxCode() {
-		return taxCode;
-	}
-
-	public void setTaxCode(String taxCode) {
-		this.taxCode = taxCode;
 	}
 
 	public Integer getDoctor() {

@@ -3,9 +3,6 @@ package com.medteamb.medteamb.service.dto.appointment;
 import java.time.LocalDateTime;
 
 import com.medteamb.medteamb.model.AppointmentStatus;
-import com.medteamb.medteamb.model.Doctor;
-import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.model.Secretary;
 
 public class AppointmentResponseDTO {
 	
@@ -14,21 +11,24 @@ public class AppointmentResponseDTO {
 	private AppointmentStatus status;
 	private String medicalService;
 	private String location;
-	private String taxCode;
-	private Doctor doctor;
-	private Secretary secretary;
-	private Patient patient;
+	private Integer doctor;
+	private Integer secretary;
+	private Integer patient;
 	
 	public Integer getAppointmentID() {
 		return appointmentID;
 	}
 	
-	public Patient getPatient() {
+	public void setAppointmentID(Integer appointmentID) {
+		this.appointmentID = appointmentID;
+	}
+	
+	public Integer getPatient() {
 		return patient;
 	}
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
+	public void setPatient(Integer integer) {
+		this.patient = integer;
 	}
 
 	public LocalDateTime getAppointmentDateTime() {
@@ -45,14 +45,6 @@ public class AppointmentResponseDTO {
 
 	public void setStatus(AppointmentStatus status) {
 		this.status = status;
-	}
-	
-	public String getTaxCode() {
-		return taxCode;
-	}
-
-	public void setTaxCode(String taxCode) {
-		this.taxCode = taxCode;
 	}
 
 	public String getMedicalService() {
@@ -71,19 +63,19 @@ public class AppointmentResponseDTO {
 		this.location = location;
 	}
 
-	public Doctor getDoctor() {
+	public Integer getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
-		this.doctor = doctor;
+	public void setDoctor(Integer integer) {
+		this.doctor = integer;
 	}
 
-	public Secretary getSecretary() {
+	public Integer getSecretary() {
 		return secretary;
 	}
 
-	public void setSecretary(Secretary secretary) {
-		this.secretary = secretary;
+	public void setSecretary(Integer integer) {
+		this.secretary = integer;
 	}
 }

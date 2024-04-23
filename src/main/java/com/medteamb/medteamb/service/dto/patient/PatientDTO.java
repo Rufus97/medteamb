@@ -1,20 +1,14 @@
 package com.medteamb.medteamb.service.dto.patient;
 
-import com.medteamb.medteamb.model.Patient;
-
 public class PatientDTO {
 
-    private String patientName;
+	private Integer patientID;
+	private String patientName;
     private String patientSurname;
     private String taxCode;
-
-    public PatientDTO(){}
-
-    public PatientDTO(Patient patient){
-        this.patientName = patient.getPatientName();
-        this.patientSurname = patient.getPatientSurname();
-        this.taxCode = patient.getTaxCode();
-    }
+    private String patientPhoneNumber;
+    private String patientEmail;
+    private Integer user;
 
     public String getPatientName() {
         return patientName;
@@ -39,4 +33,36 @@ public class PatientDTO {
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
     }
+
+	public String getPatientPhoneNumber() {
+		return patientPhoneNumber;
+	}
+
+	public void setPatientPhoneNumber(String patientPhoneNumber) {
+		this.patientPhoneNumber = patientPhoneNumber;
+	}
+
+	public String getPatientEmail() {
+		return patientEmail;
+	}
+
+	public void setPatientEmail(String patientEmail) {
+		this.patientEmail = patientEmail;
+	}
+
+	public Integer getUser() {
+		return user;
+	}
+
+	public void setUser(Integer user) {
+		this.user = user;
+	}
+
+	public Integer getPatientID() {
+		return patientID;
+	}
+
+	public void setPatientID(Integer patientID) {
+		this.patientID = patientID;
+	}
 }

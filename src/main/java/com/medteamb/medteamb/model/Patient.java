@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,17 +25,17 @@ public class Patient {
 	private String taxCode;
 	@Column(nullable = false)
 	private String patientPhoneNumber;
+	@Column(nullable = false, unique = true)
 	private String patientEmail;
 	
     public Patient(){};
+    
 	public Patient(String patientName, String patientSurname) {
 		this.patientName = patientName;
 		this.patientSurname = patientSurname;
 	}
-
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	
+	private Integer user;
 
 	public Integer getPatientID() {
 		return patientID;
@@ -81,6 +79,14 @@ public class Patient {
 
 	public void setPatientEmail(String patientEmail) {
 		this.patientEmail = patientEmail;
+	}
+	
+	public Integer getUser() {
+		return user;
+	}
+	
+	public void setUser(Integer user) {
+		this.user = user;
 	}
 
 	@Override

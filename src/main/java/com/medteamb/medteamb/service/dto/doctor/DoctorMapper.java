@@ -28,4 +28,15 @@ public class DoctorMapper {
 		doctor.setSpecialization(doctorDto.getSpecialization());
 		return doctor;
 	}
+	
+	public DoctorResponseDTO doctorToResponseDTO(Doctor doctor) {
+		DoctorResponseDTO doctorResponseDTO = new DoctorResponseDTO();
+		doctorResponseDTO.setDoctorID(doctor.getDoctorID());
+		doctorResponseDTO.setDoctorName(doctor.getDoctorName());
+		doctorResponseDTO.setDoctorSurname(doctor.getDoctorSurname());
+		doctorResponseDTO.setDoctorEmail(doctor.getDoctorEmail());
+		doctorResponseDTO.setDoctorPhoneNumber(doctor.getDoctorPhoneNumber());
+		doctorResponseDTO.setSpecialization(doctor.getSpecialization());
+		return doctorResponseDTO;
+	}
 }

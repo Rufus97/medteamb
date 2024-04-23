@@ -11,6 +11,7 @@ import com.medteamb.medteamb.repository.DoctorRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.dto.doctor.DoctorMapper;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
+import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
 
 @Service
 public class DoctorService {
@@ -54,11 +55,15 @@ public class DoctorService {
 		return docRepo.existsById(doctorID);
 	}
 
-	public DoctorRequestDTO updateDoctorById(Doctor newDoc, Integer id){
+	public DoctorResponseDTO updateDoctorById(Doctor newDoc, Integer id){
 		Doctor doc = docRepo.findById(id).
 				orElseThrow(() -> new PatientNotFound("doctor not found"));
-		doc.updateThisDocto(newDoc);
-		return docMapper.mapFromDocToDTO(doc);
+		doc.setDoctorEmail(newDoc.getDoctorEmail());
+		doc.setDoctorName(newDoc.getDoctorName());
+		doc.setDoctorPhoneNumber(newDoc.getDoctorPhoneNumber());
+		doc.setDoctorSurname(newDoc.getDoctorSurname());
+		doc.setSpecialization(newDoc.getSpecialization());
+		return docMapper.doctorToResponseDTO(docRepo.save(doc));
 	}
 //DELETE
 
