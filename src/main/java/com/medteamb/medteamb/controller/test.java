@@ -9,6 +9,7 @@ import com.medteamb.medteamb.service.PatientService;
 
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointmentDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class test {
         return service.getAllAppointmentsOfOnePatient(id);
     }
     @GetMapping("/patient/appointments/{id}")
-    public AppointmentSlot getOneAppointmentByIdAndDate(@RequestBody PatientAppointmentRequestDTO dto, @PathVariable Integer id){
+    public AppointmentSlot getOneAppointmentByIdAndDate(@RequestBody PatientRequestAppointmentDTO dto, @PathVariable Integer id){
         return service.getOneAppointmentFromPatientID(dto, id);
     }
 

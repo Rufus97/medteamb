@@ -36,11 +36,13 @@ public class PatientService {
                 (patientRepo.save(mapper.mapFromRequestToPatient(newPatient))));
     }
 
-    public Optional<AppointmentSlot> newAppointmentByDate(PatientRequestAppointmentDTO request){
 
-        return patientRepo.createAppointmentWithDateAndHour(request.getPatientID(), request.getAppointmentDate().toLocalDate(),
-                request.getAppointmentDate().toLocalTime());
-    }
+    // patient create appointment by day and cause
+     public PatientRequestAppointmentDTO createNewAppointmentByDateAndID(PatientRequestAppointmentDTO request, Integer docID){
+        PatientRequestAppointmentDTO response = new PatientRequestAppointmentDTO(request.getPatientID(),request.getAppointmentDate(), request.getMessage());
+        patientRepo.createAppointmentWithDateAndHour(request.getPatientID(), request.getAppointmentDate().toLocalDate(), request.getAppointmentDate().toLocalTime(), docID);
+        return response;
+     }
 
 
     //READ
@@ -61,13 +63,15 @@ public class PatientService {
     public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDoc(Integer docID){
         return patientRepo.getALlAvaibleAppointmentsOfOneDoctor(docID);
     }
-   /* public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDoc(PatientAppointmentRequestDTO dto){
+    public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDocNameAndSurname(String name, String surname){
+       return patientRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname(name, surname);
+    }
 
-    }*/
 
     public Iterable<AppointmentSlot>  getAllAppointmentsOfOnePatient(Integer id){
         return patientRepo.getAllPatientAppointments(id);
     }
+    // read 1 appointment by date and patient id
 
     public AppointmentSlot  getOneAppointmentFromPatientID(PatientRequestAppointmentDTO request, Integer id){
         return patientRepo.getOneAppointmentFromPatientIdAndDate(
