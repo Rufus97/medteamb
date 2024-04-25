@@ -27,13 +27,15 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     // get all avaible from doc name and surname
     @Query(value = "select * from slot_appuntamento sa join doctor d " +
             "on d.doctor_id = sa.doctor_id " +
-            "where d.doctor_name = ?1 and d.doctor_surname = ?2 and sa.status = 'AVAIBLE'", nativeQuery = true)
+            "where d.doctor_name  = ?1 and d.doctor_surname = ?2 and sa.status = 'AVAIBLE'", nativeQuery = true)
     Iterable<AppointmentSlot> getAllAvaibleAppointmentsOfOneDocNameAndSurname(String name, String surname);
 
     // get appointments from patient id
     @Query(value = "select * from slot_appuntamento sa join patient p on p.patientid  = sa.patient_id " +
             "where p.patientid  = ?1 and sa.status  = 'TO_DO' ", nativeQuery = true)
     Iterable<AppointmentSlot> getAllPatientAppointments(Integer id);
+
+    // get appointment from day and patient id
     @Query(value = "select * from slot_appuntamento sa join patient p " +
             "on p.patientid = sa.patient_id " +
             "where sa.giorno = ?#(#day.giorno) and sa.orario_iniziale = ?#(#hour.orario_iniziale) " +
@@ -41,10 +43,11 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     Optional<AppointmentSlot> getOneAppointmentFromPatientIdAndDate(@Param("day") LocalDate day,
                                                                     @Param("hour")LocalTime hour,
                                                                     @Param("id")Integer id);
+    // create new appointment with day and doctor // patient id to be replaced header request
     @Query(value = "update slot_appuntamento sa " +
             "set sa.patient_id = ?1, sa.status = 'TO_DO' " +
-            "where sa.giorno = ?2 and sa.orario_iniziale = ?3 and where sa.doctor_id = 4?")
-            Optional<AppointmentSlot> createAppointmentWithDateAndHour(Integer id, LocalDate day, LocalTime hour, Integer docID);
+            "where sa.giorno = ?2 and sa.orario_iniziale = ?3 and sa.doctor_id = ?4", nativeQuery = true)
+            AppointmentSlot createAppointmentWithDateAndHour(Integer id, LocalDate day, LocalTime hour, Integer docID);
 
     // MethodName queries
     Optional<Patient> findByPatientEmail(String patientEmail);

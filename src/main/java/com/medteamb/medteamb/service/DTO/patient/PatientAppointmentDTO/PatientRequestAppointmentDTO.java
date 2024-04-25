@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.dto.patient;
+package com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

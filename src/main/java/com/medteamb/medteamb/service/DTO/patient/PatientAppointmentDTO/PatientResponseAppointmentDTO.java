@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.dto.patient;
+package com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO;
 
 import java.time.LocalDateTime;
 
@@ -7,19 +7,6 @@ public class PatientResponseAppointmentDTO {
     Integer patientID;
     LocalDateTime appointmentDate;
     String message;
-
-    public PatientResponseAppointmentDTO(Integer doctorID, Integer patientID, LocalDateTime appointmentDate) {
-        this.doctorID = doctorID;
-        this.patientID = patientID;
-        this.appointmentDate = appointmentDate;
-    }
-
-    public PatientResponseAppointmentDTO(Integer doctorID, Integer patientID, LocalDateTime appointmentDate, String message) {
-        this.doctorID = doctorID;
-        this.patientID = patientID;
-        this.appointmentDate = appointmentDate;
-        this.message = message;
-    }
 
     public Integer getDoctorID() {
         return doctorID;

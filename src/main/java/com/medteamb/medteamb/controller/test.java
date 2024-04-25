@@ -9,7 +9,8 @@ import com.medteamb.medteamb.service.PatientService;
 
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointmentDTO;
+import com.medteamb.medteamb.service.dto.patient.DateDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.PatientRequestAppointmentDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +66,9 @@ public class test {
 
 
 
-
+   // MORE TESTS ON HEADERS
+   @GetMapping("/date")
+    public DateDTO dateTest(){
+         return new DateDTO();
+   }
 }

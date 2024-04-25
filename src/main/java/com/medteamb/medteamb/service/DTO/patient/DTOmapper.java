@@ -5,7 +5,7 @@ import com.medteamb.medteamb.model.Patient;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DTOmapper<GenericDTO>{
+public class DTOmapper{
 
 
     public PatientResponseDTO mapFromPatientToResponse(Patient response){
@@ -26,7 +26,5 @@ public class DTOmapper<GenericDTO>{
                request.getTaxCode());
     }
 
-    public PatientAppointmentRequestDTO getAppointmentRequestDTO(AppointmentSlot slot){
-        return new PatientAppointmentRequestDTO(slot.getToday(), slot.getMinHour());
-    }
+
 }

@@ -9,14 +9,7 @@ public class PatientResponseDTO {
     private String patientSurname;
     private String taxCode;
 
-    public PatientResponseDTO(){}
 
-    public PatientResponseDTO(Patient patient){
-        this.id = patient.getPatientID();
-        this.patientName = patient.getPatientName();
-        this.patientSurname = patient.getPatientSurname();
-        this.taxCode = patient.getTaxCode();
-    }
 
     public String getPatientName() {
         return patientName;
