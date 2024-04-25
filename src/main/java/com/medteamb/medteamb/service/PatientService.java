@@ -3,47 +3,50 @@ package com.medteamb.medteamb.service;
 import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.model.Requests;
+import com.medteamb.medteamb.repository.AppointmentRepository;
+import com.medteamb.medteamb.repository.AppointmentSlotRepo;
 import com.medteamb.medteamb.repository.PatientRepository;
 import com.medteamb.medteamb.repository.PatientRequestsRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.patient.*;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.PatientAppointmentMapper;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.PatientRequestAppointmentDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.RequestForNewAppointmentDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.RequestToMoveAppointmentDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class PatientService {
 
     PatientRepository patientRepo;
+
+    AppointmentSlotRepo slotRepo;
     PatientRequestsRepository requestsForAppointmentsRepo;
     DTOmapper mapper;
 
     PatientAppointmentMapper mapperForAppointment;
   /*
 
-▪ poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della
-visita
-▪ poter chiedere di spostare l’appuntamento esistente ove possibile
-▪ poter annullare un appuntamento esistente
+▪
+▪
+▪
 ▪ poter ricevere una conferma dell'appuntamento via email
-▪ poter visualizzare lo storico delle mie visite e i relativi referti
+▪
 ▪ poter richiedere farmaci ed impegnative di visite specialistiche
 ▪ poter ricevere prescrizioni di farmaci ed impegnative per visite specialistiche
 ▪ poter caricare i miei referti
    */
     public PatientService(PatientRepository patientRepo, PatientRequestsRepository requestsForAppointmentsRepo,
+                          AppointmentSlotRepo slotRepo,
                           DTOmapper mapper, PatientAppointmentMapper mapperForAppointment){
         this.patientRepo = patientRepo;
         this.requestsForAppointmentsRepo = requestsForAppointmentsRepo;
         this.mapper = mapper;
         this.mapperForAppointment = mapperForAppointment;
+        this.slotRepo = slotRepo;
     }
 
     //CREATE
@@ -53,11 +56,16 @@ visita
                 (patientRepo.save(mapper.mapFromRequestToPatient(newPatient))));
     }
     // patient create appointment by day and cause
+
      public PatientRequestAppointmentDTO createNewAppointmentByDateAndID(PatientRequestAppointmentDTO request, Integer docID){
         PatientRequestAppointmentDTO response = new PatientRequestAppointmentDTO(request.getPatientID(),request.getAppointmentDate(), request.getMessage());
-        patientRepo.createAppointmentWithDateAndHour(request.getPatientID(), request.getAppointmentDate().toLocalDate(), request.getAppointmentDate().toLocalTime(), docID);
+        slotRepo.createAppointmentWithDateAndHour(request.getPatientID(), request.getAppointmentDate().toLocalDate(), request.getAppointmentDate().toLocalTime(), docID);
         return response;
      }
+
+    //poter prenotare un appuntamento online con il mio dottore,
+    // specificando data, ora e motivo della visita
+
      public Requests newRequestForAppointment(RequestForNewAppointmentDTO request){
         return requestsForAppointmentsRepo.save(mapperForAppointment.mapFromRequest(request));
      }
@@ -79,19 +87,23 @@ visita
     // verificare disponibilità mio dottore
     // per id
     public Iterable<AppointmentSlot> getDocAvaibilityById(Integer docID){
-        return patientRepo.getALlAvaibleAppointmentsOfOneDoctor(docID);
+        return slotRepo.getALlAvaibleAppointmentsOfOneDoctor(docID);
     }
     // per nome e cognome
     public Iterable<AppointmentSlot> getDocAvaibilityByNameAndSurname(String docName, String docSurname){
-        return patientRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname(docName, docSurname);
+        return slotRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname(docName, docSurname);
     }
 
     public Iterable<AppointmentSlot>  getAllAppointmentsOfOnePatient(Integer id){
-        return patientRepo.getAllPatientAppointments(id);
+        return slotRepo.getAllPatientAppointments(id);
+    }
+    // poter visualizzare lo storico delle mie visite e i relativi referti
+    public Iterable<AppointmentSlot> getAppointmentHistory(Integer patientID){
+        return slotRepo.getHistoryOfPatientAppointmentsById(patientID);
     }
     // read 1 appointment by date and patient id
     public AppointmentSlot  getOneAppointmentFromPatientID(PatientRequestAppointmentDTO request, Integer id){
-        return patientRepo.getOneAppointmentFromPatientIdAndDate(
+        return slotRepo.getOneAppointmentFromPatientIdAndDate(
                 request.getAppointmentDate().toLocalDate(),
                 request.getAppointmentDate().toLocalTime(), id).get();
     }
@@ -105,11 +117,22 @@ visita
        patientRepo.save(patient);
        return new PatientResponse(mapper.mapFromPatientToResponse(patient));
     }
+    // poter chiedere di spostare l’appuntamento esistente ove possibile
     public Requests updateAppointmentRequestToMove(RequestToMoveAppointmentDTO request){
         Requests oldAppointment = requestsForAppointmentsRepo.findByday(
                 request.getDay()).orElseThrow( ()-> new RuntimeException("appointment not found"));
         oldAppointment.setNewDate(request.getNewDay());
+        oldAppointment.setHour(request.getNewHour());
         oldAppointment.appointmentToBeMoved();
+        return requestsForAppointmentsRepo.save(oldAppointment);
+    }
+
+    // poter annullare un appuntamento esistente
+
+    public Requests cancelAppointmentRequest(RequestToCancelAppointmentDTO request){
+        Requests oldAppointment = requestsForAppointmentsRepo.findByday(
+                request.getDate()).orElseThrow( ()-> new RuntimeException("appointment not found"));
+        oldAppointment.appointmentCancelled();
         return requestsForAppointmentsRepo.save(oldAppointment);
     }
 

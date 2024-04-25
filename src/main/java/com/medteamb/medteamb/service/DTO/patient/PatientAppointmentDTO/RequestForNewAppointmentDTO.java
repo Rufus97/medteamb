@@ -9,7 +9,6 @@ public class RequestForNewAppointmentDTO {
 
     private LocalDate day;
     private LocalTime hour;
-
     private String description;
 
 

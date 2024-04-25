@@ -23,6 +23,8 @@ public class Requests {
     private String description;
     @Column(name = "new_date")
     private LocalDate newDate;
+    @Column(name = "new_hour")
+    private LocalTime newHour;
     @Column(name = "state")
     private RequestState state = RequestState.TO_BE_APPROVED;
 
@@ -31,7 +33,8 @@ public class Requests {
     private enum RequestState{
         TO_BE_APPROVED,
         APPROVED,
-        TO_BE_MOVED
+        TO_BE_MOVED,
+        CANCELLED
     }
     public void appointmentToBeMoved(){
         this.state = RequestState.TO_BE_MOVED;
@@ -40,6 +43,8 @@ public class Requests {
     public void appointmentApproved(){
         this.state = RequestState.APPROVED;
     }
+
+    public void appointmentCancelled() {this.state = RequestState.CANCELLED; }
 
     public Long getId() {
         return id;
@@ -96,4 +101,7 @@ public class Requests {
     public void setNewDate(LocalDate newDate) {
         this.newDate = newDate;
     }
+
+    public LocalTime getNewHour() {return newHour;}
+    public void setNewHour(LocalTime newHour) {this.newHour = newHour;}
 }

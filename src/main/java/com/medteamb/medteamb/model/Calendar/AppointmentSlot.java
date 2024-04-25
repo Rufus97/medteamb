@@ -12,12 +12,12 @@ import java.time.LocalTime;
 @Table(name = "slot_appuntamento")
 public class AppointmentSlot {
     @Id
-    
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "orario_iniziale", nullable = false)
     private LocalTime minHour;
     @JoinColumn(name = "doctor_id", nullable = false)
+
     @ManyToOne
     private Doctor doctor_id;
     @JoinColumn(name = "patient_id")

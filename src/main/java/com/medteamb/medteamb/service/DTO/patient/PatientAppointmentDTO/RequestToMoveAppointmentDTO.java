@@ -12,6 +12,8 @@ public class RequestToMoveAppointmentDTO {
     private String description;
     private LocalDate newDay;
 
+    private LocalTime newHour;
+
 
 
 
@@ -54,5 +56,13 @@ public class RequestToMoveAppointmentDTO {
 
     public void setNewDay(LocalDate newDay) {
         this.newDay = newDay;
+    }
+
+    public LocalTime getNewHour() {
+        return newHour;
+    }
+
+    public void setNewHour(LocalTime newHour) {
+        this.newHour = newHour;
     }
 }
