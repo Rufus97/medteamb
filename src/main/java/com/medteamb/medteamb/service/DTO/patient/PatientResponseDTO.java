@@ -1,7 +1,5 @@
 package com.medteamb.medteamb.service.dto.patient;
 
-import com.medteamb.medteamb.model.Patient;
-
 public class PatientResponseDTO {
 
     private Integer id;

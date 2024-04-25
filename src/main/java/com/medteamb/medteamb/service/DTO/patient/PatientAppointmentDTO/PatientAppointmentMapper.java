@@ -1,7 +1,6 @@
 package com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO;
 
-import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
-import com.medteamb.medteamb.model.Requests;
+import com.medteamb.medteamb.model.Patient.Requests;
 import org.springframework.stereotype.Component;
 
 @Component

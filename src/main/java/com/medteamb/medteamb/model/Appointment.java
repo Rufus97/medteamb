@@ -3,6 +3,7 @@ package com.medteamb.medteamb.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.medteamb.medteamb.model.Patient.Patient;
 import jakarta.persistence.*;
 
 @Entity

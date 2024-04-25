@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.model;
+package com.medteamb.medteamb.model.Patient;
 
 import jakarta.persistence.*;
 

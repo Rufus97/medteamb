@@ -2,7 +2,7 @@ package com.medteamb.medteamb.model.Calendar;
 
 import com.medteamb.medteamb.model.AppointmentStatus;
 import com.medteamb.medteamb.model.Doctor;
-import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.model.Patient.Patient;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

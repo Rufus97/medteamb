@@ -2,7 +2,7 @@ package com.medteamb.medteamb.controller;
 
 
 import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
-import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.model.Patient.Patient;
 
 import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.PatientService;
@@ -26,7 +26,6 @@ public class test {
     //CREATE
     @PostMapping("/patient")
     public PatientResponse savePatient(@RequestBody PatientRequestDTO patient){
-
         return service.newPatient(patient);
     }
 
@@ -36,11 +35,11 @@ public class test {
     //READ
 
     @GetMapping("/patientById")
-    public PatientResponse getPatient(@RequestParam Integer id){
+    public PatientResponse getPatient(@RequestParam Long id){
         return service.getPatient(id);
     }
     @GetMapping("/patients/byIds")
-    public Iterable<Patient> getPatientsIds(@RequestBody Iterable<Integer> ids){
+    public Iterable<Patient> getPatientsIds(@RequestBody Iterable<Long> ids){
         return service.getPatientsByIds(ids);
     }
     @GetMapping("/patient/appointments")
@@ -54,21 +53,14 @@ public class test {
 
     //DELETE
     @DeleteMapping("/patient")
-    public PatientResponse deletePatientById(@RequestParam Integer id){
+    public PatientResponse deletePatientById(@RequestParam Long id){
         return service.deletePatientById(id);
     }
     //UPDATE
      @PutMapping("/patient/{id}")
-    public PatientResponse updatePatientById(@RequestBody Patient newPatient, @PathVariable Integer id){
+    public PatientResponse updatePatientById(@RequestBody Patient newPatient, @PathVariable Long id){
         return service.updatePatientById(newPatient, id);
     }
 
 
-
-
-   // MORE TESTS ON HEADERS
-   @GetMapping("/date")
-    public DateDTO dateTest(){
-         return new DateDTO();
-   }
 }

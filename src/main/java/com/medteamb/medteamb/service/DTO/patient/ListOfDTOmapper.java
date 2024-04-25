@@ -1,6 +1,6 @@
 package com.medteamb.medteamb.service.dto.patient;
 
-import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.model.Patient.Patient;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
 import org.springframework.stereotype.Component;
 

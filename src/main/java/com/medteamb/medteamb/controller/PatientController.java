@@ -1,22 +1,22 @@
 package com.medteamb.medteamb.controller;
 
-import com.medteamb.medteamb.model.AppointmentStatus;
 import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
-import com.medteamb.medteamb.model.Requests;
-import com.medteamb.medteamb.repository.PatientRepository;
-import com.medteamb.medteamb.repository.PatientRequestsRepository;
+import com.medteamb.medteamb.model.Patient.PatientRefert;
+import com.medteamb.medteamb.model.Patient.Requests;
+import com.medteamb.medteamb.model.Patient.SpecialAppointments;
+import com.medteamb.medteamb.repository.Patient.PatientRepository;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.RequestForNewAppointmentDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.RequestToCancelAppointmentDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.RequestToMoveAppointmentDTO;
+import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/patientAppoints")
 public class PatientController {
-     @Autowired
-     PatientRepository patientRepo;
+
      @Autowired
      PatientService service;
 
@@ -52,7 +52,16 @@ public class PatientController {
      public Iterable<AppointmentSlot> getMyAppointmentHistory(Integer patientID){
           return service.getAppointmentHistory(patientID);
      }
-
+     //poter caricare i miei referti
+     @GetMapping("/myReferts")
+     public Iterable<PatientRefert> getHistoryOfMyReferts(Long id){
+          return service.getHistoryOfPatientRefertsByID(id);
+     }
+     // poter richiedere farmaci ed impegnative di visite specialistiche
+     @PostMapping("/newSpecial")
+     public SpecialAppointments askForNewSpecialAppointment(@RequestBody SpecialRequestDTO requestDTO) {
+          return service.newSpecialAppointmentRequest(requestDTO);
+     }
 }
 
 /*
@@ -60,7 +69,7 @@ public class PatientController {
 ▪
 ▪ poter ricevere una conferma dell'appuntamento via email
 ▪
-▪ poter richiedere farmaci ed impegnative di visite specialistiche
+▪
 ▪ poter ricevere prescrizioni di farmaci ed impegnative per visite specialistiche
-▪ poter caricare i miei referti
+▪
      */

@@ -1,7 +1,6 @@
-package com.medteamb.medteamb.repository;
+package com.medteamb.medteamb.repository.Patient;
 
-import com.medteamb.medteamb.model.Requests;
-import org.springframework.cglib.core.Local;
+import com.medteamb.medteamb.model.Patient.Requests;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
