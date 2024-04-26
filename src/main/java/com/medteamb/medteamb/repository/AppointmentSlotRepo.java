@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
 
-public interface AppointmentSlotRepo extends JpaRepository<AppointmentSlot, Integer>{
+public interface AppointmentSlotRepo extends JpaRepository<AppointmentSlot, Long>{
 
     // get all avaible from doc id
     @Query(value = "select sa.* from slot_appuntamento sa join doctor d " +
@@ -46,4 +46,6 @@ public interface AppointmentSlotRepo extends JpaRepository<AppointmentSlot, Inte
             "set sa.patient_id = ?1, sa.status = 'TO_DO' " +
             "where sa.giorno = ?2 and sa.orario_iniziale = ?3 and sa.doctor_id = ?4", nativeQuery = true)
     AppointmentSlot createAppointmentWithDateAndHour(Integer id, LocalDate day, LocalTime hour, Integer docID);
+
+    AppointmentSlot findBytoday(LocalDate day);
 }

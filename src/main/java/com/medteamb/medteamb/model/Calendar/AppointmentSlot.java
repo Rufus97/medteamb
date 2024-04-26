@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class AppointmentSlot {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "orario_iniziale", nullable = false)
     private LocalTime minHour;
     @JoinColumn(name = "doctor_id", nullable = false)
@@ -38,7 +38,7 @@ public class AppointmentSlot {
         this.doctor_id = doctor_id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

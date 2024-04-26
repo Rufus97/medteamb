@@ -6,7 +6,6 @@ import java.time.LocalTime;
 public class RequestForNewAppointmentDTO {
 
     private Long patient_id;
-
     private LocalDate day;
     private LocalTime hour;
     private String description;

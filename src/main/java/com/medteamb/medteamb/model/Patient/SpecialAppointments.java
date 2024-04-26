@@ -16,7 +16,7 @@ public class SpecialAppointments {
     private Patient patient;
     @Column(name = "details")
     private String details;
-    @Column(name = "giorno")
+    @Column(name = "richiesto_il_giorno")
     private LocalDateTime emissionDate = LocalDateTime.now();
     @Column(name = "data")
     private LocalDate appointmentDate;

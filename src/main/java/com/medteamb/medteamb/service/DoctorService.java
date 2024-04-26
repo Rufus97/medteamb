@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
+import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
 import org.springframework.stereotype.Service;
 
 import com.medteamb.medteamb.model.Doctor;
@@ -57,7 +56,7 @@ public class DoctorService {
 
 	public DoctorRequestDTO updateDoctorById(Doctor newDoc, Integer id){
 		Doctor doc = docRepo.findById(id).
-				orElseThrow(() -> new PatientNotFound("doctor not found"));
+				orElseThrow(() -> new NotFound("doctor not found"));
 		doc.updateThisDocto(newDoc);
 		return docMapper.mapFromDocToDTO(doc);
 	}
