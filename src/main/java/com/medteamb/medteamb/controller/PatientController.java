@@ -1,7 +1,6 @@
 package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.service.dto.patient.PatientDTO;
-import com.medteamb.medteamb.service.dto.secretary.SecretaryResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.model.Patient;
-import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
-import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 
 import java.util.List;
 
