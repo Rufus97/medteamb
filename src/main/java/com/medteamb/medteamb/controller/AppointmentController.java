@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medteamb.medteamb.service.AppointmentService;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentIterableDTO;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentListDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,13 +26,8 @@ public class AppointmentController {
 		this.appointmentService = appointmentService;
 	}
 	
-	@PostMapping("/create")
-	public AppointmentResponseDTO createAppointment(@RequestBody AppointmentRequestDTO appointmentRequest) {
-		return appointmentService.createAppointment(appointmentRequest);
-	}
-	
 	@GetMapping("/getAll")
-	public AppointmentIterableDTO getAllAppointments() {
+	public AppointmentListDTO getAllAppointments() {
 		return appointmentService.getAllAppointments();
 	}
 	

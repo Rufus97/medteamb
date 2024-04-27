@@ -2,7 +2,7 @@ package com.medteamb.medteamb.service.dto.appointment;
 
 import org.springframework.stereotype.Component;
 
-import com.medteamb.medteamb.model.Appointment;
+import com.medteamb.medteamb.model.agenda.Appointment;
 
 @Component
 public class DTOAppointmentMapper {

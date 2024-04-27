@@ -1,20 +1,29 @@
 package com.medteamb.medteamb.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.medteamb.medteamb.model.Appointment;
+import com.medteamb.medteamb.model.Doctor;
+import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.repository.AppointmentRepository;
 import com.medteamb.medteamb.repository.DoctorRepository;
 import com.medteamb.medteamb.repository.PatientRepository;
 import com.medteamb.medteamb.repository.SecretaryRepository;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentIterableDTO;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentListDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.appointment.DTOAppointmentMapper;
 
 @Service
+@EnableScheduling
 public class AppointmentService {
 	
 	private DTOAppointmentMapper dtoMapper;
@@ -35,18 +44,70 @@ public class AppointmentService {
 		this.secretaryRepository = secretaryRepository;
 	}
 
-	public AppointmentResponseDTO createAppointment(AppointmentRequestDTO appointmentRequest) {
-		Appointment appointment = dtoMapper.requestToAppointmentMapping(appointmentRequest);
-		appointment.setDoctor(doctorRepository.findById(appointmentRequest.getDoctor()).get());
-		appointment.setSecretary(secretaryRepository.findById(appointmentRequest.getSecretary()).get());
-		appointment.setPatient(patientRepository.findById(appointmentRequest.getPatient()).get());
-		appointment.setTaxCode(patientRepository.findById(appointmentRequest.getPatient()).get().getTaxCode());
-		Appointment newAppointment = appointmentRepository.save(appointment);
-		return dtoMapper.appointmentToResponse(newAppointment);
+	public void createAppointmentsPerDay(LocalDateTime now, LocalTime beginningTime, 
+											Integer appointmentDuration, Integer appointmentsPerDay, 
+												Doctor doctor){
+        LocalDateTime hourSlot = LocalDateTime.of(now.toLocalDate(),
+        											LocalTime.of(beginningTime.getHour(),
+        														beginningTime.getMinute()));
+        for (int i = 1; i <= appointmentsPerDay; i++){
+            Appointment appointment = new Appointment(now, doctor);
+            appointmentRepository.save(appointment);
+            hourSlot = hourSlot.plusMinutes(appointmentDuration);
+        }
+    }
+	
+	public void createAppointmentsPerMonth(LocalDateTime now, LocalTime beginningTime, 
+									Integer appointmentsDuration, Integer appointmentsPerDay, 
+										Integer appointmentsRange, Doctor doctor){
+        while(now.toLocalDate().isBefore(LocalDate.now().plusMonths(appointmentsRange))){
+        	createAppointmentsPerDay(now, beginningTime, appointmentsDuration, appointmentsPerDay, doctor);
+            now = now.plusDays(1);
+        }
+    }
+	
+	@Scheduled(fixedRate = 2000L)
+	public void scheduledAppointmentCreator(LocalTime beginningTime, Integer appointmentsDuration,
+												Integer appointmentsPerDay, Integer appointmentsRange) {
+		Iterable<Integer> medicsWithoutAgenda = appointmentRepository.getAllDoctorsWithoutAgenda();
+		medicsWithoutAgenda.forEach( doctorID -> {
+			createAppointmentsPerMonth(LocalDateTime.now(),
+										beginningTime, appointmentsDuration,
+											appointmentsPerDay, appointmentsRange,
+												doctorRepository.findById(doctorID).get());
+		});
+		List<Integer> doctorsWithAgenda = new ArrayList<>();
+		appointmentRepository.getAllDoctorsWithAgenda().forEach(doctorsWithAgenda::add);
+		doctorsWithAgenda.forEach( doctorID -> {
+			createMonthlyAgendaForEachDoctor(appointmentsRange, beginningTime, appointmentsDuration,
+												appointmentsPerDay, appointmentRepository.lastDoctorAppointmentByID(doctorID));
+		});
 	}
 	
-	public AppointmentIterableDTO getAllAppointments() {
-		return new AppointmentIterableDTO(appointmentRepository.findAll());
+	private void createMonthlyAgendaForEachDoctor(Integer appointmentsRange, LocalTime beginningTime, 
+														Integer appointmentsDuration, Integer appointmentsPerDay, 
+															Optional<Appointment> lastDoctorAppointment) { 
+		LocalDateTime appointmentDateTime = lastDoctorAppointment.get().getAppointmentDateTime();
+		if(appointmentDateTime.plusMonths(appointmentsRange)
+				.isBefore(LocalDateTime.now().plusMonths(appointmentsRange))) { //deleted appointmentsRange from condition (trial and error)...
+			createAppointmentsPerMonth(appointmentDateTime.plusMonths(appointmentsRange), 
+											beginningTime, appointmentsDuration, appointmentsPerDay, 
+													appointmentsRange, lastDoctorAppointment.get().getDoctor());
+		}
+	}
+	
+//	public AppointmentResponseDTO createAppointment(AppointmentRequestDTO appointmentRequest) {
+//		Appointment appointment = dtoMapper.requestToAppointmentMapping(appointmentRequest);
+//		appointment.setDoctor(doctorRepository.findById(appointmentRequest.getDoctor()).get());
+//		appointment.setSecretary(secretaryRepository.findById(appointmentRequest.getSecretary()).get());
+//		appointment.setPatient(patientRepository.findById(appointmentRequest.getPatient()).get());
+//		appointment.setTaxCode(patientRepository.findById(appointmentRequest.getPatient()).get().getTaxCode());
+//		Appointment newAppointment = appointmentRepository.save(appointment);
+//		return dtoMapper.appointmentToResponse(newAppointment);
+//	}
+
+	public AppointmentListDTO getAllAppointments() {
+		return new AppointmentListDTO(appointmentRepository.findAll());
 	}
 	
 	public AppointmentResponseDTO getAppointmentByID(Integer appointmentID) {

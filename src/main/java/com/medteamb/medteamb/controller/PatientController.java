@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 

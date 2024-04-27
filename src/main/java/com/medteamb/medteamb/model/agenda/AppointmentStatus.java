@@ -1,5 +1,5 @@
-package com.medteamb.medteamb.model;
+package com.medteamb.medteamb.model.agenda;
 
 public enum AppointmentStatus {
-	CANCELLED, EXPIRED, PASSED, TO_DO;
+	CANCELLED, EXPIRED, PASSED, EMPTY;
 }

@@ -1,12 +1,12 @@
 package com.medteamb.medteamb.service.dto.appointment;
 
-import com.medteamb.medteamb.model.Appointment;
+import com.medteamb.medteamb.model.agenda.Appointment;
 
-public class AppointmentIterableDTO {
+public class AppointmentListDTO {
 	
 	private Iterable<Appointment> appointments;
 	
-	public AppointmentIterableDTO(Iterable<Appointment> appointments) {
+	public AppointmentListDTO(Iterable<Appointment> appointments) {
 		this.appointments = appointments;
 	}
 
