@@ -1,11 +1,11 @@
 package com.medteamb.medteamb.controller;
 
-import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
+
 import com.medteamb.medteamb.model.Patient.Patient;
 import com.medteamb.medteamb.model.Patient.PatientRefert;
 import com.medteamb.medteamb.model.Patient.Requests;
-import com.medteamb.medteamb.model.Patient.SpecialAppointments;
-import com.medteamb.medteamb.repository.Patient.PatientRepository;
+
+import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
@@ -13,13 +13,21 @@ import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+
 @RequestMapping("/patientAppoints")
 public class PatientController {
 
@@ -28,11 +36,11 @@ public class PatientController {
 
      //poter visualizzare le disponibilità del mio dottore
      @GetMapping("/docAvaibility")
-     public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDoc(@RequestParam Integer docID){
+     public Iterable<Appointment> getAllAvaibleAppointmentByOneDoc(@RequestParam Integer docID){
          return service.getDocAvaibilityById(docID);
      }
      @GetMapping("/docAvaibilityByName")
-     public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDocNameAndSurname(@RequestParam String name,@RequestParam String surname){
+     public Iterable<Appointment> getAllAvaibleAppointmentByOneDocNameAndSurname(@RequestParam String name,@RequestParam String surname){
           return service.getDocAvaibilityByNameAndSurname(name, surname);
      }
      // poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della  visita
@@ -53,7 +61,7 @@ public class PatientController {
      }
      //poter visualizzare lo storico delle mie visite e i relativi referti ( REFERTI DA CONCEPIRE )
      @GetMapping("/myAppointments")
-     public Iterable<AppointmentSlot> getMyAppointmentHistory(@RequestParam Integer patientID){
+     public Iterable<Appointment> getMyAppointmentHistory(@RequestParam Integer patientID){
           return service.getAppointmentHistory(patientID);
      }
      //poter caricare i miei referti
@@ -98,3 +106,5 @@ public class PatientController {
 ▪ poter ricevere una conferma dell'appuntamento via email
 ▪ poter ricevere prescrizioni di farmaci ed impegnative per visite specialistiche
 */
+
+

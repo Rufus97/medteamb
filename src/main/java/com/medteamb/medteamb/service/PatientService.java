@@ -1,6 +1,6 @@
 package com.medteamb.medteamb.service;
 
-import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
+
 import com.medteamb.medteamb.model.Patient.Patient;
 import com.medteamb.medteamb.model.Patient.PatientRefert;
 import com.medteamb.medteamb.model.Patient.Requests;
@@ -12,6 +12,10 @@ import com.medteamb.medteamb.repository.Patient.RefertRepository;
 import com.medteamb.medteamb.repository.Patient.SpecialAppointmentsRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.ConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
+
+import com.medteamb.medteamb.model.agenda.Appointment;
+
+
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.patient.*;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
@@ -19,13 +23,18 @@ import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequ
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Optional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class PatientService {
 
     PatientRepository patientRepo;
-    AppointmentSlotRepo slotRepo;
+    AppointmentRepository slotRepo;
     PatientRequestsRepository requestsForAppointmentsRepo;
     RefertRepository refertRepo;
     SpecialAppointmentsRepository specialRepo;
@@ -37,7 +46,7 @@ public class PatientService {
 ▪ poter ricevere prescrizioni di farmaci ed impegnative per visite specialistiche
 */
     public PatientService(PatientRepository patientRepo, PatientRequestsRepository requestsForAppointmentsRepo,
-                          AppointmentSlotRepo slotRepo, RefertRepository refertRepo,
+                          AppointmentRepository slotRepo, RefertRepository refertRepo,
                           SpecialAppointmentsRepository specialRepo,
                           DTOmapper mapper, PatientAppointmentMapper mapperForAppointment){
         this.patientRepo = patientRepo;
@@ -52,8 +61,9 @@ public class PatientService {
     //CREATE
     public PatientResponse newPatient(PatientRequestDTO newPatient){
         checkIfExists(newPatient);
-        return new PatientResponse(mapper.mapFromPatientToResponse
-                (patientRepo.save(mapper.mapFromRequestToPatient(newPatient))));
+        Patient patient = mapper.mapFromRequestToPatient(newPatient);
+        patientRepo.save(patient);
+        return new PatientResponse(mapper.mapFromPatientToResponse(patient)) ;
     }
 
     //poter richiedere farmaci ed impegnative di visite specialistiche
@@ -103,6 +113,13 @@ public class PatientService {
                orElseThrow(() -> new NotFound("patient not found")));
        return new PatientResponse(response);
     }
+    // get all patients
+    public List<PatientResponseDTO> getAllPatients() {
+        List<Patient> patients = patientRepo.findAll();
+        return patients.stream()
+                .map(mapper::mapFromPatientToResponse)
+                .collect(Collectors.toList());
+    }
     // get more patients from ids
     public Iterable<Patient> getPatientsByIds(Iterable<Long> ids){
         return patientRepo.findAllById(ids);
@@ -110,15 +127,15 @@ public class PatientService {
 
     // verificare disponibilità mio dottore
     // per id
-    public Iterable<AppointmentSlot> getDocAvaibilityById(Integer docID){
+    public Iterable<Appointment> getDocAvaibilityById(Integer docID){
         return slotRepo.getALlAvaibleAppointmentsOfOneDoctor(docID);
     }
     // per nome e cognome
-    public Iterable<AppointmentSlot> getDocAvaibilityByNameAndSurname(String docName, String docSurname){
+    public Iterable<Appointment> getDocAvaibilityByNameAndSurname(String docName, String docSurname){
         return slotRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname(docName, docSurname);
     }
     // poter visualizzare lo storico delle mie visite e i relativi referti
-    public Iterable<AppointmentSlot> getAppointmentHistory(Integer patientID){
+    public Iterable<Appointment> getAppointmentHistory(Integer patientID){
         return slotRepo.getHistoryOfPatientAppointmentsById(patientID);
     }
     // poter caricare i miei referti

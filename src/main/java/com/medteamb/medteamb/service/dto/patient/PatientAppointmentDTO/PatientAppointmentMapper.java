@@ -27,7 +27,5 @@ public class PatientAppointmentMapper {
         return newAppointmentRequest;
     }
 
-    public Page getPagesFromIterables(Iterable<?> list){
-        Page pages = new Page
-    }
+
 }

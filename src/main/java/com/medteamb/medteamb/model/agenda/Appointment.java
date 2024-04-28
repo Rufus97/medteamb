@@ -1,9 +1,18 @@
-package com.medteamb.medteamb.model;
+package com.medteamb.medteamb.model.agenda;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.medteamb.medteamb.model.Patient.Patient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.medteamb.medteamb.model.Doctor;
+
+import com.medteamb.medteamb.model.Secretary;
+
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,9 +21,10 @@ public class Appointment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "appointment_id")
 	private Integer appointmentID;
 	
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	private LocalDateTime appointmentDateTime;
 	
 	@Enumerated(EnumType.STRING)
@@ -31,14 +41,30 @@ public class Appointment {
 	private String taxCode;
 	
 	@ManyToOne
+	@Cascade(CascadeType.ALL)
+	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
 	
 	@ManyToOne
+	@Cascade(CascadeType.ALL)
+	@JoinColumn(name = "secretary_id")
 	private Secretary secretary;
 	
 	@ManyToOne
+	@Cascade(CascadeType.ALL)
+	@JoinColumn(name = "patient_id")
 	private Patient patient;
 
+	//his constructors...
+	
+	public Appointment() {}
+	
+	public Appointment(LocalDateTime appointmentDateTime, Doctor doctor) {
+		this.appointmentDateTime = appointmentDateTime;
+		this.doctor = doctor;
+		this.status = AppointmentStatus.EMPTY;
+	}
+	
 	public Integer getAppointmentID() {
 		return appointmentID;
 	}
@@ -66,23 +92,7 @@ public class Appointment {
 	public void setStatus(AppointmentStatus status) {
 		this.status = status;
 	}
-
-	public String getMedicalProvision() {
-		return medicalService;
-	}
-
-	public void setMedicalProvision(String medicalProvision) {
-		this.medicalService = medicalProvision;
-	}
-
-	public String getPlace() {
-		return location;
-	}
-
-	public void setPlace(String place) {
-		this.location = place;
-	}
-
+	
 	public String getTaxCode() {
 		return taxCode;
 	}

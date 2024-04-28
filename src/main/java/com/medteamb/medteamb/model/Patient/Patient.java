@@ -1,5 +1,7 @@
 package com.medteamb.medteamb.model.Patient;
 
+
+
 import com.medteamb.medteamb.model.User;
 import jakarta.persistence.*;
 
@@ -100,4 +102,5 @@ public class Patient {
 		this.taxCode = newPatient.getTaxCode();
 	}
 }
+
 

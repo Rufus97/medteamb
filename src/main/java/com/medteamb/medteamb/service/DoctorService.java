@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
+
 import org.springframework.stereotype.Service;
 
 import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.repository.DoctorRepository;
+import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
 import com.medteamb.medteamb.service.dto.doctor.DoctorMapper;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 
