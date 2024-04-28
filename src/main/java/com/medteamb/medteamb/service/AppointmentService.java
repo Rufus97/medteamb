@@ -32,8 +32,6 @@ public class AppointmentService {
 	private PatientRepository patientRepository;
 	private SecretaryRepository secretaryRepository;
 	
-	public AppointmentService() {}
-	
 	public AppointmentService(DTOAppointmentMapper dtoMapper, AppointmentRepository appointmentRepository,
 			DoctorRepository doctorRepository, PatientRepository patientRepository,
 			SecretaryRepository secretaryRepository) {
@@ -66,32 +64,36 @@ public class AppointmentService {
         }
     }
 	
+//	LocalTime beginningTime, Integer appointmentsDuration,
+//		Integer appointmentsPerDay, Integer appointmentsRange
 	@Scheduled(fixedRate = 2000L)
-	public void scheduledAppointmentCreator(LocalTime beginningTime, Integer appointmentsDuration,
-												Integer appointmentsPerDay, Integer appointmentsRange) {
+	public void scheduledAppointmentCreator() {
 		Iterable<Integer> medicsWithoutAgenda = appointmentRepository.getAllDoctorsWithoutAgenda();
 		medicsWithoutAgenda.forEach( doctorID -> {
+			Doctor doctor = doctorRepository.findById(doctorID).get();
 			createAppointmentsPerMonth(LocalDateTime.now(),
-										beginningTime, appointmentsDuration,
-											appointmentsPerDay, appointmentsRange,
+										doctor.getBeginningWorkTime(), doctor.getAppointmentsDuration(),
+											doctor.getAppointmentsPerDay(), doctor.getAppointmentsRange(),
 												doctorRepository.findById(doctorID).get());
 		});
 		List<Integer> doctorsWithAgenda = new ArrayList<>();
 		appointmentRepository.getAllDoctorsWithAgenda().forEach(doctorsWithAgenda::add);
 		doctorsWithAgenda.forEach( doctorID -> {
-			createMonthlyAgendaForEachDoctor(appointmentsRange, beginningTime, appointmentsDuration,
-												appointmentsPerDay, appointmentRepository.lastDoctorAppointmentByID(doctorID));
+			Doctor doctor = doctorRepository.findById(doctorID).get();
+			createMonthlyAgendaForEachDoctor(doctor.getAppointmentsRange(), doctor.getBeginningWorkTime(),
+												doctor.getAppointmentsDuration(), doctor.getAppointmentsPerDay(), 
+													appointmentRepository.lastDoctorAppointmentByID(doctorID));
 		});
 	}
 	
-	private void createMonthlyAgendaForEachDoctor(Integer appointmentsRange, LocalTime beginningTime, 
+	private void createMonthlyAgendaForEachDoctor(Integer appointmentsRange, LocalTime beginningWorkTime, 
 														Integer appointmentsDuration, Integer appointmentsPerDay, 
 															Optional<Appointment> lastDoctorAppointment) { 
 		LocalDateTime appointmentDateTime = lastDoctorAppointment.get().getAppointmentDateTime();
 		if(appointmentDateTime.plusMonths(appointmentsRange)
 				.isBefore(LocalDateTime.now().plusMonths(appointmentsRange))) { //deleted appointmentsRange from condition (trial and error)...
 			createAppointmentsPerMonth(appointmentDateTime.plusMonths(appointmentsRange), 
-											beginningTime, appointmentsDuration, appointmentsPerDay, 
+					beginningWorkTime, appointmentsDuration, appointmentsPerDay, 
 													appointmentsRange, lastDoctorAppointment.get().getDoctor());
 		}
 	}
