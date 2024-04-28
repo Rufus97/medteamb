@@ -1,6 +1,7 @@
 package com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO;
 
 import com.medteamb.medteamb.model.Patient.Requests;
+import org.hibernate.query.Page;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,5 +25,9 @@ public class PatientAppointmentMapper {
         newAppointmentRequest.setDescription(request.getDescription());
         newAppointmentRequest.setNewDate(request.getNewDay());
         return newAppointmentRequest;
+    }
+
+    public Page getPagesFromIterables(Iterable<?> list){
+        Page pages = new Page
     }
 }
