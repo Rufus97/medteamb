@@ -57,8 +57,8 @@ public class AppointmentService {
 	
 	public void createAppointmentsPerMonth(LocalDateTime now, LocalTime beginningTime, 
 									Integer appointmentsDuration, Integer appointmentsPerDay, 
-										Integer appointmentsRange, Doctor doctor){
-        while(now.toLocalDate().isBefore(LocalDate.now().plusMonths(appointmentsRange))){
+										Integer agendaMonthsRange, Doctor doctor){
+        while(now.toLocalDate().isBefore(LocalDate.now().plusMonths(agendaMonthsRange))){
         	createAppointmentsPerDay(now, beginningTime, appointmentsDuration, appointmentsPerDay, doctor);
             now = now.plusDays(1);
         }
@@ -73,14 +73,14 @@ public class AppointmentService {
 			Doctor doctor = doctorRepository.findById(doctorID).get();
 			createAppointmentsPerMonth(LocalDateTime.now(),
 										doctor.getBeginningWorkTime(), doctor.getAppointmentsDuration(),
-											doctor.getAppointmentsPerDay(), doctor.getAppointmentsRange(),
+											doctor.getAppointmentsPerDay(), doctor.getAgendaMonthsRange(),
 												doctorRepository.findById(doctorID).get());
 		});
 		List<Integer> doctorsWithAgenda = new ArrayList<>();
 		appointmentRepository.getAllDoctorsWithAgenda().forEach(doctorsWithAgenda::add);
 		doctorsWithAgenda.forEach( doctorID -> {
 			Doctor doctor = doctorRepository.findById(doctorID).get();
-			createMonthlyAgendaForEachDoctor(doctor.getAppointmentsRange(), doctor.getBeginningWorkTime(),
+			createMonthlyAgendaForEachDoctor(doctor.getAgendaMonthsRange(), doctor.getBeginningWorkTime(),
 												doctor.getAppointmentsDuration(), doctor.getAppointmentsPerDay(), 
 													appointmentRepository.lastDoctorAppointmentByID(doctorID));
 		});

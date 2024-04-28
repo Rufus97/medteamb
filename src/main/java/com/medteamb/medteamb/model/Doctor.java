@@ -38,8 +38,8 @@ public class Doctor {
 	@Column(name = "appointments_per_day", nullable = false)
 	private Integer appointmentsPerDay;
 	
-	@Column(name = "appointments_range", nullable = false)
-	private Integer appointmentsRange;
+	@Column(name = "agenda_months_range", nullable = false)
+	private Integer agendaMonthsRange;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -115,12 +115,12 @@ public class Doctor {
 		this.appointmentsPerDay = appointmentsPerDay;
 	}
 
-	public Integer getAppointmentsRange() {
-		return appointmentsRange;
+	public Integer getAgendaMonthsRange() {
+		return agendaMonthsRange;
 	}
 
-	public void setAppointmentsRange(Integer appointmentsRange) {
-		this.appointmentsRange = appointmentsRange;
+	public void setAgendaMonthsRange(Integer agendaMonthsRange) {
+		this.agendaMonthsRange = agendaMonthsRange;
 	}
 
 	public void updateThisDocto(Doctor newDoc){
@@ -132,7 +132,7 @@ public class Doctor {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(appointmentsDuration, appointmentsPerDay, appointmentsRange, beginningWorkTime, doctorEmail,
+		return Objects.hash(appointmentsDuration, appointmentsPerDay, agendaMonthsRange, beginningWorkTime, doctorEmail,
 				doctorID, doctorName, doctorPhoneNumber, doctorSurname, specialization, user);
 	}
 	
@@ -147,7 +147,7 @@ public class Doctor {
 		Doctor other = (Doctor) obj;
 		return Objects.equals(appointmentsDuration, other.appointmentsDuration)
 				&& Objects.equals(appointmentsPerDay, other.appointmentsPerDay)
-				&& Objects.equals(appointmentsRange, other.appointmentsRange)
+				&& Objects.equals(agendaMonthsRange, other.agendaMonthsRange)
 				&& Objects.equals(beginningWorkTime, other.beginningWorkTime)
 				&& Objects.equals(doctorEmail, other.doctorEmail) && Objects.equals(doctorID, other.doctorID)
 				&& Objects.equals(doctorName, other.doctorName)
