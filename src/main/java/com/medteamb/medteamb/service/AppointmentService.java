@@ -49,7 +49,7 @@ public class AppointmentService {
         											LocalTime.of(beginningTime.getHour(),
         														beginningTime.getMinute()));
         for (int i = 1; i <= appointmentsPerDay; i++){
-            Appointment appointment = new Appointment(now, doctor);
+            Appointment appointment = new Appointment(hourSlot, doctor);
             appointmentRepository.save(appointment);
             hourSlot = hourSlot.plusMinutes(appointmentDuration);
         }
