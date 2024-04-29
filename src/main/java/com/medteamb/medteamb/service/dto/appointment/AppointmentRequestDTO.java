@@ -2,7 +2,7 @@ package com.medteamb.medteamb.service.dto.appointment;
 
 import java.time.LocalDateTime;
 
-import com.medteamb.medteamb.model.AppointmentStatus;
+import com.medteamb.medteamb.model.agenda.AppointmentStatus;
 
 public class AppointmentRequestDTO {
 	

@@ -1,7 +1,6 @@
 package com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions;
 
 import org.hibernate.PropertyValueException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 public class PatientNotSavedException extends PropertyValueException {
 

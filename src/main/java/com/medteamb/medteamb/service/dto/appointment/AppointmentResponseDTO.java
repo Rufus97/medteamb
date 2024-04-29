@@ -2,10 +2,10 @@ package com.medteamb.medteamb.service.dto.appointment;
 
 import java.time.LocalDateTime;
 
-import com.medteamb.medteamb.model.AppointmentStatus;
 import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.model.Secretary;
+import com.medteamb.medteamb.model.agenda.AppointmentStatus;
 
 public class AppointmentResponseDTO {
 	

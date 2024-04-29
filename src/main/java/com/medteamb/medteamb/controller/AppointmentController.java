@@ -3,13 +3,12 @@ package com.medteamb.medteamb.controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medteamb.medteamb.service.AppointmentService;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentIterableDTO;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentListDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,13 +25,8 @@ public class AppointmentController {
 		this.appointmentService = appointmentService;
 	}
 	
-	@PostMapping("/create")
-	public AppointmentResponseDTO createAppointment(@RequestBody AppointmentRequestDTO appointmentRequest) {
-		return appointmentService.createAppointment(appointmentRequest);
-	}
-	
 	@GetMapping("/getAll")
-	public AppointmentIterableDTO getAllAppointments() {
+	public AppointmentListDTO getAllAppointments() {
 		return appointmentService.getAllAppointments();
 	}
 	

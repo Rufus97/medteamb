@@ -1,7 +1,7 @@
 package com.medteamb.medteamb.service;
 
-import com.medteamb.medteamb.model.Appointment;
 import com.medteamb.medteamb.model.Patient;
+import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.repository.PatientRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
