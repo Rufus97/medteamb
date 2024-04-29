@@ -6,7 +6,6 @@ import java.util.Objects;
 import jakarta.persistence.*;
 
 @Entity
-@Table()
 public class Doctor {
 
 	@Id

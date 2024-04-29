@@ -64,8 +64,6 @@ public class AppointmentService {
         }
     }
 	
-//	LocalTime beginningTime, Integer appointmentsDuration,
-//		Integer appointmentsPerDay, Integer appointmentsRange
 	@Scheduled(fixedRate = 2000L)
 	public void scheduledAppointmentCreator() {
 		Iterable<Integer> medicsWithoutAgenda = appointmentRepository.getAllDoctorsWithoutAgenda();
@@ -91,22 +89,12 @@ public class AppointmentService {
 															Optional<Appointment> lastDoctorAppointment) { 
 		LocalDateTime appointmentDateTime = lastDoctorAppointment.get().getAppointmentDateTime();
 		if(appointmentDateTime.plusMonths(appointmentsRange)
-				.isBefore(LocalDateTime.now().plusMonths(appointmentsRange))) { //deleted appointmentsRange from condition (trial and error)...
+				.isBefore(LocalDateTime.now().plusMonths(appointmentsRange))) {
 			createAppointmentsPerMonth(appointmentDateTime.plusMonths(appointmentsRange), 
 					beginningWorkTime, appointmentsDuration, appointmentsPerDay, 
 													appointmentsRange, lastDoctorAppointment.get().getDoctor());
 		}
 	}
-	
-//	public AppointmentResponseDTO createAppointment(AppointmentRequestDTO appointmentRequest) {
-//		Appointment appointment = dtoMapper.requestToAppointmentMapping(appointmentRequest);
-//		appointment.setDoctor(doctorRepository.findById(appointmentRequest.getDoctor()).get());
-//		appointment.setSecretary(secretaryRepository.findById(appointmentRequest.getSecretary()).get());
-//		appointment.setPatient(patientRepository.findById(appointmentRequest.getPatient()).get());
-//		appointment.setTaxCode(patientRepository.findById(appointmentRequest.getPatient()).get().getTaxCode());
-//		Appointment newAppointment = appointmentRepository.save(appointment);
-//		return dtoMapper.appointmentToResponse(newAppointment);
-//	}
 
 	public AppointmentListDTO getAllAppointments() {
 		return new AppointmentListDTO(appointmentRepository.findAll());

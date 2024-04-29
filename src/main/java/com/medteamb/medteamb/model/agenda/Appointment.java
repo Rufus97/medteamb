@@ -3,9 +3,6 @@ package com.medteamb.medteamb.model.agenda;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.model.Secretary;
@@ -27,28 +24,23 @@ public class Appointment {
 	@Enumerated(EnumType.STRING)
 	private AppointmentStatus status;
 	
-	@Column(nullable = false)
 	private String medicalService;
 	
-	@Column(nullable = false)
 	private String location;
 	
 	//database relations from here on...
 	
 	private String taxCode;
 	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "doctor_id")
 	private Doctor doctor;
 	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "secretary_id")
 	private Secretary secretary;
 	
-	@ManyToOne
-	@Cascade(CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "patient_id")
 	private Patient patient;
 

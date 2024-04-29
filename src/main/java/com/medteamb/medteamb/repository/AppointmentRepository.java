@@ -21,7 +21,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
 	@Query(value =  "select a.* from appointment a join doctor d " + 
 					"on d.doctor_id = a.doctor_id where d.doctor_id = ?1 " + 
-					"order by a.giorno desc limit 1", nativeQuery = true)
-	Optional<Appointment> lastDoctorAppointmentByID(Integer id); // ma perche n'a update doctor proprio qua...?
+					"order by a.appointment_date_time desc limit 1", nativeQuery = true)
+	Optional<Appointment> lastDoctorAppointmentByID(Integer id);
 	
 }
