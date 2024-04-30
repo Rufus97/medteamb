@@ -12,13 +12,21 @@ import com.medteamb.medteamb.repository.Patient.RefertRepository;
 import com.medteamb.medteamb.repository.Patient.SpecialAppointmentsRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.ConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
+import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
+import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
 import com.medteamb.medteamb.service.dto.patient.*;
+import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -80,19 +88,17 @@ public class PatientService {
     // specificando data, ora e motivo della visita
 
      public ResponseForNewAppointmentDTO newRequestForAppointment(RequestForNewAppointmentDTO request){
-        Optional<Requests> checkIfExists = requestsForAppointmentsRepo.findByday(request.getDay());
-         if ( checkIfExists.isPresent() ) {
-               throw new ConflictException("an appointment already exists this day: " + request.getDay() + " for this patient ");
-         } else {
-        ResponseForNewAppointmentDTO response = new ResponseForNewAppointmentDTO(
-                requestsForAppointmentsRepo.findByday(request.getDay()).get().getId(),
-                request.getPatient_id(), request.getDay(), request.getHour(), request.getDescription()
-        );
-             requestsForAppointmentsRepo.save(mapperForAppointment.mapFromRequest(request));
-             return response;
-         }
-
-
+            Optional<Requests> check = requestsForAppointmentsRepo.findByDayAndHour(request.getDay(), request.getHour());
+            if (check.isPresent()){
+                throw new ConflictException("appointment with this date and hour already exists for this patient");
+            }
+             Requests goodRequest = new Requests();
+             goodRequest.setPatient(patientRepo.findById(request.getPatient_id()).orElseThrow(
+                     ()-> new NotFound("patient with id: " + request.getPatient_id() + " not found")));
+             goodRequest.setDay(request.getDay()); goodRequest.setDescription(request.getDescription());
+             goodRequest.setHour(request.getHour());
+             requestsForAppointmentsRepo.save(goodRequest);
+             return mapper.mapFromRequestObjectToResponseDTO(goodRequest);
      }
 
 
@@ -110,16 +116,51 @@ public class PatientService {
 
     // verificare disponibilità mio dottore
     // per id
-    public Iterable<AppointmentSlot> getDocAvaibilityById(Integer docID){
-        return slotRepo.getALlAvaibleAppointmentsOfOneDoctor(docID);
+    public PatientResponseIterables<AvaibleAppointmentResponseDTO> getDocAvaibilityById(Integer docID, int page, int pageSize){
+
+        Page<AppointmentSlot> list = slotRepo.getALlAvaibleAppointmentsOfOneDoctor(docID, PageRequest.ofSize(pageSize).withPage(page));
+
+        PatientResponseIterables<AvaibleAppointmentResponseDTO> response = new PatientResponseIterables<>(mapper.mapIterableOfSlotDTO(list));
+        response.setCurrentPage(list.getNumber());
+        response.setNumOfPages(list.getTotalPages());
+        response.setNumOfElements(list.getSize());
+        response.setTotalElements(list.getTotalElements());
+        return response;
     }
     // per nome e cognome
-    public Iterable<AppointmentSlot> getDocAvaibilityByNameAndSurname(String docName, String docSurname){
-        return slotRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname(docName, docSurname);
+    public PatientResponseIterables<AvaibleAppointmentResponseDTO> getDocAvaibilityByNameAndSurname(String docName, String docSurname, int page, int size){
+        Page<AppointmentSlot> list = slotRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname( docName, docSurname, PageRequest.ofSize(size).withPage(page));
+
+        PatientResponseIterables<AvaibleAppointmentResponseDTO> response = new PatientResponseIterables<>(mapper.mapIterableOfSlotDTO(list));
+        response.setCurrentPage(list.getNumber());
+        response.setNumOfPages(list.getTotalPages());
+        response.setNumOfElements(list.getSize());
+        response.setTotalElements(list.getTotalElements());
+        return response;
+    }
+    // poter visualizzare le visite ancora da effettuare
+    public PatientResponseIterables<AvaibleAppointmentResponseDTO> getAppointmentsToDo(Integer patientID, int page, int size){
+
+        Page<AppointmentSlot> list = slotRepo.getAllPatientAppointments( patientID, PageRequest.ofSize(size).withPage(page));
+
+        PatientResponseIterables<AvaibleAppointmentResponseDTO> response = new PatientResponseIterables<>(mapper.mapIterableOfSlotDTO(list));
+        response.setCurrentPage(list.getNumber());
+        response.setNumOfPages(list.getTotalPages());
+        response.setNumOfElements(list.getSize());
+        response.setTotalElements(list.getTotalElements());
+        return response;
     }
     // poter visualizzare lo storico delle mie visite e i relativi referti
-    public Iterable<AppointmentSlot> getAppointmentHistory(Integer patientID){
-        return slotRepo.getHistoryOfPatientAppointmentsById(patientID);
+    public PatientResponseIterables<AvaibleAppointmentResponseDTO> getAppointmentHistory(Integer patientID, int page, int size){
+
+        Page<AppointmentSlot> list = slotRepo.getHistoryOfPatientAppointmentsById( patientID, PageRequest.ofSize(size).withPage(page));
+
+        PatientResponseIterables<AvaibleAppointmentResponseDTO> response = new PatientResponseIterables<>(mapper.mapIterableOfSlotDTO(list));
+        response.setCurrentPage(list.getNumber());
+        response.setNumOfPages(list.getTotalPages());
+        response.setNumOfElements(list.getSize());
+        response.setTotalElements(list.getTotalElements());
+        return response;
     }
     // poter caricare i miei referti
     public Iterable<PatientRefert> getHistoryOfPatientRefertsByID(Long id){
@@ -139,8 +180,10 @@ public class PatientService {
     public Requests updateAppointmentRequestToMove(RequestToMoveAppointmentDTO request){
         Requests oldAppointment = requestsForAppointmentsRepo.findByday(
                 request.getDay()).orElseThrow( ()-> new RuntimeException("appointment not found"));
+
+        oldAppointment.setDescription(request.getDescription());
         oldAppointment.setNewDate(request.getNewDay());
-        oldAppointment.setHour(request.getNewHour());
+        oldAppointment.setNewHour(request.getNewHour());
         oldAppointment.appointmentToBeMoved();
         return requestsForAppointmentsRepo.save(oldAppointment);
     }

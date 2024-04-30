@@ -41,7 +41,7 @@ public class DoctorService {
 	}
 //READ ONE
 
-	public Optional<DoctorRequestDTO> findDocById(Integer doctorID) {
+	public Optional<DoctorRequestDTO> findDocById(Long doctorID) {
 	Optional<Doctor> foundDoc = docRepo.findById(doctorID);
 	if(foundDoc.isEmpty()) return Optional.empty();
 	return foundDoc.map(doc->{
@@ -50,11 +50,11 @@ public class DoctorService {
 	}
 //CHECK EXISTANCE BEFORE UPDATE
 
-	public Boolean exists(Integer doctorID) {
+	public Boolean exists(Long doctorID) {
 		return docRepo.existsById(doctorID);
 	}
 
-	public DoctorRequestDTO updateDoctorById(Doctor newDoc, Integer id){
+	public DoctorRequestDTO updateDoctorById(Doctor newDoc, Long id){
 		Doctor doc = docRepo.findById(id).
 				orElseThrow(() -> new NotFound("doctor not found"));
 		doc.updateThisDocto(newDoc);
@@ -62,7 +62,7 @@ public class DoctorService {
 	}
 //DELETE
 
-	public void deleteDoc(Integer doctorID) {
+	public void deleteDoc(Long doctorID) {
 		docRepo.deleteById(doctorID);
 	}
 

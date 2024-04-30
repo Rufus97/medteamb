@@ -4,7 +4,7 @@ import com.medteamb.medteamb.model.Specialization;
 
 public class DoctorRequestDTO {
 	
-	private Integer doctorID;
+	private Long doctorID;
 	private String doctorName;
 	private String doctorSurname;
 	private String doctorPhoneNumber;
@@ -21,10 +21,10 @@ public class DoctorRequestDTO {
 		this.doctorEmail = builder.doctorEmail;
 		this.specialization = builder.specialization;
 	}
-	public Integer getDoctorID() {
+	public Long getDoctorID() {
 		return doctorID;
 	}
-	public void setDoctorID(Integer doctorID) {
+	public void setDoctorID(Long doctorID) {
 		this.doctorID = doctorID;
 	}
 	public String getDoctorName() {
@@ -63,7 +63,7 @@ public class DoctorRequestDTO {
 	}
 	
 	public static final class Builder {
-		private Integer doctorID;
+		private Long doctorID;
 		private String doctorName;
 		private String doctorSurname;
 		private String doctorPhoneNumber;
@@ -73,7 +73,7 @@ public class DoctorRequestDTO {
 		private Builder() {
 		}
 
-		public Builder withDoctorID(Integer doctorID) {
+		public Builder withDoctorID(Long doctorID) {
 			this.doctorID = doctorID;
 			return this;
 		}

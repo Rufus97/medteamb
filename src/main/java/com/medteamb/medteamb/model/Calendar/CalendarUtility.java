@@ -47,13 +47,13 @@ public class CalendarUtility {
     @Scheduled(fixedRate = 2000L)
     public void getAllNoAgends(){
 
-        Iterable<Integer> medicsNoAgend = calendarRepo.getAllDcotorWhoDontHaveAgenda();
+        Iterable<Long> medicsNoAgend = calendarRepo.getAllDcotorWhoDontHaveAgenda();
          medicsNoAgend.forEach(
                  id -> {
                     initializeMonth(LocalDate.now(), LocalDate.now().plusMonths(1), doctorRepository.findById(id).get());
                  }
          );
-         List<Integer> docsWithAgenda = new ArrayList<>();
+         List<Long> docsWithAgenda = new ArrayList<>();
 
 
          calendarRepo.getAllDocsWithAgenda().forEach(docsWithAgenda::add);

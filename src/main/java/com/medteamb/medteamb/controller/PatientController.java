@@ -8,28 +8,34 @@ import com.medteamb.medteamb.model.Patient.SpecialAppointments;
 import com.medteamb.medteamb.repository.Patient.PatientRepository;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
+import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
+import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/patientAppoints")
+@RequestMapping("/patient")
 public class PatientController {
 
      @Autowired
      PatientService service;
 
-     //poter visualizzare le disponibilità del mio dottore
-     @GetMapping("/docAvaibility")
-     public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDoc(@RequestParam Integer docID){
-         return service.getDocAvaibilityById(docID);
+     //poter visualizzare le disponibilità del mio dottore // testato
+     @GetMapping("/docAvailability/{page}")
+     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getAllAvaibleAppointmentByOneDoc(@PathVariable int page, @RequestParam Integer docID, @RequestParam int size){
+         return service.getDocAvaibilityById(docID, page, size);
      }
-     @GetMapping("/docAvaibilityByName")
-     public Iterable<AppointmentSlot> getAllAvaibleAppointmentByOneDocNameAndSurname(@RequestParam String name,@RequestParam String surname){
-          return service.getDocAvaibilityByNameAndSurname(name, surname);
+     @GetMapping("/docAvaibilityByName/{page}")  //testato
+     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getAllAvaibleAppointmentByOneDocNameAndSurname(@RequestParam String name,@RequestParam String surname, @PathVariable int page, @RequestParam int size){
+          return service.getDocAvaibilityByNameAndSurname(name, surname, page, size);
      }
      // poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della  visita
      @PostMapping("/newAppointment")
@@ -48,9 +54,14 @@ public class PatientController {
           return service.cancelAppointmentRequest(request);
      }
      //poter visualizzare lo storico delle mie visite e i relativi referti ( REFERTI DA CONCEPIRE )
-     @GetMapping("/myAppointments")
-     public Iterable<AppointmentSlot> getMyAppointmentHistory(@RequestParam Integer patientID){
-          return service.getAppointmentHistory(patientID);
+     @GetMapping("/myAppointments/{page}")
+     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getMyAppointmentHistory(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+          return service.getAppointmentHistory(patientID, page, size);
+     }
+     // poter visualizzare gli appuntamenti prenotati da svolgere
+     @GetMapping("/myAppointmentsToDo/{page}")
+     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+          return service.getAppointmentsToDo(patientID, page, size);
      }
      //poter caricare i miei referti
      @GetMapping("/myReferts")

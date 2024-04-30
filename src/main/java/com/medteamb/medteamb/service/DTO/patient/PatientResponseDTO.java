@@ -2,12 +2,18 @@ package com.medteamb.medteamb.service.dto.patient;
 
 public class PatientResponseDTO {
 
-    private Integer id;
+    private Long id;
     private String patientName;
     private String patientSurname;
     private String taxCode;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPatientName() {
         return patientName;

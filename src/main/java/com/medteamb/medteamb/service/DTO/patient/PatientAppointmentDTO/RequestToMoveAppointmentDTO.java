@@ -11,7 +11,6 @@ public class RequestToMoveAppointmentDTO {
     private LocalTime hour;
     private String description;
     private LocalDate newDay;
-
     private LocalTime newHour;
 
 

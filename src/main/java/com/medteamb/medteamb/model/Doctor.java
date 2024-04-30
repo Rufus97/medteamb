@@ -10,7 +10,7 @@ public class Doctor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "doctor_id")
-	private Integer doctorID;
+	private Long doctorID;
 	
 	@Column(nullable = false)
 	private String doctorName;
@@ -31,7 +31,7 @@ public class Doctor {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	public void setDoctorID(Integer doctorID) {
+	public void setDoctorID(Long doctorID) {
 		this.doctorID = doctorID;
 	}
 
@@ -43,7 +43,7 @@ public class Doctor {
 		this.user = user;
 	}
 
-	public Integer getDoctorID() {
+	public Long getDoctorID() {
 		return doctorID;
 	}
 	public String getDoctorName() {

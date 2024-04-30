@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class
-MedteambApplication {
+  MedteambApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MedteambApplication.class, args);
