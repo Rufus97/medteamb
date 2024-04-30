@@ -1,39 +1,35 @@
 package com.medteamb.medteamb.service.dto.doctor;
 
-import com.medteamb.medteamb.model.Doctor;
 import org.springframework.stereotype.Component;
+
+import com.medteamb.medteamb.model.Doctor;
 
 @Component
 public class DoctorMapper {
 
-	public DoctorRequestDTO mapFromDocToDTO(Doctor doctor) {
-		DoctorRequestDTO doctorDto = DoctorRequestDTO.builder()
-				.withDoctorID(doctor.getDoctorID())
-				.withDoctorName(doctor.getDoctorName())
-				.withDoctorSurname(doctor.getDoctorSurname())
-				.withDoctorEmail(doctor.getDoctorEmail())
-				.withDoctorPhoneNumber(doctor.getDoctorPhoneNumber())
-				.withSpecialization(doctor.getSpecialization())
-				.withAgendaMonthsRange(doctor.getAgendaMonthsRange())
-				.withAppointmentsDuration(doctor.getAppointmentsDuration())
-				.withAppointmentsPerDay(doctor.getAppointmentsPerDay())
-				.withBeginningWorkTime(doctor.getBeginningWorkTime())
-				.build();
-		return doctorDto;
+	public Doctor mapFromRequestDTOToDoc(DoctorRequestDTO request) {
+		Doctor doctor = new Doctor();
+		doctor.setDoctorID(request.getDoctorID());
+		doctor.setDoctorName(request.getDoctorName());
+		doctor.setDoctorSurname(request.getDoctorSurname());
+		doctor.setDoctorPhoneNumber(request.getDoctorPhoneNumber());
+		doctor.setDoctorEmail(request.getDoctorEmail());
+		doctor.setSpecialization(request.getSpecialization());
+		return doctor;
 		
 	}
 	
-	public Doctor mapFrom(DoctorRequestDTO doctorDto) {
-		Doctor doctor = new Doctor();
-		doctor.setDoctorName(doctorDto.getDoctorName());
-		doctor.setDoctorSurname(doctorDto.getDoctorSurname());
-		doctor.setDoctorEmail(doctorDto.getDoctorEmail());
-		doctor.setDoctorPhoneNumber(doctorDto.getDoctorPhoneNumber());
-		doctor.setSpecialization(doctorDto.getSpecialization());
-		doctor.setAgendaMonthsRange(doctorDto.getAgendaMonthsRange());
-		doctor.setAppointmentsDuration(doctorDto.getAppointmentsDuration());
-		doctor.setAppointmentsPerDay(doctorDto.getAppointmentsPerDay());
-		doctor.setBeginningWorkTime(doctorDto.getBeginningWorkTime());
-		return doctor;
+	public DoctorResponseDTO mapFromDocToResponseDTO(Doctor response) {
+		return DoctorResponseDTO.builder()
+				.withDoctorName(response.getDoctorName())
+				.withDoctorSurname(response.getDoctorSurname())
+				.withDoctorPhoneNumber(response.getDoctorPhoneNumber())
+				.withDoctorEmail(response.getDoctorEmail())
+				.withSpecialization(response.getSpecialization())
+				.withBeginningWorkTime(response.getBeginningWorkTime())
+				.withAppointmentsDuration(response.getAppointmentsDuration())
+				.withAppointmentsPerDay(response.getAppointmentsPerDay())
+				.withAgendaMonthsRange(response.getAgendaMonthsRange())
+				.build();
 	}
 }
