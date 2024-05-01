@@ -1,8 +1,9 @@
-package com.medteamb.medteamb.service.ExceptionHandler.PatientHandler;
+package com.medteamb.medteamb.service.exception.exceptionHandler;
 
 
-import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
+import com.medteamb.medteamb.service.exception.PatientExceptions.PatientNotFound;
+
 import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

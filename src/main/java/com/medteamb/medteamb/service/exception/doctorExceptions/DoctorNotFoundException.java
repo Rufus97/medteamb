@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.ExceptionHandler.doctorExceptions;
+package com.medteamb.medteamb.service.exception.doctorExceptions;
 
 import io.jsonwebtoken.lang.Supplier;
 

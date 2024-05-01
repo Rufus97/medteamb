@@ -9,12 +9,15 @@ public class DoctorMapper {
 
 	public Doctor mapFromRequestDTOToDoc(DoctorRequestDTO request) {
 		Doctor doctor = new Doctor();
-		doctor.setDoctorID(request.getDoctorID());
 		doctor.setDoctorName(request.getDoctorName());
 		doctor.setDoctorSurname(request.getDoctorSurname());
 		doctor.setDoctorPhoneNumber(request.getDoctorPhoneNumber());
 		doctor.setDoctorEmail(request.getDoctorEmail());
 		doctor.setSpecialization(request.getSpecialization());
+		doctor.setBeginningWorkTime(request.getBeginningWorkTime());
+		doctor.setAppointmentsPerDay(request.getAppointmentsPerDay());
+		doctor.setAppointmentsDuration(request.getAppointmentsDuration());
+		doctor.setAgendaMonthsRange(request.getAgendaMonthsRange());
 		return doctor;
 		
 	}

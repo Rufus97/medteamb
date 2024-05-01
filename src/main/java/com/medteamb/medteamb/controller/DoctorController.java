@@ -2,6 +2,7 @@ package com.medteamb.medteamb.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.medteamb.medteamb.service.DoctorService;
@@ -27,6 +29,7 @@ public class DoctorController {
 	}
 	
 	@PostMapping(path = "/create")
+	@ResponseStatus(value = HttpStatus.CREATED)
 	public DoctorResponseDTO createDoctor(@RequestBody DoctorRequestDTO doctorDto) {
 		return docService.saveDoctor(doctorDto) ;
 	}
@@ -42,6 +45,7 @@ public class DoctorController {
 	}
 	
 	@PutMapping(path = "/update/{doctorID}")
+	@ResponseStatus(value = HttpStatus.ACCEPTED)
 	public DoctorResponseDTO updateById(@PathVariable Integer doctorID,
 			@RequestBody DoctorRequestDTO doctorDto) {
 		return docService.updateDoctor(doctorDto, doctorID);
