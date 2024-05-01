@@ -1,37 +1,30 @@
 package com.medteamb.medteamb.service.dto.patient.SpecialAppointments;
 
-import com.medteamb.medteamb.model.Patient.Patient;
-import com.medteamb.medteamb.model.Patient.SpecialAppointments;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class SpecialResponseDTO {
+public class SpecialAppointmentRequestDTO {
 
-    private Long id;
-    private Long patient_id;
+    private Long patientID;
+    private String details;
     private LocalDate appointmentDate;
     private LocalTime appointmentHour;
 
 
-    public Long getId() {
-        return id;
+    public Long getPatientID() {
+        return this.patientID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPatient(Long patient) {
+        this.patientID = patient;
     }
 
-    public Long getPatient_id() {
-        return patient_id;
+    public String getDetails() {
+        return details;
     }
 
-    public void setPatient_id(Long patient_id) {
-        this.patient_id = patient_id;
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public LocalDate getAppointmentDate() {

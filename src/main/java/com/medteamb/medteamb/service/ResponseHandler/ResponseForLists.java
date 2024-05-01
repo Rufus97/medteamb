@@ -1,15 +1,14 @@
-package com.medteamb.medteamb.service.ResponseHandler.PatientResponse;
+package com.medteamb.medteamb.service.ResponseHandler;
 
 
 import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
-import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import org.springframework.http.HttpStatus;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientResponseIterables<T> extends BaseResponse {
+public class ResponseForLists<T> extends BaseResponse {
 
    List<T> body = new ArrayList<>();
 
@@ -19,11 +18,11 @@ public class PatientResponseIterables<T> extends BaseResponse {
    private Long totalElements;
 
 
-   public PatientResponseIterables(String message, HttpStatus status){
+   public ResponseForLists(String message, HttpStatus status){
        super(status, message);
    }
 
-    public PatientResponseIterables(List<T> body) {
+    public ResponseForLists(List<T> body) {
         this.body = body;
     }
 

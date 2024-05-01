@@ -1,26 +1,18 @@
 package com.medteamb.medteamb.controller;
 
-import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
 import com.medteamb.medteamb.model.Patient.Patient;
-import com.medteamb.medteamb.model.Patient.PatientRefert;
 import com.medteamb.medteamb.model.Patient.Requests;
-import com.medteamb.medteamb.model.Patient.SpecialAppointments;
-import com.medteamb.medteamb.repository.Patient.PatientRepository;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponseIterables;
+import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
-import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
-import org.hibernate.query.Page;
+import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialAppointmentRequestDTO;
+import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialAppointmentResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/patient")
@@ -31,17 +23,17 @@ public class PatientController {
 
      //poter visualizzare le disponibilità del mio dottore // testato
      @GetMapping("/docAvailability/{page}")
-     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getAllAvaibleAppointmentByOneDoc(@PathVariable int page, @RequestParam Integer docID, @RequestParam int size){
-         return service.getDocAvaibilityById(docID, page, size);
+     public ResponseForLists<AvaibleAppointmentResponseDTO> getAvaibleAppointmentsByDocId(@PathVariable int page, @RequestParam Integer docID, @RequestParam int size){
+         return service.getDocAvailabilityById(docID, page, size);
      }
      @GetMapping("/docAvaibilityByName/{page}")  //testato
-     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getAllAvaibleAppointmentByOneDocNameAndSurname(@RequestParam String name,@RequestParam String surname, @PathVariable int page, @RequestParam int size){
-          return service.getDocAvaibilityByNameAndSurname(name, surname, page, size);
+     public ResponseForLists<AvaibleAppointmentResponseDTO> getAvaibleAppointmentsByDocNameAndSurname(@RequestParam String name, @RequestParam String surname, @PathVariable int page, @RequestParam int size){
+          return service.getDocAvailabilityByNameAndSurname(name, surname, page, size);
      }
      // poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della  visita
      @PostMapping("/newAppointment")
-     public ResponseForNewAppointmentDTO askForAppointment(@RequestBody RequestForNewAppointmentDTO request){
-           return service.newRequestForAppointment(request);
+     public AppointmentResponseDTO askForAppointment(@RequestBody RequestForNewAppointmentDTO request){
+           return service.newAppointmentRequest(request);
      }
 
      //poter chiedere di spostare l’appuntamento esistente ove possibile
@@ -52,26 +44,26 @@ public class PatientController {
      //poter annullare un appuntamento esistente
      @PutMapping("/cancelAppointment")
      public Requests askToCancelAppointment(@RequestBody RequestToCancelAppointmentDTO request){
-          return service.cancelAppointmentRequest(request);
+          return service.updateAppointmentToCancel(request);
      }
      //poter visualizzare lo storico delle mie visite e i relativi referti ( REFERTI DA CONCEPIRE )
      @GetMapping("/myAppointments/{page}")
-     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getMyAppointmentHistory(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
-          return service.getAppointmentHistory(patientID, page, size);
+     public ResponseForLists<AvaibleAppointmentResponseDTO> getMyAppointmentHistory(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+          return service.getAppointmentHistoryByPatientId(patientID, page, size);
      }
      // poter visualizzare gli appuntamenti prenotati da svolgere
      @GetMapping("/myAppointmentsToDo/{page}")
-     public PatientResponseIterables<AvaibleAppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<AvaibleAppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
           return service.getAppointmentsToDo(patientID, page, size);
      }
      //poter caricare i miei referti
      @GetMapping("/myReferts/{page}")
-     public PatientResponseIterables<RefertResponseDTO> getHistoryOfMyReferts(@RequestParam Long id, @PathVariable int page, @RequestParam int size){
-          return service.getHistoryOfPatientRefertsByID(id, page, size);
+     public ResponseForLists<RefertResponseDTO> getHistoryOfMyReferts(@RequestParam Long id, @PathVariable int page, @RequestParam int size){
+          return service.getRefertHistoryByPatientId(id, page, size);
      }
      // poter richiedere farmaci ed impegnative di visite specialistiche
      @PostMapping("/newSpecial")
-     public SpecialResponseDTO askForNewSpecialAppointment(@RequestBody SpecialRequestDTO requestDTO) {
+     public SpecialAppointmentResponseDTO askForNewSpecialAppointment(@RequestBody SpecialAppointmentRequestDTO requestDTO) {
           return service.newSpecialAppointmentRequest(requestDTO);
      }
 

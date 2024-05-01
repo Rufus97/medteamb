@@ -6,9 +6,9 @@ import com.medteamb.medteamb.model.Patient.PatientRefert;
 import com.medteamb.medteamb.model.Patient.Requests;
 import com.medteamb.medteamb.model.Patient.SpecialAppointments;
 import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.ResponseForNewAppointmentDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
+import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialAppointmentResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -34,8 +34,8 @@ public class DTOmapper{
                request.getPatientPhoneNumber(),
                request.getTaxCode());
     }
-    public SpecialResponseDTO mapFromSpecialRequest(SpecialAppointments response){
-        SpecialResponseDTO responseDTO = new SpecialResponseDTO();
+    public SpecialAppointmentResponseDTO mapFromSpecialRequest(SpecialAppointments response){
+        SpecialAppointmentResponseDTO responseDTO = new SpecialAppointmentResponseDTO();
         responseDTO.setId(response.getPatient().getPatientID());
         responseDTO.setAppointmentDate(response.getAppointmentDate());
         responseDTO.setAppointmentHour(response.getAppointmentHour());
@@ -73,8 +73,8 @@ public class DTOmapper{
         return response;
    }
 
-    public ResponseForNewAppointmentDTO mapFromRequestObjectToResponseDTO(Requests request){
-        return new ResponseForNewAppointmentDTO(
+    public AppointmentResponseDTO mapFromRequestObjectToResponseDTO(Requests request){
+        return new AppointmentResponseDTO(
                 request.getId(), request.getPatient().getPatientID(), request.getDay(),
                 request.getHour(), request.getDescription()
         );

@@ -1,14 +1,9 @@
 package com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO;
 
-import com.medteamb.medteamb.model.Patient.Patient;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ResponseForNewAppointmentDTO {
+public class AppointmentResponseDTO {
 
     private Long id;
     private Long patient_id;
@@ -16,7 +11,7 @@ public class ResponseForNewAppointmentDTO {
     private LocalTime hour;
     private String description;
 
-    public ResponseForNewAppointmentDTO(Long id, Long patient_id, LocalDate day, LocalTime hour, String description) {
+    public AppointmentResponseDTO(Long id, Long patient_id, LocalDate day, LocalTime hour, String description) {
         this.id = id;
         this.patient_id = patient_id;
         this.day = day;
