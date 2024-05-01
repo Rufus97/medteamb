@@ -3,9 +3,10 @@ package com.medteamb.medteamb.service;
 import com.medteamb.medteamb.model.Patient;
 import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.repository.PatientRepository;
-import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.PatientNotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.dto.patient.*;
+import com.medteamb.medteamb.service.exception.PatientExceptions.PatientNotFound;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

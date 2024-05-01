@@ -2,15 +2,16 @@ package com.medteamb.medteamb.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.repository.DoctorRepository;
-import com.medteamb.medteamb.service.ExceptionHandler.doctorExceptions.DoctorNotFoundException;
 import com.medteamb.medteamb.service.dto.doctor.DoctorMapper;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.exception.doctorExceptions.DoctorNotFoundException;
 
 @Service
 public class DoctorService {
@@ -43,7 +44,7 @@ public class DoctorService {
 
 	public DoctorResponseDTO findDocById(Integer doctorID) {
 	Doctor foundDoc = docRepo.findById(doctorID).orElseThrow(()->
-	new DoctorNotFoundException("Doctor not found"));
+	new DoctorNotFoundException(doctorID));
 	return docMapper.mapFromDocToResponseDTO(foundDoc);
 	}
 //CHECK EXISTANCE BEFORE UPDATE
@@ -60,21 +61,23 @@ public class DoctorService {
 	}
 	
 	public DoctorResponseDTO updateDoctor(DoctorRequestDTO docDto, Integer id){
-		 docDto.setDoctorID(id); 
-		if(docRepo.findById(id).isEmpty()) {
+		Optional<Doctor> doctor = docRepo.findById(id);
+		if(doctor.isEmpty()) {
 			throw new DoctorNotFoundException(id);
 		}
-		Doctor doc = docMapper.mapFromRequestDTOToDoc(docDto);
-		return DoctorResponseDTO.builder()
-				.withDoctorName(doc.getDoctorName())
-				.withDoctorSurname(doc.getDoctorSurname())
-				.withDoctorPhoneNumber(doc.getDoctorPhoneNumber())
-				.withDoctorEmail(doc.getDoctorEmail())
-				.withBeginningWorkTime(doc.getBeginningWorkTime())
-				.withAppointmentsPerDay(doc.getAppointmentsPerDay())
-				.withAppointmentsDuration(doc.getAppointmentsDuration())
-				.withAgendaMonthsRange(doc.getAgendaMonthsRange())
-				.build();
+		Doctor updatable = doctor.get();
+		updatable.setDoctorName(docDto.getDoctorName());
+		updatable.setDoctorSurname(docDto.getDoctorSurname());
+		updatable.setDoctorPhoneNumber(docDto.getDoctorPhoneNumber());
+		updatable.setDoctorEmail(docDto.getDoctorEmail());
+		updatable.setSpecialization(docDto.getSpecialization());
+		updatable.setBeginningWorkTime(docDto.getBeginningWorkTime());
+		updatable.setAppointmentsPerDay(docDto.getAppointmentsPerDay());
+		updatable.setAppointmentsDuration(docDto.getAppointmentsDuration());
+		updatable.setAgendaMonthsRange(docDto.getAgendaMonthsRange());
+		
+		return docMapper.mapFromDocToResponseDTO(docRepo.save(updatable));
+		
 	}
 //DELETE
 

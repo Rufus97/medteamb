@@ -3,9 +3,11 @@ package com.medteamb.medteamb.service.dto.doctor;
 import java.time.LocalTime;
 
 import com.medteamb.medteamb.model.Specialization;
+import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
 
-public class DoctorResponseDTO {
+public class DoctorResponseDTO extends BaseResponse {
 
+	
 	
 	private String doctorName;
 	private String doctorSurname;
@@ -17,6 +19,11 @@ public class DoctorResponseDTO {
 	private Integer appointmentsPerDay;
 	private Integer agendaMonthsRange;
 	
+public DoctorResponseDTO() {}
+	
+	public DoctorResponseDTO(String message) {
+		super(message);
+	}
 
 	public String getDoctorName() {
 		return doctorName;
