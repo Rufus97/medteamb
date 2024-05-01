@@ -12,6 +12,7 @@ import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResp
 import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
+import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
 import org.hibernate.query.Page;
@@ -64,9 +65,9 @@ public class PatientController {
           return service.getAppointmentsToDo(patientID, page, size);
      }
      //poter caricare i miei referti
-     @GetMapping("/myReferts")
-     public Iterable<PatientRefert> getHistoryOfMyReferts(@RequestParam Long id){
-          return service.getHistoryOfPatientRefertsByID(id);
+     @GetMapping("/myReferts/{page}")
+     public PatientResponseIterables<RefertResponseDTO> getHistoryOfMyReferts(@RequestParam Long id, @PathVariable int page, @RequestParam int size){
+          return service.getHistoryOfPatientRefertsByID(id, page, size);
      }
      // poter richiedere farmaci ed impegnative di visite specialistiche
      @PostMapping("/newSpecial")
@@ -98,6 +99,11 @@ public class PatientController {
      @PutMapping("/{id}")
      public PatientResponse updatePatientById(@RequestBody Patient newPatient, @PathVariable Long id){
           return service.updatePatientById(newPatient, id);
+     }
+
+     @PostMapping("/testPostRefert")
+     public RefertResponseDTO postTestRefert(@RequestParam Long id, @RequestBody String diagnosis){
+         return service.postTestRefert(id, diagnosis);
      }
 }
 

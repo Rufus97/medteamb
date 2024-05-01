@@ -56,11 +56,6 @@ public interface AppointmentSlotRepo extends JpaRepository<AppointmentSlot, Long
     Optional<AppointmentSlot> getOneAppointmentFromPatientIdAndDate(@Param("day") LocalDate day,
                                                                     @Param("hour") LocalTime hour,
                                                                     @Param("id")Integer id);
-    // create new appointment with day and doctor // patient id to be replaced header request
-    @Query(value = "update slot_appuntamento sa " +
-            "set sa.patient_id = ?1, sa.status = 'TO_DO' " +
-            "where sa.giorno = ?2 and sa.orario_iniziale = ?3 and sa.doctor_id = ?4", nativeQuery = true)
-    AppointmentSlot createAppointmentWithDateAndHour(Integer id, LocalDate day, LocalTime hour, Integer docID);
 
     AppointmentSlot findBytoday(LocalDate day);
 }

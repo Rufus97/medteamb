@@ -18,6 +18,7 @@ import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResp
 import com.medteamb.medteamb.service.dto.patient.*;
 import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
+import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
 import org.springframework.data.domain.Page;
@@ -66,10 +67,10 @@ public class PatientService {
 
     //poter richiedere farmaci ed impegnative di visite specialistiche
     public SpecialResponseDTO newSpecialAppointmentRequest(SpecialRequestDTO specialRequestDTO){
-        Optional<SpecialAppointments> check = specialRepo.findByappointmentDate(specialRequestDTO.getAppointmentDate());
+        Optional<Requests> check = specialRepo.findByAppointmentDateAndAppointmentHour(specialRequestDTO.getAppointmentDate(), specialRequestDTO.getAppointmentHour());
         if (check.isPresent()){
-            throw new ConflictException("a special apopintment already exists this date: " + specialRequestDTO.getAppointmentDate());
-        } else {
+            throw new ConflictException("appointment with this date and hour already exists for this patient");
+        }
         SpecialAppointments response =  new SpecialAppointments();
             response.setDetails(specialRequestDTO.getDetails());
             response.setAppointmentHour(specialRequestDTO.getAppointmentHour());
@@ -80,7 +81,7 @@ public class PatientService {
             specialRepo.save(response);
             new SpecialResponseDTO();
             return mapper.mapFromSpecialRequest(response);
-        }
+
     }
 
 
@@ -163,8 +164,14 @@ public class PatientService {
         return response;
     }
     // poter caricare i miei referti
-    public Iterable<PatientRefert> getHistoryOfPatientRefertsByID(Long id){
-        return refertRepo.getHistoryOfRefertsByPatientID(id);
+    public PatientResponseIterables<RefertResponseDTO> getHistoryOfPatientRefertsByID(Long id, int page, int size){
+        Page<PatientRefert> list = refertRepo.getHistoryOfRefertsByPatientID(id, PageRequest.of(page, size));
+        PatientResponseIterables<RefertResponseDTO> response = new PatientResponseIterables<>( mapper.mapFromIterableToRefertResponseListDTO(list));
+        response.setCurrentPage(list.getNumber());
+        response.setNumOfPages(list.getTotalPages());
+        response.setNumOfElements(list.getSize());
+        response.setTotalElements(list.getTotalElements());
+        return response;
     }
 
     //UPDATE
@@ -179,7 +186,7 @@ public class PatientService {
     // poter chiedere di spostare l’appuntamento esistente ove possibile
     public Requests updateAppointmentRequestToMove(RequestToMoveAppointmentDTO request){
         Requests oldAppointment = requestsForAppointmentsRepo.findByday(
-                request.getDay()).orElseThrow( ()-> new RuntimeException("appointment not found"));
+                request.getDay()).orElseThrow( ()-> new NotFound("appointment not found"));
 
         oldAppointment.setDescription(request.getDescription());
         oldAppointment.setNewDate(request.getNewDay());
@@ -219,6 +226,14 @@ public class PatientService {
             throw new ConflictException("patient taxCode " + request.getTaxCode()
             + " already exists");
         }
+    }
+
+    public RefertResponseDTO postTestRefert(Long id, String request) {
+        PatientRefert goodRefert = new PatientRefert();
+        goodRefert.setPatient(patientRepo.findById(1L).get());
+        goodRefert.setDiagnosis(request);
+        refertRepo.save(goodRefert);
+        return mapper.mapFromRefertToResponseDTO(goodRefert);
     }
 }
 

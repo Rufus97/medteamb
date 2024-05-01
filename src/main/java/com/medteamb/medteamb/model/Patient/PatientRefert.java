@@ -14,10 +14,9 @@ public class PatientRefert {
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
-
     private String diagnosis;
-
     private LocalDateTime emissionDate = LocalDateTime.now();
+
 
     public Long getId() {
         return id;

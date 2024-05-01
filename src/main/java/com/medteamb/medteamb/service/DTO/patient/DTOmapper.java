@@ -2,10 +2,12 @@ package com.medteamb.medteamb.service.dto.patient;
 
 import com.medteamb.medteamb.model.Calendar.AppointmentSlot;
 import com.medteamb.medteamb.model.Patient.Patient;
+import com.medteamb.medteamb.model.Patient.PatientRefert;
 import com.medteamb.medteamb.model.Patient.Requests;
 import com.medteamb.medteamb.model.Patient.SpecialAppointments;
 import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.ResponseForNewAppointmentDTO;
+import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialResponseDTO;
 import org.springframework.stereotype.Component;
 
@@ -58,6 +60,18 @@ public class DTOmapper{
         }
         return response;
     }
+
+   public RefertResponseDTO mapFromRefertToResponseDTO(PatientRefert request){
+        return new RefertResponseDTO(request.getId(), request.getPatient().getPatientID(),
+                request.getEmissionDate(), request.getDiagnosis());
+   }
+   public List<RefertResponseDTO> mapFromIterableToRefertResponseListDTO(Iterable<PatientRefert> list){
+        List<RefertResponseDTO> response = new ArrayList<>();
+        for (PatientRefert refert : list){
+            response.add(mapFromRefertToResponseDTO(refert));
+        }
+        return response;
+   }
 
     public ResponseForNewAppointmentDTO mapFromRequestObjectToResponseDTO(Requests request){
         return new ResponseForNewAppointmentDTO(
