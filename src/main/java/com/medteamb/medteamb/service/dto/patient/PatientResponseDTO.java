@@ -2,6 +2,7 @@ package com.medteamb.medteamb.service.dto.patient;
 
 public class PatientResponseDTO {
 
+
     private Long id;
     private String patientName;
     private String patientSurname;

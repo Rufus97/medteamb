@@ -1,14 +1,12 @@
 package com.medteamb.medteamb.model;
 
 
-// import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
+import java.util.Objects;
+
+//import com.medteamb.medteamb.utils.BCryptPasswordEncoder;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Entity
 @Table (name = "user")
@@ -59,9 +57,28 @@ public class User {
     public static UserBuilder builder() {
         return new UserBuilder();
     }
+  
+    @Override
+	public int hashCode() {
+		return Objects.hash(password, roles, userId, username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(password, other.password) && Objects.equals(roles, other.roles)
+				&& Objects.equals(userId, other.userId) && Objects.equals(username, other.username);
+	}
 
 
-    public static class UserBuilder {
+
+	public static class UserBuilder {
 
 /*        private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -101,5 +118,5 @@ public class User {
             return this;
         }
     }
-
+    
 }

@@ -1,10 +1,14 @@
 package com.medteamb.medteamb.controller;
 
+
+
 import com.medteamb.medteamb.model.Patient.Patient;
 import com.medteamb.medteamb.model.Patient.Requests;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
@@ -23,16 +27,16 @@ public class PatientController {
 
      //poter visualizzare le disponibilità del mio dottore // testato
      @GetMapping("/docAvailability/{page}")
-     public ResponseForLists<AvaibleAppointmentResponseDTO> getAvaibleAppointmentsByDocId(@PathVariable int page, @RequestParam Integer docID, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocId(@PathVariable int page, @RequestParam Integer docID, @RequestParam int size){
          return service.getDocAvailabilityById(docID, page, size);
      }
      @GetMapping("/docAvaibilityByName/{page}")  //testato
-     public ResponseForLists<AvaibleAppointmentResponseDTO> getAvaibleAppointmentsByDocNameAndSurname(@RequestParam String name, @RequestParam String surname, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocNameAndSurname(@RequestParam String name, @RequestParam String surname, @PathVariable int page, @RequestParam int size){
           return service.getDocAvailabilityByNameAndSurname(name, surname, page, size);
      }
      // poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della  visita
      @PostMapping("/newAppointment")
-     public AppointmentResponseDTO askForAppointment(@RequestBody RequestForNewAppointmentDTO request){
+     public AppointmentResponseDTO askForAppointment(@RequestBody AppointmentRequestDTO request){
            return service.newAppointmentRequest(request);
      }
 
@@ -103,3 +107,4 @@ public class PatientController {
 ▪ poter ricevere una conferma dell'appuntamento via email
 ▪ poter ricevere prescrizioni di farmaci ed impegnative per visite specialistiche
 */
+

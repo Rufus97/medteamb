@@ -2,17 +2,17 @@ package com.medteamb.medteamb.service.dto.secretary;
 
 public class SecretaryResponseDTO {
 
-    private Integer secretaryId;
+    private Long secretaryId;
     private String secretaryName;
     private String secretarySurname;
     private String secretaryPhoneNumber;
     private String secretaryEmail;
 
-    public Integer getSecretaryId() {
+    public Long getSecretaryId() {
         return secretaryId;
     }
 
-    public void setSecretaryId(Integer secretaryId) {
+    public void setSecretaryId(Long secretaryId) {
         this.secretaryId = secretaryId;
     }
 

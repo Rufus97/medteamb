@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 
 
 import java.util.Objects;
-
 @Entity
 @Table(name = "secretary")
 public class Secretary {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer secretaryID;
+	private Long secretaryID;
 	@Column(nullable = false)
 	private String secretaryName;
 	@Column(nullable = false)
@@ -20,6 +19,9 @@ public class Secretary {
 	private String secretaryPhoneNumber;
 	@Column(nullable = false, unique = true)
 	private String secretaryEmail;
+	
+	//@OneToMany(cascade = CascadeType.ALL, mappedBy="appointmentID")
+	//private Appointment appointments;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -30,7 +32,7 @@ public class Secretary {
 //	@JoinColumn(name = "user")
 //	private User user;
 
-	public Integer getSecretaryID() {
+	public Long getSecretaryID() {
 		return secretaryID;
 	}
 
