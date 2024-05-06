@@ -3,10 +3,9 @@ package com.medteamb.medteamb.service.dto.appointment;
 import java.time.LocalDateTime;
 
 import com.medteamb.medteamb.model.Doctor;
-
-import com.medteamb.medteamb.model.Patient.Patient;
 import com.medteamb.medteamb.model.Secretary;
 import com.medteamb.medteamb.model.agenda.AppointmentStatus;
+import com.medteamb.medteamb.model.patient.Patient;
 
 public class AppointmentResponseDTO {
 	
@@ -24,6 +23,10 @@ public class AppointmentResponseDTO {
 		return appointmentID;
 	}
 	
+	public void setAppointmentID(Integer appointmentID) {
+		this.appointmentID = appointmentID;
+	}
+
 	public Patient getPatient() {
 		return patient;
 	}

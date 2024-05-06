@@ -5,6 +5,7 @@ public class PatientRequestDTO {
     private String patientSurname;
     private String taxCode;
     private String patientPhoneNumber;
+    private String patientEmail;
 
     public String getPatientName() {
         return patientName;
@@ -37,4 +38,12 @@ public class PatientRequestDTO {
     public void setPatientPhoneNumber(String patientPhoneNumber) {
         this.patientPhoneNumber = patientPhoneNumber;
     }
+
+	public String getPatientEmail() {
+		return patientEmail;
+	}
+
+	public void setPatientEmail(String patientEmail) {
+		this.patientEmail = patientEmail;
+	}
 }

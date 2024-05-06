@@ -9,7 +9,6 @@ public class PatientResponse extends BaseResponse{
 
     PatientResponseDTO body;
 
-
     public PatientResponse(PatientResponseDTO body) {
         this.body = body;
     }

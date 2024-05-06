@@ -1,6 +1,8 @@
 package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.service.SecretaryService;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
+import com.medteamb.medteamb.service.dto.secretary.SecretaryRequestAppointment;
 import com.medteamb.medteamb.service.dto.secretary.SecretaryRequestDTO;
 import com.medteamb.medteamb.service.dto.secretary.SecretaryResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ public class SecretaryController {
     }
 
     @GetMapping("/get/{secretaryID}")
-    public ResponseEntity<SecretaryResponseDTO> getSecretaryById(@PathVariable Integer secretaryID) {
+    public ResponseEntity<SecretaryResponseDTO> getSecretaryById(@PathVariable Long secretaryID) {
         SecretaryResponseDTO secretary = secretaryService.getSecretaryById(secretaryID);
         return new ResponseEntity<>(secretary, HttpStatus.OK);
     }
@@ -38,14 +40,21 @@ public class SecretaryController {
     }
 
     @PutMapping("/update/{secretaryID}")
-    public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Integer secretaryID, @RequestBody SecretaryRequestDTO secretaryDTO) {
+    public ResponseEntity<SecretaryResponseDTO> updateSecretary(@PathVariable Long secretaryID, @RequestBody SecretaryRequestDTO secretaryDTO) {
         SecretaryResponseDTO updatedSecretary = secretaryService.updateSecretary(secretaryID, secretaryDTO);
         return new ResponseEntity<>(updatedSecretary, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{secretaryID}")
-    public ResponseEntity<Void> deleteSecretary(@PathVariable Integer secretaryID) {
+    public ResponseEntity<Void> deleteSecretary(@PathVariable Long secretaryID) {
         secretaryService.deleteSecretary(secretaryID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    
+    @PutMapping("/newAppointment/{taxCode}")
+    public ResponseEntity<AppointmentResponseDTO> createAppointment(@PathVariable String taxCode,
+    																	@RequestBody SecretaryRequestAppointment requestAppointment){
+    	AppointmentResponseDTO appointmentResponse = secretaryService.newAppointmentRequest(requestAppointment, taxCode);
+    	return new ResponseEntity<>(appointmentResponse, HttpStatus.CREATED);
     }
 }

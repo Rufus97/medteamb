@@ -1,14 +1,13 @@
 package com.medteamb.medteamb.service.dto;
 
-import com.medteamb.medteamb.model.Patient.Patient;
-import com.medteamb.medteamb.model.Patient.PatientRefert;
-import com.medteamb.medteamb.model.Patient.Requests;
-import com.medteamb.medteamb.model.Patient.SpecialAppointments;
-
 import com.medteamb.medteamb.model.agenda.Appointment;
+import com.medteamb.medteamb.model.patient.Patient;
+import com.medteamb.medteamb.model.patient.PatientRefert;
+import com.medteamb.medteamb.model.patient.Requests;
+import com.medteamb.medteamb.model.patient.SpecialAppointments;
 import com.medteamb.medteamb.repository.DoctorRepository;
-import com.medteamb.medteamb.repository.Patient.PatientRepository;
 import com.medteamb.medteamb.repository.SecretaryRepository;
+import com.medteamb.medteamb.repository.patient.PatientRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
@@ -44,9 +43,10 @@ public class DTOmapper{
     // patient request mapper
     public Patient mapFromRequestToPatient(PatientRequestDTO request){
        return new Patient(request.getPatientName(),
-               request.getPatientSurname(),
-               request.getPatientPhoneNumber(),
-               request.getTaxCode());
+               		request.getPatientSurname(),
+               		request.getPatientPhoneNumber(),
+               		request.getTaxCode(),
+       				request.getPatientEmail());
     }
 
 

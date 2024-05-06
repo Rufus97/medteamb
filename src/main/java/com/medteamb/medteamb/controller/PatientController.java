@@ -1,17 +1,14 @@
 package com.medteamb.medteamb.controller;
 
-
-
-import com.medteamb.medteamb.model.Patient.Patient;
-import com.medteamb.medteamb.model.Patient.Requests;
+import com.medteamb.medteamb.model.patient.Patient;
+import com.medteamb.medteamb.model.patient.Requests;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.AppointmentSlots.AvaibleAppointmentResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientAppointmentDTO.*;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientUpdateAppointment;
+import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointment;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialAppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialAppointmentResponseDTO;
@@ -19,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/api/v1/patients")
 public class PatientController {
 
      @Autowired
@@ -27,37 +24,42 @@ public class PatientController {
 
      //poter visualizzare le disponibilità del mio dottore // testato
      @GetMapping("/docAvailability/{page}")
-     public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocId(@PathVariable int page, @RequestParam Integer docID, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocId(@PathVariable int page, @RequestParam Long docID, @RequestParam int size){
          return service.getDocAvailabilityById(docID, page, size);
      }
+     
      @GetMapping("/docAvaibilityByName/{page}")  //testato
      public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocNameAndSurname(@RequestParam String name, @RequestParam String surname, @PathVariable int page, @RequestParam int size){
           return service.getDocAvailabilityByNameAndSurname(name, surname, page, size);
      }
+     
      // poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della  visita
-     @PostMapping("/newAppointment")
-     public AppointmentResponseDTO askForAppointment(@RequestBody AppointmentRequestDTO request){
-           return service.newAppointmentRequest(request);
+     //testato - funziona selezionando l'appuntamento da prenotare e dando il proprio id
+     @PutMapping("/newAppointment")
+     public AppointmentResponseDTO askForAppointment(@RequestBody PatientRequestAppointment patientRequestAppointment){
+           return service.newAppointmentRequest(patientRequestAppointment);
      }
 
      //poter chiedere di spostare l’appuntamento esistente ove possibile
      @PutMapping("/moveAppointment")
-     public Requests askToMoveAppointment(@RequestBody RequestToMoveAppointmentDTO request){
-         return service.updateAppointmentRequestToMove(request);
+     public AppointmentResponseDTO moveAppointment(@RequestBody PatientUpdateAppointment patientUpdateAppointment){
+         return service.moveAppointment(patientUpdateAppointment);
      }
+     
+     
      //poter annullare un appuntamento esistente
      @PutMapping("/cancelAppointment")
-     public Requests askToCancelAppointment(@RequestBody RequestToCancelAppointmentDTO request){
-          return service.updateAppointmentToCancel(request);
+     public Requests cancelAppointment(){
+          return null;
      }
      //poter visualizzare lo storico delle mie visite e i relativi referti ( REFERTI DA CONCEPIRE )
      @GetMapping("/myAppointments/{page}")
-     public ResponseForLists<AvaibleAppointmentResponseDTO> getMyAppointmentHistory(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentHistory(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
           return service.getAppointmentHistoryByPatientId(patientID, page, size);
      }
      // poter visualizzare gli appuntamenti prenotati da svolgere
      @GetMapping("/myAppointmentsToDo/{page}")
-     public ResponseForLists<AvaibleAppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
           return service.getAppointmentsToDo(patientID, page, size);
      }
      //poter caricare i miei referti
@@ -72,7 +74,7 @@ public class PatientController {
      }
 
      //CREATE
-     @PostMapping
+     @PostMapping("/create")
      public PatientResponse savePatient(@RequestBody PatientRequestDTO patient){
           return service.newPatient(patient);
      }

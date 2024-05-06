@@ -1,7 +1,8 @@
 package com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientInterceptor;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.medteamb.medteamb.repository.Patient.PatientRepository;
+import com.medteamb.medteamb.repository.patient.PatientRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.model.Patient;
+package com.medteamb.medteamb.model.patient;
 
 import com.medteamb.medteamb.model.User;
 import jakarta.persistence.*;
@@ -22,11 +22,12 @@ public class Patient {
 	@Column(unique = true)
 	private String patientEmail;
     public Patient(){};
-	public Patient(String patientName, String patientSurname, String taxCode, String patientPhoneNumber) {
+	public Patient(String patientName, String patientSurname, String taxCode, String patientPhoneNumber, String patientEmail) {
 		this.patientName = patientName;
 		this.patientSurname = patientSurname;
 		this.patientPhoneNumber = patientPhoneNumber;
 		this.taxCode = taxCode;
+		this.patientEmail = patientEmail;
 	}
 
 	@OneToOne

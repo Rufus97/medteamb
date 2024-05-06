@@ -1,9 +1,10 @@
 package com.medteamb.medteamb.service.dto.patient.RefertDTO;
 
-import com.medteamb.medteamb.model.Patient.Patient;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+
+import com.medteamb.medteamb.model.patient.Patient;
 
 public class RefertResponseDTO {
 

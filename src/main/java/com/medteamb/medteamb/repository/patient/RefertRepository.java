@@ -1,11 +1,12 @@
-package com.medteamb.medteamb.repository.Patient;
+package com.medteamb.medteamb.repository.patient;
 
-import com.medteamb.medteamb.model.Patient.PatientRefert;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.medteamb.medteamb.model.patient.PatientRefert;
 
 public interface RefertRepository extends JpaRepository<PatientRefert, Long> {
 
