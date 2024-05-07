@@ -1,6 +1,11 @@
 package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.service.dto.patient.PatientDTO;
+
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.PublicEndpoint;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.RoleSecurity;
+import it.pasqualecavallo.studentsmaterial.authorization_framework.security.ZeroSecurity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +31,19 @@ public class PatientController {
     @Autowired
     private PatientService service;
 
-
+    @PublicEndpoint
     @PostMapping("/create")
     public PatientResponse savePatient(@RequestBody Patient patient){
         return service.newPatient(patient);
     }
+    
+    @ZeroSecurity
     @GetMapping("/get/{patientID}")
     public PatientResponse getPatient(@PathVariable Integer patientID){
         return service.getPatient(patientID);
     }
+    
+    @RoleSecurity("ROLE_ADMIN")
     @GetMapping("/getMultiple")
     public Iterable<Patient> getPatientsIds(@RequestBody Iterable<Integer> patientIDs){
         return service.getPatientsByIds(patientIDs);

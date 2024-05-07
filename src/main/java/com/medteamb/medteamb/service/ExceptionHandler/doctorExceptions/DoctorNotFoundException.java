@@ -1,6 +1,6 @@
 package com.medteamb.medteamb.service.ExceptionHandler.doctorExceptions;
 
-import io.jsonwebtoken.lang.Supplier;
+import java.util.function.Supplier;
 
 public class DoctorNotFoundException extends RuntimeException implements Supplier<String>{
 
