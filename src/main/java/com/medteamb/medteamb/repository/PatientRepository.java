@@ -1,3 +1,5 @@
+package com.medteamb.medteamb.repository;
+
 import com.medteamb.medteamb.model.Patient.Patient;
 import com.medteamb.medteamb.model.agenda.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
