@@ -3,19 +3,19 @@ package com.medteamb.medteamb.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
+import com.medteamb.medteamb.service.ResponseHandler.Response;
+import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
+import com.medteamb.medteamb.service.dto.DTOmapper;
+import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
+import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
-import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
@@ -24,13 +24,16 @@ public class DoctorController {
 
 	private DoctorService docService;
 
-	public DoctorController(DoctorService docService) {
+	private DTOmapper mapper;
+
+	public DoctorController(DoctorService docService, DTOmapper mapper) {
 		this.docService = docService;
+		this.mapper = mapper;
 	}
 
 
 
-	/*poter visualizzare la mia agenda con gli appuntamenti della giornata e i dettagli dei pazienti
+	/*
 ▪ poter accedere alle informazioni sanitarie dei miei pazienti in vista della visita
 ▪ poter creare e modificare i profili dei miei pazienti, inserendo dati anagrafici, recapiti e
 	SOPRATTUTTO informazioni sanitarie e dettagli sull’esenzione del ticket
@@ -39,22 +42,33 @@ public class DoctorController {
 ▪ poter prescrivere farmaci ai miei pazienti, specificando dosaggio e durata della terapia
 ▪ poter creare, modificare o cancellare gli appuntamenti dei miei pazienti
 ▪ poter consultare i referti caricati dei miei pazienti*/
-	
+
+
+	//poter visualizzare la mia agenda con gli appuntamenti della giornata e i dettagli dei pazienti
+	@GetMapping("/myAppointments")
+	public ResponseForLists<AppointmentResponseDTO> getMyAppointments(@RequestParam Long id, int page, int size){
+		return docService.getMyAppointments(id, page, size);
+	}
+
+
+
+
+
 	@PostMapping(path = "/create")
-	public ResponseEntity<DoctorRequestDTO> createDoctor(@RequestBody DoctorRequestDTO doctorDto) {
-		return new ResponseEntity<>(docService.saveDoctor(doctorDto), HttpStatus.CREATED) ;
+	public Response<DoctorResponseDTO> createDoctor(@RequestBody DoctorRequestDTO doctorDto) {
+		return docService.newDoctor(doctorDto);
 	}
 	
-	@GetMapping(path ="/getAll")
-	public List<DoctorRequestDTO> showAllDoctors(){
-		return docService.showAllDocs();
+	@GetMapping(path ="/getAll/{page}")
+	public ResponseForLists<DoctorResponseDTO> showAllDoctors(@PathVariable int page, @RequestParam int size){
+		return docService.showAllDocs(page, size);
 	}
 	
 	@GetMapping(path ="/get/{doctorId}")
-	public ResponseEntity<DoctorRequestDTO>showById(@PathVariable Long doctorId){
-		Optional<DoctorRequestDTO> foundDoctor = docService.findDocById(doctorId);
+	public ResponseEntity<DoctorResponseDTO>showById(@PathVariable Long doctorId){
+		Optional<DoctorResponseDTO> foundDoctor = docService.findDocById(doctorId);
 		if(foundDoctor.isPresent()) {
-			DoctorRequestDTO doctorDto = foundDoctor.get();
+			DoctorResponseDTO doctorDto = foundDoctor.get();
 			return new ResponseEntity<>(doctorDto, 
 					HttpStatus.FOUND);
 		}
@@ -62,14 +76,12 @@ public class DoctorController {
 	}
 	
 	@PutMapping(path = "/update/{doctorId}")
-	public ResponseEntity<DoctorRequestDTO>updateById(@PathVariable Long doctorId,
+	public Response<DoctorResponseDTO> updateById(@PathVariable Long doctorId,
 			@RequestBody DoctorRequestDTO doctorDto) {
 		if(!docService.exists(doctorId)) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw new NotFound("doctor not found");
 		}
-		doctorDto.setDoctorID(doctorId);
-		return new ResponseEntity<>(docService.saveDoctor(doctorDto),
-				HttpStatus.ACCEPTED);
+        return createDoctor(doctorDto);
 	}
 	
 	@DeleteMapping(path = "/delete/{doctorId}")

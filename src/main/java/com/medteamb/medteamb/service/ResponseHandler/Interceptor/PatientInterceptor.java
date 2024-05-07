@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientInterceptor;
+package com.medteamb.medteamb.service.ResponseHandler.Interceptor;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.medteamb.medteamb.repository.patient.PatientRepository;

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -50,6 +51,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 					"where d.doctor_name  = ?1 and d.doctor_surname = ?2 and a.status = 'AVAIBLE' ")
 	Page<Appointment> getAllAvaibleAppointmentsOfOneDocNameAndSurname(String name, String surname
 			, PageRequest page);
+
+	// get all doctor appointment from doctor request
+	@Query(value = "select a.* from appointment a " +
+			"where a.doctor_id = ?1 and a.status = 'TO_DO'", nativeQuery = true)
+	Page<Appointment> getAllMyAppointments(Long id, PageRequest page);
 
 
 	// get appointments from patient id

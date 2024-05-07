@@ -10,9 +10,9 @@ import com.medteamb.medteamb.repository.*;
 import com.medteamb.medteamb.repository.patient.PatientRepository;
 import com.medteamb.medteamb.repository.patient.RefertRepository;
 import com.medteamb.medteamb.repository.patient.SpecialAppointmentsRepository;
-import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.ConflictException;
-import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
+import com.medteamb.medteamb.service.ExceptionHandler.CustomException.ConflictException;
+import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
+import com.medteamb.medteamb.service.ResponseHandler.Response;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.DTOmapper;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
@@ -58,11 +58,11 @@ public class PatientService {
     }
 
     //CREATE
-    public PatientResponse newPatient(PatientRequestDTO newPatient){
+    public Response newPatient(PatientRequestDTO newPatient){
         checkIfExists(newPatient);
         Patient patient = mapper.mapFromRequestToPatient(newPatient);
         patientRepo.save(patient);
-        return new PatientResponse(mapper.mapFromPatientToResponse(patient));
+        return new Response(mapper.mapFromPatientToResponse(patient));
     }
 
 
@@ -103,10 +103,10 @@ public class PatientService {
 
     //READ
     // get patient by id
-    public PatientResponse getPatient(Long id){
+    public Response getPatient(Long id){
        PatientResponseDTO response =  mapper.mapFromPatientToResponse(patientRepo.findById(id).
                orElseThrow(() -> new NotFound("patient not found")));
-       return new PatientResponse(response);
+       return new Response(response);
     }
     // get all patients
     public List<PatientResponseDTO> getAllPatients() {
@@ -126,7 +126,7 @@ public class PatientService {
 
         Page<Appointment> list = appointmentsRepo.getALlAvaibleAppointmentsOfOneDoctor(docID, PageRequest.ofSize(pageSize).withPage(page));
 
-        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapIterableOfSlotDTO(list));
+        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToAppointmentResponse(list));
         response.setCurrentPage(list.getNumber());
         response.setNumOfPages(list.getTotalPages());
         response.setNumOfElements(list.getSize());
@@ -137,7 +137,7 @@ public class PatientService {
     public ResponseForLists<AppointmentResponseDTO> getDocAvailabilityByNameAndSurname(String docName, String docSurname, int page, int size){
         Page<Appointment> list = appointmentsRepo.getAllAvaibleAppointmentsOfOneDocNameAndSurname( docName, docSurname, PageRequest.ofSize(size).withPage(page));
 
-        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapIterableOfSlotDTO(list));
+        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToAppointmentResponse(list));
         response.setCurrentPage(list.getNumber());
         response.setNumOfPages(list.getTotalPages());
         response.setNumOfElements(list.getSize());
@@ -149,7 +149,7 @@ public class PatientService {
 
         Page<Appointment> list = appointmentsRepo.getAllPatientAppointments( patientID, PageRequest.ofSize(size).withPage(page));
 
-        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapIterableOfSlotDTO(list));
+        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToAppointmentResponse(list));
         response.setCurrentPage(list.getNumber());
         response.setNumOfPages(list.getTotalPages());
         response.setNumOfElements(list.getSize());
@@ -161,7 +161,7 @@ public class PatientService {
 
         Page<Appointment> list = appointmentsRepo.getHistoryOfPatientAppointmentsById( patientID, PageRequest.ofSize(size).withPage(page));
 
-        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapIterableOfSlotDTO(list));
+        ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToAppointmentResponse(list));
         response.setCurrentPage(list.getNumber());
         response.setNumOfPages(list.getTotalPages());
         response.setNumOfElements(list.getSize());
@@ -181,23 +181,23 @@ public class PatientService {
 
     //UPDATE
     // update 1 patient by id with a newPatientIstance
-    public PatientResponse updatePatientById(Patient newPatient, Long id){
+    public Response updatePatientById(Patient newPatient, Long id){
        Patient patient = patientRepo.findById(id).
                orElseThrow(() -> new NotFound("patient not found"));
        patient.updateThisPatient(newPatient);
        patientRepo.save(patient);
-       return new PatientResponse(mapper.mapFromPatientToResponse(patient));
+       return new Response(mapper.mapFromPatientToResponse(patient));
     }
     // poter chiedere di spostare l’appuntamento esistente ove possibile
     // poter annullare un appuntamento esistente
 
     //DELETE
     // delete 1 patient by id
-    public PatientResponse deletePatientById(Long id){
+    public Response deletePatientById(Long id){
         Patient patient = patientRepo.findById(id).
                 orElseThrow(() -> new NotFound("patient not found"));
         patientRepo.delete(patient);
-        return new PatientResponse(mapper.mapFromPatientToResponse(patient));
+        return new Response(mapper.mapFromPatientToResponse(patient));
     }
 
 

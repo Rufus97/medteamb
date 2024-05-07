@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientInterceptor;
+package com.medteamb.medteamb.service.ResponseHandler.Interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

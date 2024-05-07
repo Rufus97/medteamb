@@ -1,4 +1,4 @@
-package com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions;
+package com.medteamb.medteamb.service.ExceptionHandler.CustomException;
 
 public class ConflictException extends RuntimeException {
 

@@ -1,16 +1,18 @@
 package com.medteamb.medteamb.service.dto;
 
+import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.model.patient.Patient;
 import com.medteamb.medteamb.model.patient.PatientRefert;
-import com.medteamb.medteamb.model.patient.Requests;
 import com.medteamb.medteamb.model.patient.SpecialAppointments;
 import com.medteamb.medteamb.repository.DoctorRepository;
 import com.medteamb.medteamb.repository.SecretaryRepository;
 import com.medteamb.medteamb.repository.patient.PatientRepository;
-import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
+import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
+import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
+import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
@@ -30,7 +32,7 @@ public class DTOmapper{
     DoctorRepository doctorRepository;
     @Autowired
     SecretaryRepository secretaryRepository;
-
+    // PATIENT MAPPER
     // patient response mapper
     public PatientResponseDTO mapFromPatientToResponse(Patient response){
         PatientResponseDTO responseDTO = new PatientResponseDTO();
@@ -49,10 +51,10 @@ public class DTOmapper{
        				request.getPatientEmail());
     }
 
-
+   // APPINTMENTS MAPPER
    // list of appointments mapper
 
-    public List<AppointmentResponseDTO> mapIterableOfSlotDTO(Iterable<Appointment> list){
+    public List<AppointmentResponseDTO> mapFromIterableToAppointmentResponse(Iterable<Appointment> list){
         List<AppointmentResponseDTO> response = new ArrayList<>();
         for (Appointment slot : list){
            response.add(mapFromAppointmentToResponseDTO(slot));
@@ -82,6 +84,37 @@ public class DTOmapper{
         goodRequest.setTaxCode(request.getTaxCode()); goodRequest.setAppointmentDateTime(request.getAppointmentDateTime());
         goodRequest.setLocation(request.getLocation());
         return goodRequest;
+    }
+
+    // DOCTOR MAPPERS
+    public DoctorResponseDTO mapFromDocToResponse(Doctor doctor) {
+        DoctorResponseDTO responseDTO = new DoctorResponseDTO();
+        responseDTO.setDoctor_id(doctor.getDoctorID()); responseDTO.setDoctorSurname(doctor.getDoctorSurname());
+        responseDTO.setDoctorName(doctor.getDoctorName()); responseDTO.setDoctorEmail(doctor.getDoctorEmail());
+        responseDTO.setSpecialization(doctor.getSpecialization()); responseDTO.setDoctorPhoneNumber(doctor.getDoctorPhoneNumber());
+        return responseDTO;
+    }
+
+    public Doctor mapFromRequestToDoc(DoctorRequestDTO doctorDto) {
+        Doctor doctor = new Doctor();
+        doctor.setDoctorName(doctorDto.getDoctorName());
+        doctor.setDoctorSurname(doctorDto.getDoctorSurname());
+        doctor.setDoctorEmail(doctorDto.getDoctorEmail());
+        doctor.setDoctorPhoneNumber(doctorDto.getDoctorPhoneNumber());
+        doctor.setSpecialization(doctorDto.getSpecialization());
+        doctor.setAgendaMonthsRange(doctorDto.getAgendaMonthsRange());
+        doctor.setAppointmentsDuration(doctorDto.getAppointmentsDuration());
+        doctor.setAppointmentsPerDay(doctorDto.getAppointmentsPerDay());
+        doctor.setBeginningWorkTime(doctorDto.getBeginningWorkTime());
+        return doctor;
+    }
+    // map a doctor response list
+    public List<DoctorResponseDTO> mapFromIterableToDocResponse(Iterable<Doctor> list){
+        List<DoctorResponseDTO> response = new ArrayList<>();
+        for (Doctor slot : list){
+            response.add(mapFromDocToResponse(slot));
+        }
+        return response;
     }
 
 

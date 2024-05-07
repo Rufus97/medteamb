@@ -1,9 +1,8 @@
 package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.model.patient.Patient;
-import com.medteamb.medteamb.model.patient.Requests;
 import com.medteamb.medteamb.service.PatientService;
-import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
+import com.medteamb.medteamb.service.ResponseHandler.Response;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
@@ -75,12 +74,12 @@ public class PatientController {
 
      //CREATE
      @PostMapping("/create")
-     public PatientResponse savePatient(@RequestBody PatientRequestDTO patient){
+     public Response savePatient(@RequestBody PatientRequestDTO patient){
           return service.newPatient(patient);
      }
      //READ
      @GetMapping("/ById")
-     public PatientResponse getPatient(@RequestParam Long id){
+     public Response getPatient(@RequestParam Long id){
           return service.getPatient(id);
      }
      @GetMapping("/byIds")
@@ -90,12 +89,12 @@ public class PatientController {
 
      //DELETE
      @DeleteMapping
-     public PatientResponse deletePatientById(@RequestParam Long id){
+     public Response deletePatientById(@RequestParam Long id){
           return service.deletePatientById(id);
      }
      //UPDATE
      @PutMapping("/{id}")
-     public PatientResponse updatePatientById(@RequestBody Patient newPatient, @PathVariable Long id){
+     public Response updatePatientById(@RequestBody Patient newPatient, @PathVariable Long id){
           return service.updatePatientById(newPatient, id);
      }
 
