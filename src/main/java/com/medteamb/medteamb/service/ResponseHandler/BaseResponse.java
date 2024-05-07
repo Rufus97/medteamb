@@ -7,7 +7,6 @@ public class BaseResponse{
     private HttpStatus httpStatus = HttpStatus.OK;
     private String message = "no message";
 
-
     public BaseResponse(){}
 
     public BaseResponse(String message){

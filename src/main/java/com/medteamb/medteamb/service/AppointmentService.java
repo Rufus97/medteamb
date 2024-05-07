@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.medteamb.medteamb.repository.Patient.PatientRepository;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import com.medteamb.medteamb.repository.AppointmentRepository;
 import com.medteamb.medteamb.repository.DoctorRepository;
 
 import com.medteamb.medteamb.repository.SecretaryRepository;
+import com.medteamb.medteamb.repository.patient.PatientRepository;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentListDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;

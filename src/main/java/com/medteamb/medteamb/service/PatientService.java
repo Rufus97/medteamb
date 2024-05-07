@@ -1,20 +1,20 @@
 package com.medteamb.medteamb.service;
 
-import com.medteamb.medteamb.model.Patient.Patient;
-import com.medteamb.medteamb.model.Patient.PatientRefert;
-import com.medteamb.medteamb.model.Patient.Requests;
-import com.medteamb.medteamb.model.Patient.SpecialAppointments;
 import com.medteamb.medteamb.model.agenda.Appointment;
+import com.medteamb.medteamb.model.agenda.AppointmentStatus;
+import com.medteamb.medteamb.model.patient.Patient;
+import com.medteamb.medteamb.model.patient.PatientRefert;
+import com.medteamb.medteamb.model.patient.Requests;
+import com.medteamb.medteamb.model.patient.SpecialAppointments;
 import com.medteamb.medteamb.repository.*;
-import com.medteamb.medteamb.repository.Patient.PatientRepository;
-import com.medteamb.medteamb.repository.Patient.RefertRepository;
-import com.medteamb.medteamb.repository.Patient.SpecialAppointmentsRepository;
+import com.medteamb.medteamb.repository.patient.PatientRepository;
+import com.medteamb.medteamb.repository.patient.RefertRepository;
+import com.medteamb.medteamb.repository.patient.SpecialAppointmentsRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.ConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
 import com.medteamb.medteamb.service.ResponseHandler.PatientResponse.PatientResponse;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.DTOmapper;
-import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.*;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
@@ -28,7 +28,6 @@ import java.util.Optional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 public class PatientService {
@@ -47,8 +46,9 @@ public class PatientService {
 */
     public PatientService(PatientRepository patientRepo, DoctorRepository doctorRepo,
                           SecretaryRepository secretaryRepo, RefertRepository refertRepo,
-                          SpecialAppointmentsRepository specialAppointmentsRepo,
+                          SpecialAppointmentsRepository specialAppointmentsRepo, AppointmentRepository appointmentsRepo,
                           DTOmapper mapper){
+    	this.appointmentsRepo = appointmentsRepo;
         this.patientRepo = patientRepo;
         this.mapper = mapper;
         this.refertRepo = refertRepo;
@@ -70,17 +70,17 @@ public class PatientService {
     //poter prenotare un appuntamento online con il mio dottore,
     // specificando data, ora e motivo della visita
 
-     public AppointmentResponseDTO newAppointmentRequest(AppointmentRequestDTO request){
-            Optional<Appointment> check = appointmentsRepo.findByAppointmentDateTime(request.getAppointmentDateTime());
-            if (check.isPresent()){
-                throw new ConflictException("appointment with this date and hour already exists for this patient");
-            }
-             Appointment goodRequest = mapper.mapFromAppointmentRequestToAppointment(request);
-             appointmentsRepo.save(goodRequest);
-             return mapper.mapFromAppointmentToResponseDTO(goodRequest);
-     }
-
-
+    public AppointmentResponseDTO newAppointmentRequest(PatientRequestAppointment patientRequestAppointment){
+    	 Appointment appointment = appointmentsRepo.findById(patientRequestAppointment.getAppointmentID()).get();
+    	 Patient patient = patientRepo.findById(patientRequestAppointment.getPatientID()).get();
+    	 appointment.setPatient(patient);
+    	 appointment.setStatus(AppointmentStatus.TO_DO);
+    	 appointment.setMedicalService("Visita");
+    	 appointment.setLocation("Develhope");
+    	 appointment.setTaxCode(patient.getTaxCode());
+         appointmentsRepo.save(appointment);
+         return mapper.mapFromAppointmentToResponseDTO(appointment);
+    }
 
     //poter richiedere farmaci ed impegnative di visite specialistiche
     public SpecialAppointmentResponseDTO newSpecialAppointmentRequest(SpecialAppointmentRequestDTO specialAppointmentRequestDTO){
@@ -189,7 +189,6 @@ public class PatientService {
        return new PatientResponse(mapper.mapFromPatientToResponse(patient));
     }
     // poter chiedere di spostare l’appuntamento esistente ove possibile
-
     // poter annullare un appuntamento esistente
 
     //DELETE
@@ -225,6 +224,38 @@ public class PatientService {
         goodRefert.setDiagnosis(request);
         refertRepo.save(goodRefert);
         return mapper.mapFromRefertToResponseDTO(goodRefert);
+    }
+
+	public AppointmentResponseDTO moveAppointment(PatientUpdateAppointment patientUpdateAppointment) {
+		Patient patient = patientRepo.findById(patientUpdateAppointment.getPatientID()).get();
+		Appointment oldAppointment = appointmentsRepo.findById(patientUpdateAppointment.getOldAppointmentID()).get();
+
+		oldAppointment.setMedicalService(null);
+		oldAppointment.setPatient(null);
+		oldAppointment.setStatus(AppointmentStatus.EMPTY);
+		oldAppointment.setTaxCode(null);
+		PatientRequestAppointment patientRequestAppointment = new PatientRequestAppointment();
+		patientRequestAppointment.setAppointmentID(patientUpdateAppointment.getNewAppointmentID());
+		patientRequestAppointment.setPatientID(patient.getPatientID());
+		return newAppointmentRequest(patientRequestAppointment);
+	}
+
+    public AppointmentResponseDTO cancelAppointment(PatientRequestAppointment requestAppointment) {
+        Appointment appointment = appointmentsRepo.findById(requestAppointment.getAppointmentID()).get();
+        Patient patient = patientRepo.findById(requestAppointment.getPatientID()).get();
+        boolean check = appointment.getPatient().getPatientID() == patient.getPatientID();
+        if (check)
+        {
+        appointment.setPatient(null);
+        appointment.setStatus(AppointmentStatus.EMPTY);
+        appointment.setMedicalService(null);
+        appointment.setLocation(null);
+        appointment.setTaxCode(null);
+        appointmentsRepo.save(appointment);
+        return mapper.mapFromAppointmentToResponseDTO(appointment);
+        } else {
+            throw new ConflictException("this appointment " + appointment + " dosen't belong to this patient " + patient.getPatientID());
+        }
     }
 }
 

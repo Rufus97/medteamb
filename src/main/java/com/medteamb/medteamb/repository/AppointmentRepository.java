@@ -1,6 +1,5 @@
 package com.medteamb.medteamb.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -69,12 +68,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	Page<Appointment> getHistoryOfPatientAppointmentsById(Integer id, PageRequest page);
 
 	Optional<Appointment> findByAppointmentDateTime(LocalDateTime day);
-
-
-
-
-
-
-
 
 }

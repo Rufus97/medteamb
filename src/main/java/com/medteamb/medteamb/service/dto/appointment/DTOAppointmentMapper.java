@@ -18,6 +18,7 @@ public class DTOAppointmentMapper {
 	
 	public AppointmentResponseDTO appointmentToResponse(Appointment appointment) {
 		AppointmentResponseDTO appointmentResponse = new AppointmentResponseDTO();
+		appointmentResponse.setAppointmentID(appointment.getAppointmentID());
 		appointmentResponse.setAppointmentDateTime(appointment.getAppointmentDateTime());
 		appointmentResponse.setDoctor(appointment.getDoctor());
 		appointmentResponse.setLocation(appointment.getLocation());

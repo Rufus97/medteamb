@@ -17,6 +17,8 @@ public class DoctorRequestDTO {
 	private Integer appointmentsPerDay;
 	private Integer agendaMonthsRange;
 
+	private DoctorRequestDTO() {}
+	
 	private DoctorRequestDTO(Builder builder) {
 		this.doctorID = builder.doctorID;
 		this.doctorName = builder.doctorName;
@@ -30,12 +32,13 @@ public class DoctorRequestDTO {
 		this.agendaMonthsRange = builder.agendaMonthsRange;
 	}
 
-	public Long getDoctorID() {
 
 
-	public DoctorRequestDTO() { }
+
+
+
 	
-	public Integer getDoctorID() {
+	public Long getDoctorID() {
 
 		return doctorID;
 	}

@@ -1,9 +1,6 @@
 package com.medteamb.medteamb.service.ResponseHandler;
 
-
-import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
 import org.springframework.http.HttpStatus;
-
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.medteamb.medteamb.service.dto.patient.RefertDTO;
 
-import com.medteamb.medteamb.model.Patient.Patient;
+import com.medteamb.medteamb.model.patient.Patient;
 
 public class RefertRequestDTO {
 

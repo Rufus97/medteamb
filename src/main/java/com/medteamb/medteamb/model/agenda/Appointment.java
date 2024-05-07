@@ -3,11 +3,10 @@ package com.medteamb.medteamb.model.agenda;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.medteamb.medteamb.model.Patient.Patient;
-
 import com.medteamb.medteamb.model.Doctor;
 
 import com.medteamb.medteamb.model.Secretary;
+import com.medteamb.medteamb.model.patient.Patient;
 
 import jakarta.persistence.*;
 

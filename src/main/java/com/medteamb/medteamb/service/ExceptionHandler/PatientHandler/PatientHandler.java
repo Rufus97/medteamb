@@ -1,7 +1,10 @@
 package com.medteamb.medteamb.service.ExceptionHandler.PatientHandler;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 4c1455b5073586f65b8ba742c28db9ded35e6e1b
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.ConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.PatientExceptions.NotFound;
 import com.medteamb.medteamb.service.ResponseHandler.BaseResponse;
@@ -9,9 +12,11 @@ import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4c1455b5073586f65b8ba742c28db9ded35e6e1b
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 
 @RestControllerAdvice
 public class PatientHandler {
@@ -29,14 +34,9 @@ public class PatientHandler {
         return new BaseResponse(HttpStatus.INTERNAL_SERVER_ERROR, exMessage);
     }
 
-
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public BaseResponse patientConflictException(ConflictException e){
         return new BaseResponse(HttpStatus.CONFLICT, e.getMessage());
     }
-
-
-  
-
 }
