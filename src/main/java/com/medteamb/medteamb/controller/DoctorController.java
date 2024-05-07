@@ -10,6 +10,7 @@ import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.DTOmapper;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,8 @@ public class DoctorController {
 
 
 	/*
-▪ poter accedere alle informazioni sanitarie dei miei pazienti in vista della visita
-▪ poter creare e modificare i profili dei miei pazienti, inserendo dati anagrafici, recapiti e
-	SOPRATTUTTO informazioni sanitarie e dettagli sull’esenzione del ticket
+▪
+▪
 ▪ poter annotare le informazioni relative alla visita e la diagnosi
 ▪ poter prescrivere un’impegnativa per la visita dallo specialista
 ▪ poter prescrivere farmaci ai miei pazienti, specificando dosaggio e durata della terapia
@@ -50,6 +50,14 @@ public class DoctorController {
 		return docService.getMyAppointments(id, page, size);
 	}
 
+	//poter accedere alle informazioni sanitarie dei miei pazienti in vista della visita
+    @GetMapping("/myPatients/{id}")
+	public ResponseForLists<PatientResponseDTO> getMyPatients(@PathVariable long idDoc, int page, int size){
+		return docService.getMyPatients(idDoc, page, size);
+	}
+
+	// poter creare e modificare i profili dei miei pazienti, inserendo dati anagrafici, recapiti e
+	//	SOPRATTUTTO informazioni sanitarie e dettagli sull’esenzione del ticket //forse aggiornare model paziente
 
 
 

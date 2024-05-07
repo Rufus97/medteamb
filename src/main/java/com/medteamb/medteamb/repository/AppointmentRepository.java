@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 
+import com.medteamb.medteamb.model.patient.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +57,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query(value = "select a.* from appointment a " +
 			"where a.doctor_id = ?1 and a.status = 'TO_DO'", nativeQuery = true)
 	Page<Appointment> getAllMyAppointments(Long id, PageRequest page);
+
+	// get all patient from doctor id
+	@Query(value = "select p.* from patient p join appointment a " +
+			"on p.patientid = a.patient_id where a.doctor_id = ?1 " +
+			"group by p.patientid", nativeQuery = true)
+	Page<Patient> getAllMyPatients(Long id, PageRequest page);
 
 
 	// get appointments from patient id

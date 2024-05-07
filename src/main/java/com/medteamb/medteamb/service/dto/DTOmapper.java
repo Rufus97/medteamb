@@ -51,6 +51,14 @@ public class DTOmapper{
        				request.getPatientEmail());
     }
 
+    public List<PatientResponseDTO> mapFromIterableToPatientResponse(Iterable<Patient> list){
+        List<PatientResponseDTO> response = new ArrayList<>();
+        for (Patient slot : list){
+            response.add(mapFromPatientToResponse(slot));
+        }
+        return response;
+    }
+
    // APPINTMENTS MAPPER
    // list of appointments mapper
 

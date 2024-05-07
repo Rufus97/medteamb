@@ -5,6 +5,7 @@ import java.util.Optional;
 
 
 import com.medteamb.medteamb.model.agenda.Appointment;
+import com.medteamb.medteamb.model.patient.Patient;
 import com.medteamb.medteamb.repository.AppointmentRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
 
@@ -13,6 +14,7 @@ import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.DTOmapper;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -93,4 +95,14 @@ public class DoctorService {
 	}
 
 
+	public ResponseForLists<PatientResponseDTO> getMyPatients(long idDoc, int page, int size) {
+		Page<Patient>  doctors = appointmentRepo.getAllMyPatients(idDoc, PageRequest.of(page, size));
+
+		ResponseForLists<PatientResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToPatientResponse(doctors.toList()));
+		response.setCurrentPage(doctors.getNumber());
+		response.setNumOfPages(doctors.getTotalPages());
+		response.setNumOfElements(doctors.getNumberOfElements());
+		response.setTotalElements(doctors.getTotalElements());
+		return response;
+	}
 }
