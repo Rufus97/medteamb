@@ -188,7 +188,7 @@ public class PatientService {
        patientRepo.save(patient);
        return new Response(mapper.mapFromPatientToResponse(patient));
     }
-    // poter chiedere di spostare l’appuntamento esistente ove possibile
+
     // poter annullare un appuntamento esistente
 
     //DELETE
@@ -225,7 +225,7 @@ public class PatientService {
         refertRepo.save(goodRefert);
         return mapper.mapFromRefertToResponseDTO(goodRefert);
     }
-
+    // poter chiedere di spostare l’appuntamento esistente ove possibile
 	public AppointmentResponseDTO moveAppointment(PatientUpdateAppointment patientUpdateAppointment) {
 		Patient patient = patientRepo.findById(patientUpdateAppointment.getPatientID()).get();
 		Appointment oldAppointment = appointmentsRepo.findById(patientUpdateAppointment.getOldAppointmentID()).get();

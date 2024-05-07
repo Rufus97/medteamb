@@ -9,8 +9,11 @@ import com.medteamb.medteamb.service.ResponseHandler.Response;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.DTOmapper;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
+import com.medteamb.medteamb.service.dto.doctor.DoctorRequestAppointmentDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointment;
 import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
+import com.medteamb.medteamb.service.dto.patient.PatientUpdateAppointment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,7 @@ public class DoctorController {
 ▪ poter annotare le informazioni relative alla visita e la diagnosi
 ▪ poter prescrivere un’impegnativa per la visita dallo specialista
 ▪ poter prescrivere farmaci ai miei pazienti, specificando dosaggio e durata della terapia
-▪ poter creare, modificare o cancellare gli appuntamenti dei miei pazienti
+▪
 ▪ poter consultare i referti caricati dei miei pazienti*/
 
 
@@ -56,7 +59,26 @@ public class DoctorController {
 		return docService.getMyPatients(idDoc, page, size);
 	}
 
+	//poter creare, modificare o cancellare gli appuntamenti dei miei pazienti
+	// delete
+	@PutMapping("/appointmentUpdate/{id}")
+	public AppointmentResponseDTO cancelAppointmentFromDoc(@PathVariable long id, @RequestBody PatientRequestAppointment request){
+		return docService.cancelAppointment(id, request);
+	}
+	// create
+	@PutMapping("/appointmentCreate/{id}")
+	public AppointmentResponseDTO createAppointmentFromDoc(@PathVariable long id, @RequestBody DoctorRequestAppointmentDTO request){
+		return docService.createAppointment(id, request);
+	}
+	// move
+	@PutMapping("/appointmentMove/{id}")
+	public AppointmentResponseDTO moveAppointmentFromDoc(@PathVariable long id, @RequestBody PatientUpdateAppointment request){
+		return docService.moveAppointment(id, request);
+	}
+
+
 	// poter creare e modificare i profili dei miei pazienti, inserendo dati anagrafici, recapiti e
+	// controller del paziente ha già un update?
 	//	SOPRATTUTTO informazioni sanitarie e dettagli sull’esenzione del ticket //forse aggiornare model paziente
 
 
