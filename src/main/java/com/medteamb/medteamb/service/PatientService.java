@@ -229,7 +229,6 @@ public class PatientService {
 	public AppointmentResponseDTO moveAppointment(PatientUpdateAppointment patientUpdateAppointment) {
 		Patient patient = patientRepo.findById(patientUpdateAppointment.getPatientID()).get();
 		Appointment oldAppointment = appointmentsRepo.findById(patientUpdateAppointment.getOldAppointmentID()).get();
-
 		oldAppointment.setMedicalService(null);
 		oldAppointment.setPatient(null);
 		oldAppointment.setStatus(AppointmentStatus.EMPTY);
