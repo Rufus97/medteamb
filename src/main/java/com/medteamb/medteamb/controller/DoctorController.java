@@ -62,17 +62,17 @@ public class DoctorController {
 	//poter creare, modificare o cancellare gli appuntamenti dei miei pazienti
 	// delete
 	@PutMapping("/appointmentUpdate/{id}")
-	public AppointmentResponseDTO cancelAppointmentFromDoc(@PathVariable long id, @RequestBody PatientRequestAppointment request){
+	public Response<AppointmentResponseDTO> cancelAppointmentFromDoc(@PathVariable long id, @RequestBody PatientRequestAppointment request){
 		return docService.cancelAppointment(id, request);
 	}
 	// create
 	@PutMapping("/appointmentCreate/{id}")
-	public AppointmentResponseDTO createAppointmentFromDoc(@PathVariable long id, @RequestBody DoctorRequestAppointmentDTO request){
+	public Response<AppointmentResponseDTO> createAppointmentFromDoc(@PathVariable long id, @RequestBody DoctorRequestAppointmentDTO request){
 		return docService.createAppointment(id, request);
 	}
 	// move
 	@PutMapping("/appointmentMove/{id}")
-	public AppointmentResponseDTO moveAppointmentFromDoc(@PathVariable long id, @RequestBody PatientUpdateAppointment request){
+	public Response<AppointmentResponseDTO> moveAppointmentFromDoc(@PathVariable long id, @RequestBody PatientUpdateAppointment request){
 		return docService.moveAppointment(id, request);
 	}
 
@@ -95,14 +95,8 @@ public class DoctorController {
 	}
 	
 	@GetMapping(path ="/get/{doctorId}")
-	public ResponseEntity<DoctorResponseDTO>showById(@PathVariable Long doctorId){
-		Optional<DoctorResponseDTO> foundDoctor = docService.findDocById(doctorId);
-		if(foundDoctor.isPresent()) {
-			DoctorResponseDTO doctorDto = foundDoctor.get();
-			return new ResponseEntity<>(doctorDto, 
-					HttpStatus.FOUND);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	public Response<DoctorResponseDTO>showById(@PathVariable Long doctorId){
+		return docService.findDocById(doctorId);
 	}
 	
 	@PutMapping(path = "/update/{doctorId}")

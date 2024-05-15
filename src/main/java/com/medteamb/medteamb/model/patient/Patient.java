@@ -1,6 +1,7 @@
 package com.medteamb.medteamb.model.patient;
 
-import com.medteamb.medteamb.model.User;
+
+import com.medteamb.medteamb.model.UserEntity;
 import jakarta.persistence.*;
 
 
@@ -32,7 +33,7 @@ public class Patient {
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private UserEntity user;
 
 	public Long getPatientID() {
 		return patientID;
@@ -85,11 +86,11 @@ public class Patient {
 	}
 
 
-	public User getUser() {
+	public UserEntity getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserEntity user) {
 		this.user = user;
 	}
 

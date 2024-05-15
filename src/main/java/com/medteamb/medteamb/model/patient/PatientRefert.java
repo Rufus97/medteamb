@@ -17,7 +17,6 @@ public class PatientRefert {
     private String diagnosis;
     private LocalDateTime emissionDate = LocalDateTime.now();
 
-
     public Long getId() {
         return id;
     }

@@ -25,7 +25,7 @@ public class Secretary {
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private UserEntity user;
 
 
 //	@OneToOne

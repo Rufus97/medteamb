@@ -54,7 +54,17 @@ public class DoctorService {
 		Doctor savedDoc = docRepo.save(doctor);
 		return new Response<DoctorResponseDTO> (mapper.mapFromDocToResponse(savedDoc)) ;
 	}
-//READ ALL
+//READ
+
+	public ResponseForLists<PatientResponseDTO> getMyPatients(long idDoc, int page, int size) {
+		Page<Patient>  doctors = appointmentRepo.getAllMyPatients(idDoc, PageRequest.of(page, size));
+		ResponseForLists<PatientResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToPatientResponse(doctors.toList()));
+		response.setCurrentPage(doctors.getNumber());
+		response.setNumOfPages(doctors.getTotalPages());
+		response.setNumOfElements(doctors.getNumberOfElements());
+		response.setTotalElements(doctors.getTotalElements());
+		return response;
+	}
 	public ResponseForLists<AppointmentResponseDTO> getMyAppointments(Long id, int page, int size) {
 		Page<Appointment> list = appointmentRepo.getAllMyAppointments(id, PageRequest.of(page,size));
 		ResponseForLists<AppointmentResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToAppointmentResponse(list.toList()));
@@ -67,7 +77,6 @@ public class DoctorService {
 
 	public ResponseForLists<DoctorResponseDTO> showAllDocs(int page, int size) {
 		Page<Doctor>  doctors = docRepo.findAll(PageRequest.of(page, size));
-
 		ResponseForLists<DoctorResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToDocResponse(doctors.toList()));
 		response.setCurrentPage(doctors.getNumber());
 		response.setNumOfPages(doctors.getTotalPages());
@@ -77,16 +86,17 @@ public class DoctorService {
 	}
 //READ ONE
 
-	public Optional<DoctorResponseDTO> findDocById(Long doctorID) {
-	Optional<Doctor> foundDoc = docRepo.findById(doctorID);
-	if(foundDoc.isEmpty()) return Optional.empty();
-	return foundDoc.map(doc->{
-		return mapper.mapFromDocToResponse(doc);
-	});
+	public Response<DoctorResponseDTO> findDocById(Long doctorID) {
+	Doctor foundDoc = docRepo.findById(doctorID).orElseThrow(
+			()-> new NotFound("doctor not found")
+	);
+	return new Response<>(mapper.mapFromDocToResponse(foundDoc));
 	}
-//CHECK EXISTANCE BEFORE UPDATE
-	// update patient appointment from doctor DELETE
-public AppointmentResponseDTO cancelAppointment(Long id, PatientRequestAppointment requestAppointment) {
+
+
+	// il dottore deve essere in grado di updatare, cancellare e creare gli appuntamenti del paziente
+	// DELETE
+public Response<AppointmentResponseDTO> cancelAppointment(Long id, PatientRequestAppointment requestAppointment) {
 	Appointment appointment = appointmentRepo.findById(requestAppointment.getAppointmentID()).get();
 	Doctor patient = docRepo.findById(id).orElseThrow(
 			() -> new NotFound("doctor not found " + id)
@@ -99,13 +109,13 @@ public AppointmentResponseDTO cancelAppointment(Long id, PatientRequestAppointme
 		appointment.setLocation(null);
 		appointment.setTaxCode(null);
 		appointmentRepo.save(appointment);
-		return mapper.mapFromAppointmentToResponseDTO(appointment);
+		return new Response<>(mapper.mapFromAppointmentToResponseDTO(appointment));
 	} else {
 		throw new ConflictException("this appointment " + appointment + " dosen't belong to this doctor " + patient.getDoctorID());
 	}
 }
-	// update appointment from doctor CREATE
-	public AppointmentResponseDTO createAppointment(Long id, DoctorRequestAppointmentDTO requestAppointment) {
+	//  CREATE
+	public Response<AppointmentResponseDTO> createAppointment(Long id, DoctorRequestAppointmentDTO requestAppointment) {
 		Appointment appointment = appointmentRepo.findById(requestAppointment.getAppointmentID()).get();
 		Doctor doctor = docRepo.findById(id).orElseThrow(
 				() -> new NotFound("doctor not found " + id)
@@ -113,7 +123,7 @@ public AppointmentResponseDTO cancelAppointment(Long id, PatientRequestAppointme
 		Patient patient = patientRepo.findById(requestAppointment.getPatientID()).orElseThrow(
 				() -> new NotFound("patient not found " + id)
 		);
-		boolean check = appointment.getDoctor().getDoctorID() == id;
+		boolean check = appointment.getDoctor().getDoctorID() == doctor.getDoctorID();
 		if (check) {
 			appointment.setPatient(patient);
 			appointment.setStatus(AppointmentStatus.TO_DO);
@@ -121,26 +131,35 @@ public AppointmentResponseDTO cancelAppointment(Long id, PatientRequestAppointme
 			appointment.setLocation(requestAppointment.getLocation());
 			appointment.setTaxCode(requestAppointment.getTaxCode());
 			appointmentRepo.save(appointment);
-			return mapper.mapFromAppointmentToResponseDTO(appointment);
+			return new Response<>(mapper.mapFromAppointmentToResponseDTO(appointment));
 		} else {
-			throw new ConflictException("this appointment " + appointment + " dosen't belong to this patient " + patient.getPatientID());
+			throw new ConflictException("this appointment " + appointment + " dosen't belong to this patient "
+					+ patient.getPatientID());
 		}
 	}
 
-	// update appointment from doc move
-	// move
-	public AppointmentResponseDTO moveAppointment(long id, PatientUpdateAppointment request) {
+	// MOVE
+	public Response<AppointmentResponseDTO> moveAppointment(long id, PatientUpdateAppointment request) {
 		Patient patient = patientRepo.findById(request.getPatientID()).get();
 		Appointment oldAppointment = appointmentRepo.findById(request.getOldAppointmentID()).get();
+		Doctor doctor = docRepo.findById(id).orElseThrow(
+				() -> new NotFound("doctor not found " + id)
+		);
+		boolean check = oldAppointment.getDoctor().getDoctorID() == doctor.getDoctorID();
+		if (check) {
 
-		oldAppointment.setMedicalService(null);
-		oldAppointment.setPatient(null);
-		oldAppointment.setStatus(AppointmentStatus.EMPTY);
-		oldAppointment.setTaxCode(null);
-		DoctorRequestAppointmentDTO patientRequestAppointment = new DoctorRequestAppointmentDTO();
-		patientRequestAppointment.setAppointmentID(request.getNewAppointmentID());
-		patientRequestAppointment.setPatientID(patient.getPatientID());
-		return createAppointment(id, patientRequestAppointment);
+			oldAppointment.setMedicalService(null);
+			oldAppointment.setPatient(null);
+			oldAppointment.setStatus(AppointmentStatus.EMPTY);
+			oldAppointment.setTaxCode(null);
+			DoctorRequestAppointmentDTO patientRequestAppointment = new DoctorRequestAppointmentDTO();
+			patientRequestAppointment.setAppointmentID(request.getNewAppointmentID());
+			patientRequestAppointment.setPatientID(patient.getPatientID());
+			return createAppointment(id, patientRequestAppointment);
+		} else {
+			throw new ConflictException("this appointment " + oldAppointment + " dosen't belong to this patient "
+					+ patient.getPatientID());
+		}
 	}
 
 
@@ -161,15 +180,5 @@ public AppointmentResponseDTO cancelAppointment(Long id, PatientRequestAppointme
 	}
 
 
-	public ResponseForLists<PatientResponseDTO> getMyPatients(long idDoc, int page, int size) {
-		Page<Patient>  doctors = appointmentRepo.getAllMyPatients(idDoc, PageRequest.of(page, size));
-
-		ResponseForLists<PatientResponseDTO> response = new ResponseForLists<>(mapper.mapFromIterableToPatientResponse(doctors.toList()));
-		response.setCurrentPage(doctors.getNumber());
-		response.setNumOfPages(doctors.getTotalPages());
-		response.setNumOfElements(doctors.getNumberOfElements());
-		response.setTotalElements(doctors.getTotalElements());
-		return response;
-	}
 
 }

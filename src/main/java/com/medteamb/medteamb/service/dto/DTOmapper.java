@@ -4,7 +4,6 @@ import com.medteamb.medteamb.model.Doctor;
 import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.model.patient.Patient;
 import com.medteamb.medteamb.model.patient.PatientRefert;
-import com.medteamb.medteamb.model.patient.SpecialAppointments;
 import com.medteamb.medteamb.repository.DoctorRepository;
 import com.medteamb.medteamb.repository.SecretaryRepository;
 import com.medteamb.medteamb.repository.patient.PatientRepository;
@@ -61,7 +60,6 @@ public class DTOmapper{
 
    // APPINTMENTS MAPPER
    // list of appointments mapper
-
     public List<AppointmentResponseDTO> mapFromIterableToAppointmentResponse(Iterable<Appointment> list){
         List<AppointmentResponseDTO> response = new ArrayList<>();
         for (Appointment slot : list){
@@ -141,13 +139,4 @@ public class DTOmapper{
         return response;
    }
 
-    // special appointments if required entity
-    public SpecialAppointmentResponseDTO mapFromSpecialRequest(SpecialAppointments response){
-        SpecialAppointmentResponseDTO responseDTO = new SpecialAppointmentResponseDTO();
-        responseDTO.setId(response.getPatient().getPatientID());
-        responseDTO.setAppointmentDate(response.getAppointmentDate());
-        responseDTO.setAppointmentHour(response.getAppointmentHour());
-        responseDTO.setId(response.getId());
-        return responseDTO;
-    }
 }

@@ -11,7 +11,6 @@ public class RefertResponseDTO {
     private Long id;
     private Long patient_id;
     private LocalDateTime emissionDate;
-
     private String diagnosis;
 
     public RefertResponseDTO(Long id, Long patient_id, LocalDateTime emissionDate, String diagnosis) {
