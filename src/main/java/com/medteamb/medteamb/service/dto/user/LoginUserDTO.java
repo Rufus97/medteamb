@@ -1,7 +1,6 @@
 package com.medteamb.medteamb.service.dto.user;
 
-public class UserLoginDTO {
-
+public class LoginUserDTO {
     String username;
     String password;
 

@@ -7,7 +7,6 @@ import com.medteamb.medteamb.model.patient.PatientRefert;
 import com.medteamb.medteamb.repository.*;
 import com.medteamb.medteamb.repository.patient.PatientRepository;
 import com.medteamb.medteamb.repository.patient.RefertRepository;
-import com.medteamb.medteamb.repository.patient.SpecialAppointmentsRepository;
 import com.medteamb.medteamb.service.ExceptionHandler.CustomException.ConflictException;
 import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
 import com.medteamb.medteamb.service.ResponseHandler.Response;
@@ -30,7 +29,7 @@ public class PatientService {
     SecretaryRepository secretaryRepo;
     AppointmentRepository appointmentsRepo;
     RefertRepository refertRepo;
-    SpecialAppointmentsRepository specialAppointmentsRepo;
+
     DTOmapper mapper;
 
     /*
@@ -39,14 +38,13 @@ public class PatientService {
 ▪ poter ricevere prescrizioni di farmaci ed impegnative per visite specialistiche
 */
     public PatientService(PatientRepository patientRepo, DoctorRepository doctorRepo,
-                          SecretaryRepository secretaryRepo, RefertRepository refertRepo,
-                          SpecialAppointmentsRepository specialAppointmentsRepo, AppointmentRepository appointmentsRepo,
+                          SecretaryRepository secretaryRepo, RefertRepository refertRepo, AppointmentRepository appointmentsRepo,
                           DTOmapper mapper){
     	this.appointmentsRepo = appointmentsRepo;
         this.patientRepo = patientRepo;
         this.mapper = mapper;
         this.refertRepo = refertRepo;
-        this.specialAppointmentsRepo = specialAppointmentsRepo;
+
         this.doctorRepo = doctorRepo;
         this.secretaryRepo = secretaryRepo;
     }

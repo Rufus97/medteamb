@@ -1,5 +1,6 @@
 package com.medteamb.medteamb.controller;
 
+import com.medteamb.medteamb.Security.utils.PatientRoleAnnotation;
 import com.medteamb.medteamb.model.patient.Patient;
 import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.Response;
@@ -21,11 +22,12 @@ public class PatientController {
      PatientService service;
 
      //poter visualizzare le disponibilità del mio dottore // testato
+     @PatientRoleAnnotation
      @GetMapping("/docAvailability/{page}")
      public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocId(@PathVariable int page, @RequestParam Long docID, @RequestParam int size){
          return service.getDocAvailabilityById(docID, page, size);
      }
-     
+     @PatientRoleAnnotation
      @GetMapping("/docAvaibilityByName/{page}")  //testato
      public ResponseForLists<AppointmentResponseDTO> getAvaibleAppointmentsByDocNameAndSurname(@RequestParam String name, @RequestParam String surname, @PathVariable int page, @RequestParam int size){
           return service.getDocAvailabilityByNameAndSurname(name, surname, page, size);
@@ -56,11 +58,13 @@ public class PatientController {
           return service.getAppointmentHistoryByPatientId(patientID, page, size);
      }
      // poter visualizzare gli appuntamenti prenotati da svolgere
+     @PatientRoleAnnotation
      @GetMapping("/myAppointmentsToDo/{page}")
      public ResponseForLists<AppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
           return service.getAppointmentsToDoByPatientId(patientID, page, size);
      }
      //poter caricare i miei referti
+     @PatientRoleAnnotation
      @GetMapping("/myReferts/{page}")
      public ResponseForLists<RefertResponseDTO> getHistoryOfMyReferts(@RequestParam Long id, @PathVariable int page, @RequestParam int size){
           return service.getRefertHistoryByPatientId(id, page, size);
@@ -68,13 +72,14 @@ public class PatientController {
 
 
      //CREATE
+     @PatientRoleAnnotation
      @PostMapping("/create")
      public Response<PatientResponseDTO> savePatient(@RequestBody PatientRequestDTO patient){
           return service.newPatient(patient);
      }
 
      //READ
-
+     @PatientRoleAnnotation
      @GetMapping("/ById")
      public Response<Patient> getPatient(@RequestParam Long id){
 

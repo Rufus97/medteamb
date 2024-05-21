@@ -14,9 +14,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-
     private String roles;
-
     private String password;
 
     public Long getId() {
@@ -50,7 +48,4 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-    
 }
