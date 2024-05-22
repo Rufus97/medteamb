@@ -2,15 +2,9 @@ package com.medteamb.medteamb.service.dto.patient;
 
 public class PatientUpdateAppointment {
 	
-	private Long patientID;
+
 	private Integer newAppointmentID;
 	private Integer oldAppointmentID;
-	public Long getPatientID() {
-		return patientID;
-	}
-	public void setPatientID(Long patientID) {
-		this.patientID = patientID;
-	}
 	public Integer getNewAppointmentID() {
 		return newAppointmentID;
 	}

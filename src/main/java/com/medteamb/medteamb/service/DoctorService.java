@@ -146,7 +146,7 @@ public Response<AppointmentResponseDTO> cancelAppointment(Long id, PatientReques
 
 	// MOVE
 	public Response<AppointmentResponseDTO> moveAppointment(long id, PatientUpdateAppointment request) {
-		Patient patient = patientRepo.findById(request.getPatientID()).get();
+		Patient patient = patientRepo.findById(id).get();
 		Appointment oldAppointment = appointmentRepo.findById(request.getOldAppointmentID()).get();
 		Doctor doctor = docRepo.findById(id).orElseThrow(
 				() -> new NotFound("doctor not found " + id)

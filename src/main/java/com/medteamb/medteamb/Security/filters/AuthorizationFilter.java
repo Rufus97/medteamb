@@ -15,12 +15,15 @@ import com.medteamb.medteamb.model.UserDetails;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -44,17 +47,20 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
+
+
         Map<String, HandlerMapping> map = BeanFactoryUtils.beansOfTypeIncludingAncestors(
-                context, HandlerMapping.class, true, false
+                RequestContextUtils.findWebApplicationContext(request), HandlerMapping.class, true, false
         );
         UserDetails user = null;
         try {
-            HandlerExecutionChain chain = map.get("requestMappingHandlerMapping")
-                    .getHandler(request);
+            HandlerExecutionChain chain = map.get("requestMappingHandlerMapping").getHandler(request);
+            System.out.println("CHAIN: " + chain);
             assert chain != null;
             HandlerMethod method = (HandlerMethod) chain.getHandler();
+            System.out.println("METHOD " + method);
             Claims claim = null;
+            System.out.println("DENTRO IL TRY MI SCASSO");
 
             if (request.getHeader("Authentication") != null){
                 String token = request.getHeader("Authentication");
@@ -75,10 +81,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     response.sendError(401, "unauthorized");
                 }
             } else {
-                response.sendError(401, "unauthorized");
+                response.sendError(401, "qualcosa è andato male con l'header auth");
             }
         } catch (Exception e) {
-            response.sendError(401, "unauthorized");
+            response.sendError(401, "qualcosa è andato male col metodo");
         }
     }
 }

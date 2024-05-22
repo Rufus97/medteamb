@@ -197,8 +197,8 @@ public class PatientService {
         return new Response<>(mapper.mapFromRefertToResponseDTO(goodRefert));
     }
     // poter chiedere di spostare l’appuntamento esistente ove possibile
-	public Response<AppointmentResponseDTO> moveAppointment(PatientUpdateAppointment patientUpdateAppointment) {
-		Patient patient = patientRepo.findById(patientUpdateAppointment.getPatientID()).orElseThrow(
+	public Response<AppointmentResponseDTO> moveAppointment(Long id, PatientUpdateAppointment patientUpdateAppointment) {
+		Patient patient = patientRepo.findById(id).orElseThrow(
                 ()-> new NotFound("patient not found ")
         );
 		Appointment oldAppointment = appointmentsRepo.findById(patientUpdateAppointment.getOldAppointmentID()).orElseThrow(
@@ -211,14 +211,14 @@ public class PatientService {
 
 		PatientRequestAppointment patientRequestAppointment = new PatientRequestAppointment();
 		patientRequestAppointment.setAppointmentID(patientUpdateAppointment.getNewAppointmentID());
-		patientRequestAppointment.setPatientID(patient.getPatientID());
+		patientRequestAppointment.setPatientID(id);
 
-        return newAppointmentRequest(patient.getPatientID(), oldAppointment.getAppointmentID());
+        return newAppointmentRequest(id, oldAppointment.getAppointmentID());
 	}
 
-    public Response<AppointmentResponseDTO> cancelAppointment(PatientRequestAppointment requestAppointment) {
-        Appointment appointment = appointmentsRepo.findById(requestAppointment.getAppointmentID()).get();
-        Patient patient = patientRepo.findById(requestAppointment.getPatientID()).get();
+    public Response<AppointmentResponseDTO> cancelAppointment(Long id, Integer appointmentID) {
+        Appointment appointment = appointmentsRepo.findById(appointmentID).get();
+        Patient patient = patientRepo.findById(id).get();
         boolean check = appointment.getPatient().getPatientID() == patient.getPatientID();
         if (check)
         {

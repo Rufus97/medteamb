@@ -42,25 +42,27 @@ public class PatientController {
 
      //poter chiedere di spostare l’appuntamento esistente ove possibile
      @PutMapping("/moveAppointment")
-     public Response<AppointmentResponseDTO> moveAppointment(@RequestBody PatientUpdateAppointment patientUpdateAppointment){
-         return service.moveAppointment(patientUpdateAppointment);
+     public Response<AppointmentResponseDTO> moveAppointment(@RequestAttribute Long id,  @RequestBody PatientUpdateAppointment request){
+         return service.moveAppointment(id, request);
      }
      
      
      //poter annullare un appuntamento esistente
+     @PatientRoleAnnotation
      @PutMapping("/cancelAppointment")
-     public Response<AppointmentResponseDTO> cancelAppointment(@RequestBody PatientRequestAppointment requestAppointment){
-          return service.cancelAppointment(requestAppointment);
+     public Response<AppointmentResponseDTO> cancelAppointment(@RequestAttribute Long id,  @RequestParam Integer appointmentID){
+          return service.cancelAppointment(id, appointmentID);
      }
      //poter visualizzare lo storico delle mie visite e i relativi referti ( REFERTI DA CONCEPIRE )
+     @PatientRoleAnnotation
      @GetMapping("/myAppointments/{page}")
-     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentHistory(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentHistory(@RequestAttribute Integer patientID, @PathVariable int page, @RequestParam int size){
           return service.getAppointmentHistoryByPatientId(patientID, page, size);
      }
      // poter visualizzare gli appuntamenti prenotati da svolgere
      @PatientRoleAnnotation
      @GetMapping("/myAppointmentsToDo/{page}")
-     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentToDo(@RequestParam Integer patientID, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentToDo(@RequestAttribute Integer patientID, @PathVariable int page, @RequestParam int size){
           return service.getAppointmentsToDoByPatientId(patientID, page, size);
      }
      //poter caricare i miei referti
@@ -87,18 +89,20 @@ public class PatientController {
      }
 
      //DELETE
+     @PatientRoleAnnotation
      @DeleteMapping
-     public Response<PatientResponseDTO> deletePatientById(@RequestParam Long id){
+     public Response<PatientResponseDTO> deletePatientById(@RequestAttribute Long id){
           return service.deletePatientById(id);
      }
      //UPDATE
+     @PatientRoleAnnotation
      @PutMapping("/{id}")
-     public Response<PatientResponseDTO> updatePatientById(@RequestBody Patient newPatient, @PathVariable Long id){
+     public Response<PatientResponseDTO> updatePatientById(@RequestBody Patient newPatient, @RequestAttribute Long id){
           return service.updatePatientById(newPatient, id);
      }
-
+     @PatientRoleAnnotation
      @PostMapping("/testPostRefert")
-     public Response<RefertResponseDTO> postRefert(@RequestParam Long id, @RequestBody String diagnosis){
+     public Response<RefertResponseDTO> postRefert(@RequestAttribute Long id, @RequestBody String diagnosis){
          return service.postTestRefert(id, diagnosis);
      }
 }
