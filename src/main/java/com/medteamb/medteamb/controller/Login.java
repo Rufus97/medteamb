@@ -2,7 +2,7 @@ package com.medteamb.medteamb.controller;
 
 import com.medteamb.medteamb.Security.utils.PatientRoleAnnotation;
 import com.medteamb.medteamb.model.UserEntity;
-import com.medteamb.medteamb.service.dto.user.RegisterUserDTO;
+import com.medteamb.medteamb.service.dto.patient.RegisterPatientDTO;
 import com.medteamb.medteamb.repository.UserEntityRepo;
 import com.medteamb.medteamb.service.UserEntityService;
 
@@ -21,10 +21,6 @@ public class Login {
     @Autowired
     UserEntityRepo userEntityRepo;
 
-    @PostMapping("/register")
-    public UserEntity user(@RequestBody RegisterUserDTO request) throws AuthenticationException {
-        return userEntityService.registerUser(request);
-    }
 
     @GetMapping("/login")
     public String logging(@RequestParam String username, @RequestParam String password){

@@ -1,5 +1,7 @@
 package com.medteamb.medteamb.service.dto.patient;
 
+import com.medteamb.medteamb.model.UserEntity;
+
 public class PatientResponseDTO {
 
 
@@ -7,6 +9,16 @@ public class PatientResponseDTO {
     private String patientName;
     private String patientSurname;
     private String taxCode;
+
+    private UserEntity user;
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;

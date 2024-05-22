@@ -12,9 +12,11 @@ import com.medteamb.medteamb.service.dto.appointment.AppointmentRequestDTO;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.dto.doctor.RegisterDoctorDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
+import com.medteamb.medteamb.service.dto.patient.RegisterPatientDTO;
 import com.medteamb.medteamb.service.dto.patient.SpecialAppointments.SpecialAppointmentResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,7 @@ public class DTOmapper{
         responseDTO.setPatientName(response.getPatientName());
         responseDTO.setPatientSurname(response.getPatientSurname());
         responseDTO.setTaxCode(response.getTaxCode());
+        responseDTO.setUser(response.getUser());
         return responseDTO;
     }
     // patient request mapper
@@ -49,6 +52,7 @@ public class DTOmapper{
                		request.getTaxCode(),
        				request.getPatientEmail());
     }
+
 
     public List<PatientResponseDTO> mapFromIterableToPatientResponse(Iterable<Patient> list){
         List<PatientResponseDTO> response = new ArrayList<>();
@@ -98,10 +102,11 @@ public class DTOmapper{
         responseDTO.setDoctor_id(doctor.getDoctorID()); responseDTO.setDoctorSurname(doctor.getDoctorSurname());
         responseDTO.setDoctorName(doctor.getDoctorName()); responseDTO.setDoctorEmail(doctor.getDoctorEmail());
         responseDTO.setSpecialization(doctor.getSpecialization()); responseDTO.setDoctorPhoneNumber(doctor.getDoctorPhoneNumber());
+        responseDTO.setUser(doctor.getUser());
         return responseDTO;
     }
 
-    public Doctor mapFromRequestToDoc(DoctorRequestDTO doctorDto) {
+    public Doctor mapFromRequestToDoc(RegisterDoctorDTO doctorDto) {
         Doctor doctor = new Doctor();
         doctor.setDoctorName(doctorDto.getDoctorName());
         doctor.setDoctorSurname(doctorDto.getDoctorSurname());
@@ -139,4 +144,13 @@ public class DTOmapper{
         return response;
    }
 
+    public Patient mapFromRegisterPatientToPatient(RegisterPatientDTO newPatient) {
+        Patient patient = new Patient();
+        patient.setPatientEmail(newPatient.getPatientEmail());
+        patient.setPatientName(newPatient.getPatientName());
+        patient.setPatientSurname(newPatient.getPatientSurname());
+        patient.setPatientPhoneNumber(newPatient.getPatientPhoneNumber());
+        patient.setTaxCode(newPatient.getTaxCode());
+        return patient;
+    }
 }

@@ -11,6 +11,7 @@ import com.medteamb.medteamb.service.dto.DTOmapper;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestAppointmentDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.dto.doctor.RegisterDoctorDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointment;
 import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientUpdateAppointment;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.medteamb.medteamb.service.DoctorService;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
+
+import javax.naming.AuthenticationException;
 
 
 @RestController
@@ -85,7 +88,7 @@ public class DoctorController {
 
 
 	@PostMapping(path = "/create")
-	public Response<DoctorResponseDTO> createDoctor(@RequestBody DoctorRequestDTO doctorDto) {
+	public Response<DoctorResponseDTO> createDoctor(@RequestBody RegisterDoctorDTO doctorDto) throws AuthenticationException {
 		return docService.newDoctor(doctorDto);
 	}
 	
@@ -98,14 +101,13 @@ public class DoctorController {
 	public Response<DoctorResponseDTO>showById(@PathVariable Long doctorId){
 		return docService.findDocById(doctorId);
 	}
-	
+	// da modificare dio porco perchè chiama il create che registra un account
 	@PutMapping(path = "/update/{doctorId}")
-	public Response<DoctorResponseDTO> updateById(@PathVariable Long doctorId,
+	public void updateById(@PathVariable Long doctorId,
 			@RequestBody DoctorRequestDTO doctorDto) {
 		if(!docService.exists(doctorId)) {
 			throw new NotFound("doctor not found");
 		}
-        return createDoctor(doctorDto);
 	}
 	
 	@DeleteMapping(path = "/delete/{doctorId}")

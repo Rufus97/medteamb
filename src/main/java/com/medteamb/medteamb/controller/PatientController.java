@@ -6,13 +6,12 @@ import com.medteamb.medteamb.service.PatientService;
 import com.medteamb.medteamb.service.ResponseHandler.Response;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientRequestDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
-import com.medteamb.medteamb.service.dto.patient.PatientUpdateAppointment;
-import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointment;
+import com.medteamb.medteamb.service.dto.patient.*;
 import com.medteamb.medteamb.service.dto.patient.RefertDTO.RefertResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.naming.AuthenticationException;
 
 @RestController
 @RequestMapping("/api/v1/patients")
@@ -35,9 +34,10 @@ public class PatientController {
      
      // poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della  visita
      //testato - funziona selezionando l'appuntamento da prenotare e dando il proprio id
+     @PatientRoleAnnotation
      @PutMapping("/newAppointment")
-     public Response<AppointmentResponseDTO> askForAppointment(@RequestBody PatientRequestAppointment patientRequestAppointment){
-           return service.newAppointmentRequest(patientRequestAppointment);
+     public Response<AppointmentResponseDTO> askForAppointment(@RequestAttribute Long id,  @RequestParam Integer appointmentID){
+           return service.newAppointmentRequest(id, appointmentID);
      }
 
      //poter chiedere di spostare l’appuntamento esistente ove possibile
@@ -74,14 +74,14 @@ public class PatientController {
      //CREATE
      @PatientRoleAnnotation
      @PostMapping("/create")
-     public Response<PatientResponseDTO> savePatient(@RequestBody PatientRequestDTO patient){
+     public Response<PatientResponseDTO> registerPatient(@RequestBody RegisterPatientDTO patient) throws AuthenticationException {
           return service.newPatient(patient);
      }
 
      //READ
      @PatientRoleAnnotation
      @GetMapping("/ById")
-     public Response<Patient> getPatient(@RequestParam Long id){
+     public Response<Patient> getPatient(@RequestAttribute Long id){
 
           return service.getPatient(id);
      }

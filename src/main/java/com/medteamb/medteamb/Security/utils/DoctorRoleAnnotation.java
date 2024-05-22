@@ -1,11 +1,11 @@
-package mySecurityFramework.mySecurityFramework.user.utils;
+package com.medteamb.medteamb.Security.utils;
 
 import java.lang.annotation.*;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface AnotherAnnotation {
+public @interface DoctorRoleAnnotation {
 
     String text = "DOCTOR";
 }

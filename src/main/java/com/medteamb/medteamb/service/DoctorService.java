@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+import com.medteamb.medteamb.model.UserEntity;
 import com.medteamb.medteamb.model.agenda.Appointment;
 import com.medteamb.medteamb.model.agenda.AppointmentStatus;
 import com.medteamb.medteamb.model.patient.Patient;
@@ -18,6 +19,7 @@ import com.medteamb.medteamb.service.dto.DTOmapper;
 import com.medteamb.medteamb.service.dto.appointment.AppointmentResponseDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestAppointmentDTO;
 import com.medteamb.medteamb.service.dto.doctor.DoctorResponseDTO;
+import com.medteamb.medteamb.service.dto.doctor.RegisterDoctorDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientRequestAppointment;
 import com.medteamb.medteamb.service.dto.patient.PatientResponseDTO;
 import com.medteamb.medteamb.service.dto.patient.PatientUpdateAppointment;
@@ -30,27 +32,31 @@ import com.medteamb.medteamb.repository.DoctorRepository;
 
 import com.medteamb.medteamb.service.dto.doctor.DoctorRequestDTO;
 
+import javax.naming.AuthenticationException;
 import javax.print.Doc;
 
 @Service
 public class DoctorService {
 
 
-
+ private UserEntityService userEntityService;
 	private DTOmapper mapper;
 	private DoctorRepository docRepo;
     private PatientRepository patientRepo;
 	private AppointmentRepository appointmentRepo;
 	
-	public DoctorService(DTOmapper mapper, DoctorRepository docRepo, AppointmentRepository appointmentRepo) {
+	public DoctorService(UserEntityService userEntityService,DTOmapper mapper, DoctorRepository docRepo, AppointmentRepository appointmentRepo) {
 		this.docRepo = docRepo;
 		this.appointmentRepo = appointmentRepo;
 		this.mapper = mapper;
+		this.userEntityService = userEntityService;
 	}
 //CREATE
 
-	public  Response<DoctorResponseDTO> newDoctor(DoctorRequestDTO docDto) {
+	public  Response<DoctorResponseDTO> newDoctor(RegisterDoctorDTO docDto) throws AuthenticationException {
 		Doctor doctor = mapper.mapFromRequestToDoc(docDto);
+		UserEntity user = userEntityService.registerDoctor(docDto);
+		doctor.setUser(user);
 		Doctor savedDoc = docRepo.save(doctor);
 		return new Response<DoctorResponseDTO> (mapper.mapFromDocToResponse(savedDoc)) ;
 	}

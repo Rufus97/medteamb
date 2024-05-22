@@ -1,6 +1,7 @@
 package com.medteamb.medteamb.Security.filters;
 
 import com.medteamb.medteamb.Security.UserDaoImpl;
+import com.medteamb.medteamb.Security.utils.DoctorRoleAnnotation;
 import com.medteamb.medteamb.Security.utils.JwtUtils;
 import com.medteamb.medteamb.Security.utils.PatientRoleAnnotation;
 import io.jsonwebtoken.Claims;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class AuthorizationFilter extends OncePerRequestFilter {
@@ -34,7 +36,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return "/api/v1/login".equals(request.getRequestURI()) || "/api/v1/register".equals(request.getRequestURI());
+        return "/api/v1/login".equals(request.getRequestURI()) || "/api/v1/register".equals(request.getRequestURI())
+                || "/api/v1/patients/create".equals(request.getRequestURI()) || "/api/v1/doctor/create".equals(request.getRequestURI());
     }
 
 
@@ -49,28 +52,33 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         try {
             HandlerExecutionChain chain = map.get("requestMappingHandlerMapping")
                     .getHandler(request);
+            assert chain != null;
             HandlerMethod method = (HandlerMethod) chain.getHandler();
             Claims claim = null;
 
-            if (!request.getHeader("Authentication").isBlank()){
+            if (request.getHeader("Authentication") != null){
                 String token = request.getHeader("Authentication");
                 claim = jwtUtils.extractAllClaims(token);
                 user = userDao.getUserByUsername(claim.getSubject());
+                if (method.hasMethodAnnotation(PatientRoleAnnotation.class) &&
+                        Objects.requireNonNull(user).getRoles().getFirst().equals("PATIENT")){
+                    System.out.println("you're authenticated as: " + claim.get("role"));
+                    filterChain.doFilter(request, response);
+                } else if (method.hasMethodAnnotation(DoctorRoleAnnotation.class) &&
+                        Objects.requireNonNull(user).getRoles().getFirst().equals("DOCTOR")) {
+                    System.out.println("you're authenticated as: " + claim.get("role"));
+                    filterChain.doFilter(request, response);
+                }
+                else
+                {
+                    System.out.println(claim.get("role") + " unauthorized");
+                    response.sendError(401, "unauthorized");
+                }
             } else {
                 response.sendError(401, "unauthorized");
             }
-            if (method.hasMethodAnnotation(PatientRoleAnnotation.class) &&
-                    user.getRoles().get(0).equals("PATIENT")){
-                System.out.println("you're authenticated as: " + claim.get("role"));
-                filterChain.doFilter(request, response);
-            } else
-            {
-                System.out.println(claim.get("role") + " unauthorized");
-                response.sendError(401, "unauthorized");
-            }
-
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            response.sendError(401, "unauthorized");
         }
     }
 }

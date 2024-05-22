@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,8 @@ public class PatientService {
     AppointmentRepository appointmentsRepo;
     RefertRepository refertRepo;
 
+    UserEntityService userEntityService;
+
     DTOmapper mapper;
 
     /*
@@ -39,29 +42,30 @@ public class PatientService {
 */
     public PatientService(PatientRepository patientRepo, DoctorRepository doctorRepo,
                           SecretaryRepository secretaryRepo, RefertRepository refertRepo, AppointmentRepository appointmentsRepo,
-                          DTOmapper mapper){
+                          DTOmapper mapper, UserEntityService userEntityService){
     	this.appointmentsRepo = appointmentsRepo;
         this.patientRepo = patientRepo;
         this.mapper = mapper;
         this.refertRepo = refertRepo;
-
+        this.userEntityService = userEntityService;
         this.doctorRepo = doctorRepo;
         this.secretaryRepo = secretaryRepo;
     }
 
     //CREATE
-    public Response<PatientResponseDTO> newPatient(PatientRequestDTO newPatient){
+    public Response<PatientResponseDTO> newPatient(RegisterPatientDTO newPatient) throws AuthenticationException {
         checkIfExists(newPatient);
-        Patient patient = mapper.mapFromRequestToPatient(newPatient);
+        Patient patient = mapper.mapFromRegisterPatientToPatient(newPatient);
+        patient.setUser(userEntityService.registerPatient(newPatient));
         patientRepo.save(patient);
         return new Response<>(mapper.mapFromPatientToResponse(patient));
     }
 
     //poter prenotare un appuntamento online con il mio dottore, specificando data, ora e motivo della visita
 
-    public Response<AppointmentResponseDTO> newAppointmentRequest(PatientRequestAppointment patientRequestAppointment){
-    	 Appointment appointment = appointmentsRepo.findById(patientRequestAppointment.getAppointmentID()).get();
-    	 Patient patient = patientRepo.findById(patientRequestAppointment.getPatientID()).get();
+    public Response<AppointmentResponseDTO> newAppointmentRequest(Long patientID, Integer appointmentID){
+    	 Appointment appointment = appointmentsRepo.findById(appointmentID).get();
+    	 Patient patient = patientRepo.findById(patientID).get();
             appointment.setPatient(patient);
             appointment.setStatus(AppointmentStatus.TO_DO);
             appointment.setMedicalService("Visita");
@@ -166,7 +170,7 @@ public class PatientService {
 
     // UTILITIES
 
-    public void checkIfExists(PatientRequestDTO request){
+    public void checkIfExists(RegisterPatientDTO request){
         Optional<Patient> optionalPhone = patientRepo.findBypatientPhoneNumber(request.getPatientPhoneNumber());
         if (optionalPhone.isPresent()){
             throw new ConflictException("patient phone number " + request.getPatientPhoneNumber()
@@ -209,7 +213,7 @@ public class PatientService {
 		patientRequestAppointment.setAppointmentID(patientUpdateAppointment.getNewAppointmentID());
 		patientRequestAppointment.setPatientID(patient.getPatientID());
 
-        return newAppointmentRequest(patientRequestAppointment);
+        return newAppointmentRequest(patient.getPatientID(), oldAppointment.getAppointmentID());
 	}
 
     public Response<AppointmentResponseDTO> cancelAppointment(PatientRequestAppointment requestAppointment) {

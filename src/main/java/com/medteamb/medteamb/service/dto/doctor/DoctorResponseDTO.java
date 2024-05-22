@@ -1,6 +1,7 @@
 package com.medteamb.medteamb.service.dto.doctor;
 
 import com.medteamb.medteamb.model.Specialization;
+import com.medteamb.medteamb.model.UserEntity;
 
 public class DoctorResponseDTO {
     private Long doctor_id;
@@ -9,6 +10,16 @@ public class DoctorResponseDTO {
     private String doctorPhoneNumber;
     private String doctorEmail;
     private Specialization specialization;
+
+    private UserEntity user;
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
 
     public Long getDoctor_id() {
         return doctor_id;
