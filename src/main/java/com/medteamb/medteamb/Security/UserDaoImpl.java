@@ -5,6 +5,7 @@ import com.medteamb.medteamb.model.UserEntity;
 
 import com.medteamb.medteamb.model.UserDetails;
 import com.medteamb.medteamb.repository.UserEntityRepo;
+import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public UserDetails getUserByUsername(String username) {
         UserEntity myUser = repo.findByUsername(username).orElseThrow(
-                ()-> new RuntimeException("User not found")
+                ()-> new NotFound("User not found")
         );
         List<String> roles = Arrays.asList(myUser.getRoles());
         return UserDetails.userDetailsBuilder().withUserId(myUser.getId()).withUsername(myUser.getUsername())

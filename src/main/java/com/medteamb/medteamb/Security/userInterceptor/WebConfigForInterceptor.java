@@ -14,8 +14,13 @@ public class WebConfigForInterceptor implements WebMvcConfigurer {
 
     @Autowired
     UserInterceptor userInterceptor;
+
+    @Autowired
+    DocUserInterceptor docUserInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         registry.addInterceptor(userInterceptor);
+        registry.addInterceptor(docUserInterceptor);
     }
 }

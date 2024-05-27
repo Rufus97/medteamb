@@ -89,6 +89,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     System.out.println("you're authenticated as: " + claim.get("role"));
                     filterChain.doFilter(request, response);
                 }
+                else{
+                    response.sendError(401, "unauthorized");
+                }
             } else {
                 response.sendError(401, "invalid token");
             }

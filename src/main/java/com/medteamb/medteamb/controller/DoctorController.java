@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.medteamb.medteamb.Security.utils.DoctorRoleAnnotation;
 import com.medteamb.medteamb.service.ExceptionHandler.CustomException.NotFound;
 import com.medteamb.medteamb.service.ResponseHandler.Response;
 import com.medteamb.medteamb.service.ResponseHandler.ResponseForLists;
@@ -51,32 +52,37 @@ public class DoctorController {
 
 
 	//poter visualizzare la mia agenda con gli appuntamenti della giornata e i dettagli dei pazienti
-	@GetMapping("/myAppointments")
-	public ResponseForLists<AppointmentResponseDTO> getMyAppointments(@RequestParam Long id, int page, int size){
-		return docService.getMyAppointments(id, page, size);
+	@DoctorRoleAnnotation
+	@GetMapping("/myAppointments/{page}")
+	public ResponseForLists<AppointmentResponseDTO> getMyAppointments(@RequestAttribute Long docID, @PathVariable int page, @RequestParam int size){
+		return docService.getMyAppointments(docID, page, size);
 	}
 
 	//poter accedere alle informazioni sanitarie dei miei pazienti in vista della visita
+	@DoctorRoleAnnotation
     @GetMapping("/myPatients/{id}")
-	public ResponseForLists<PatientResponseDTO> getMyPatients(@PathVariable long idDoc, int page, int size){
-		return docService.getMyPatients(idDoc, page, size);
+	public ResponseForLists<PatientResponseDTO> getMyPatients(@RequestAttribute Long docID, int page, int size){
+		return docService.getMyPatients(docID, page, size);
 	}
 
 	//poter creare, modificare o cancellare gli appuntamenti dei miei pazienti
 	// delete
+	@DoctorRoleAnnotation
 	@PutMapping("/appointmentUpdate/{id}")
-	public Response<AppointmentResponseDTO> cancelAppointmentFromDoc(@PathVariable long id, @RequestBody PatientRequestAppointment request){
-		return docService.cancelAppointment(id, request);
+	public Response<AppointmentResponseDTO> cancelAppointmentFromDoc(@RequestAttribute Long docID, @RequestBody PatientRequestAppointment request){
+		return docService.cancelAppointment(docID, request);
 	}
 	// create
+	@DoctorRoleAnnotation
 	@PutMapping("/appointmentCreate/{id}")
-	public Response<AppointmentResponseDTO> createAppointmentFromDoc(@PathVariable long id, @RequestBody DoctorRequestAppointmentDTO request){
-		return docService.createAppointment(id, request);
+	public Response<AppointmentResponseDTO> createAppointmentFromDoc(@RequestAttribute Long docID, @RequestBody DoctorRequestAppointmentDTO request){
+		return docService.createAppointment(docID, request);
 	}
 	// move
+	@DoctorRoleAnnotation
 	@PutMapping("/appointmentMove/{id}")
-	public Response<AppointmentResponseDTO> moveAppointmentFromDoc(@PathVariable long id, @RequestBody PatientUpdateAppointment request){
-		return docService.moveAppointment(id, request);
+	public Response<AppointmentResponseDTO> moveAppointmentFromDoc(@RequestAttribute Long docID, @RequestBody PatientUpdateAppointment request){
+		return docService.moveAppointment(docID, request);
 	}
 
 
@@ -96,23 +102,23 @@ public class DoctorController {
 	public ResponseForLists<DoctorResponseDTO> showAllDoctors(@PathVariable int page, @RequestParam int size){
 		return docService.showAllDocs(page, size);
 	}
-	
+	@DoctorRoleAnnotation
 	@GetMapping(path ="/get/{doctorId}")
-	public Response<DoctorResponseDTO>showById(@PathVariable Long doctorId){
-		return docService.findDocById(doctorId);
+	public Response<DoctorResponseDTO>showById(@RequestAttribute Long docID){
+		return docService.findDocById(docID);
 	}
 	// da modificare dio porco perchè chiama il create che registra un account
+	@DoctorRoleAnnotation
 	@PutMapping(path = "/update/{doctorId}")
-	public void updateById(@PathVariable Long doctorId,
-			@RequestBody DoctorRequestDTO doctorDto) {
-		if(!docService.exists(doctorId)) {
+	public void updateById(@RequestAttribute Long docID, @RequestBody DoctorRequestDTO doctorDto) {
+		if(!docService.exists(docID)) {
 			throw new NotFound("doctor not found");
 		}
 	}
-	
+	@DoctorRoleAnnotation
 	@DeleteMapping(path = "/delete/{doctorId}")
-	public ResponseEntity<DoctorRequestDTO>deleteDoctor(@PathVariable Long doctorId){
-		docService.deleteDoc(doctorId);
+	public ResponseEntity<DoctorRequestDTO>deleteDoctor(@RequestAttribute Long docID){
+		docService.deleteDoc(docID);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
