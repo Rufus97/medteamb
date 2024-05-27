@@ -71,6 +71,12 @@ public class PatientController {
      public ResponseForLists<RefertResponseDTO> getHistoryOfMyReferts(@RequestAttribute Long id, @PathVariable int page, @RequestParam int size){
           return service.getRefertHistoryByPatientId(id, page, size);
      }
+     @PatientRoleAnnotation
+     @PostMapping("/postRefert")
+     public Response<RefertResponseDTO> postRefert(@RequestAttribute Long id, @RequestBody String diagnosis){
+          return service.postTestRefert(id, diagnosis);
+     }
+
 
 
      //CREATE
@@ -79,6 +85,7 @@ public class PatientController {
      public Response<PatientResponseDTO> registerPatient(@RequestBody RegisterPatientDTO patient) throws AuthenticationException {
           return service.newPatient(patient);
      }
+
 
      //READ
      @PatientRoleAnnotation
@@ -99,11 +106,7 @@ public class PatientController {
      public Response<PatientResponseDTO> updatePatientById(@RequestBody Patient newPatient, @RequestAttribute Long id){
           return service.updatePatientById(newPatient, id);
      }
-     @PatientRoleAnnotation
-     @PostMapping("/testPostRefert")
-     public Response<RefertResponseDTO> postRefert(@RequestAttribute Long id, @RequestBody String diagnosis){
-         return service.postTestRefert(id, diagnosis);
-     }
+
 }
 
 /*

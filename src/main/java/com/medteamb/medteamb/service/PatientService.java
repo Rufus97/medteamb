@@ -65,6 +65,7 @@ public class PatientService {
 
     public Response<AppointmentResponseDTO> newAppointmentRequest(Long patientID, Integer appointmentID){
     	 Appointment appointment = appointmentsRepo.findById(appointmentID).get();
+         if (appointment.getStatus() == AppointmentStatus.EMPTY){
     	 Patient patient = patientRepo.findById(patientID).get();
             appointment.setPatient(patient);
             appointment.setStatus(AppointmentStatus.TO_DO);
@@ -72,6 +73,9 @@ public class PatientService {
             appointment.setLocation("Develhope");
             appointment.setTaxCode(patient.getTaxCode());
             appointmentsRepo.save(appointment);
+         } else {
+             throw new ConflictException("l'appuntamento non è disponibile");
+         }
          return new Response<AppointmentResponseDTO>(mapper.mapFromAppointmentToResponseDTO(appointment));
     }
 
@@ -206,7 +210,6 @@ public class PatientService {
 		Appointment oldAppointment = appointmentsRepo.findById(patientUpdateAppointment.getOldAppointmentID()).orElseThrow(
                 ()-> new NotFound("appointment not found ")
         );
-        System.out.println(oldAppointment);
         oldAppointment.setLocation(null);
 		oldAppointment.setMedicalService(null);
 		oldAppointment.setPatient(null);
