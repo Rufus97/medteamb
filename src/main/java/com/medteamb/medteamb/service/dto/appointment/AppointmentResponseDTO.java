@@ -15,9 +15,8 @@ public class AppointmentResponseDTO {
 	private String medicalService;
 	private String location;
 	private String taxCode;
-	private Doctor doctor;
-	private Secretary secretary;
-	private Patient patient;
+	private Long doctor;
+
 	
 	public Integer getAppointmentID() {
 		return appointmentID;
@@ -27,13 +26,7 @@ public class AppointmentResponseDTO {
 		this.appointmentID = appointmentID;
 	}
 
-	public Patient getPatient() {
-		return patient;
-	}
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
 
 	public LocalDateTime getAppointmentDateTime() {
 		return appointmentDateTime;
@@ -75,19 +68,13 @@ public class AppointmentResponseDTO {
 		this.location = location;
 	}
 
-	public Doctor getDoctor() {
+	public Long getDoctor() {
 		return doctor;
 	}
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(Long doctor) {
 		this.doctor = doctor;
 	}
 
-	public Secretary getSecretary() {
-		return secretary;
-	}
 
-	public void setSecretary(Secretary secretary) {
-		this.secretary = secretary;
-	}
 }

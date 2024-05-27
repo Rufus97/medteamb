@@ -194,6 +194,8 @@ public class PatientService {
         goodRefert.setPatient(patientRepo.findById(id).get());
         goodRefert.setDiagnosis(request);
         refertRepo.save(goodRefert);
+
+
         return new Response<>(mapper.mapFromRefertToResponseDTO(goodRefert));
     }
     // poter chiedere di spostare l’appuntamento esistente ove possibile
@@ -204,16 +206,16 @@ public class PatientService {
 		Appointment oldAppointment = appointmentsRepo.findById(patientUpdateAppointment.getOldAppointmentID()).orElseThrow(
                 ()-> new NotFound("appointment not found ")
         );
+        System.out.println(oldAppointment);
+        oldAppointment.setLocation(null);
 		oldAppointment.setMedicalService(null);
 		oldAppointment.setPatient(null);
 		oldAppointment.setStatus(AppointmentStatus.EMPTY);
 		oldAppointment.setTaxCode(null);
+        appointmentsRepo.save(oldAppointment);
 
-		PatientRequestAppointment patientRequestAppointment = new PatientRequestAppointment();
-		patientRequestAppointment.setAppointmentID(patientUpdateAppointment.getNewAppointmentID());
-		patientRequestAppointment.setPatientID(id);
+      return newAppointmentRequest(patient.getPatientID(), patientUpdateAppointment.getNewAppointmentID());
 
-        return newAppointmentRequest(id, oldAppointment.getAppointmentID());
 	}
 
     public Response<AppointmentResponseDTO> cancelAppointment(Long id, Integer appointmentID) {
@@ -234,8 +236,6 @@ public class PatientService {
         }
     }
 }
-
-
 
 
 

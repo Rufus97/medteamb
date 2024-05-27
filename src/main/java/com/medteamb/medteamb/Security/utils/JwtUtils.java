@@ -43,7 +43,8 @@ public class JwtUtils {
     }
 
     public Boolean isTokenValid(String token, UserDetails userDetails) {
-       String username = extractUsername(token);
+       Claims claim = extractAllClaims(token);
+       String username = (String) claim.get("sub");
        return username.equals(userDetails.getUsername());
     }
 

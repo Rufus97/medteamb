@@ -6,6 +6,7 @@ import com.medteamb.medteamb.Security.utils.JwtUtils;
 import com.medteamb.medteamb.Security.utils.PatientRoleAnnotation;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import com.medteamb.medteamb.model.UserDetails;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
 
@@ -37,6 +40,16 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     UserDaoImpl userDao;
 
+    HandlerMapping handlerMapping;
+
+
+
+    public AuthorizationFilter(ApplicationContext context) {
+      this.handlerMapping = BeanFactoryUtils
+              .beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false)
+              .get("requestMappingHandlerMapping");
+    }
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return "/api/v1/login".equals(request.getRequestURI()) || "/api/v1/register".equals(request.getRequestURI())
@@ -47,27 +60,28 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-
-        Map<String, HandlerMapping> map = BeanFactoryUtils.beansOfTypeIncludingAncestors(
-                RequestContextUtils.findWebApplicationContext(request), HandlerMapping.class, true, false
-        );
-        UserDetails user = null;
+        HandlerMethod method = null;
         try {
-            HandlerExecutionChain chain = map.get("requestMappingHandlerMapping").getHandler(request);
-            System.out.println("CHAIN: " + chain);
-            assert chain != null;
-            HandlerMethod method = (HandlerMethod) chain.getHandler();
-            System.out.println("METHOD " + method);
-            Claims claim = null;
-            System.out.println("DENTRO IL TRY MI SCASSO");
+            System.out.println("sto mappando il metodo");
+            HandlerExecutionChain chain = this.handlerMapping.getHandler(request);
+            method = (HandlerMethod) chain.getHandler();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-            if (request.getHeader("Authentication") != null){
-                String token = request.getHeader("Authentication");
-                claim = jwtUtils.extractAllClaims(token);
-                user = userDao.getUserByUsername(claim.getSubject());
+        UserDetails user = null;
+        if (request.getHeader("Authentication") != null) {
+            System.out.println("sto usando il token");
+
+            String token = request.getHeader("Authentication");
+            Claims claim = null;
+
+            claim = jwtUtils.extractAllClaims(token);
+            user = userDao.getUserByUsername(claim.getSubject());
+            if (jwtUtils.isTokenValid(token, user)){
+                System.out.println("sto validando il token");
                 if (method.hasMethodAnnotation(PatientRoleAnnotation.class) &&
-                        Objects.requireNonNull(user).getRoles().getFirst().equals("PATIENT")){
+                        Objects.requireNonNull(user).getRoles().getFirst().equals("PATIENT")) {
                     System.out.println("you're authenticated as: " + claim.get("role"));
                     filterChain.doFilter(request, response);
                 } else if (method.hasMethodAnnotation(DoctorRoleAnnotation.class) &&
@@ -75,16 +89,16 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     System.out.println("you're authenticated as: " + claim.get("role"));
                     filterChain.doFilter(request, response);
                 }
-                else
-                {
-                    System.out.println(claim.get("role") + " unauthorized");
-                    response.sendError(401, "unauthorized");
-                }
             } else {
-                response.sendError(401, "qualcosa è andato male con l'header auth");
+                response.sendError(401, "invalid token");
             }
-        } catch (Exception e) {
-            response.sendError(401, "qualcosa è andato male col metodo");
+
         }
+        else {
+        response.sendError(401, "unauthorized");
+        }
+
+
+
     }
 }

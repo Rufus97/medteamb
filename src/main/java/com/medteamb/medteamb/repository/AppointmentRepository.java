@@ -37,10 +37,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	// get all avaible from doc id
 	@Query(value = "select a.* from appointment as a join doctor as d " +
 			"on d.doctor_id = a.doctor_id " +
-			"where d.doctor_id = ?1 and  a.status = 'AVAIBLE'" ,nativeQuery = true,
-			countQuery = "select count(a.id) from appointment as a join doctor as d " +
+			"where d.doctor_id = ?1 and  a.status = 'EMPTY'" ,nativeQuery = true,
+			countQuery = "select count(a.appointment_id) from appointment as a join doctor as d " +
 					"on d.doctor_id = a.doctor_id " +
-					"where d.doctor_id = ?1 and a.status = 'AVAIBLE'")
+					"where d.doctor_id = ?1 and a.status = 'EMPTY'")
 	Page<Appointment> getALlAvaibleAppointmentsOfOneDoctor(Long id, PageRequest page);
 
 	// get all avaible from doc name and surname

@@ -74,10 +74,11 @@ public class DTOmapper{
 
     public AppointmentResponseDTO mapFromAppointmentToResponseDTO(Appointment obj){
        AppointmentResponseDTO response = new AppointmentResponseDTO();
+       response.setAppointmentID(obj.getAppointmentID());
        response.setLocation(obj.getLocation()); response.setAppointmentDateTime(obj.getAppointmentDateTime());
        response.setTaxCode(obj.getTaxCode()); response.setMedicalService(obj.getMedicalService());
-       response.setStatus(obj.getStatus()); response.setPatient(obj.getPatient());
-       response.setDoctor(obj.getDoctor()); response.setSecretary(obj.getSecretary());
+       response.setStatus(obj.getStatus());
+       response.setDoctor(obj.getDoctor().getDoctorID());
        return response;
     }
 

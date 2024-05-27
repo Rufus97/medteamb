@@ -41,12 +41,12 @@ public class PatientController {
      }
 
      //poter chiedere di spostare l’appuntamento esistente ove possibile
+     @PatientRoleAnnotation
      @PutMapping("/moveAppointment")
      public Response<AppointmentResponseDTO> moveAppointment(@RequestAttribute Long id,  @RequestBody PatientUpdateAppointment request){
          return service.moveAppointment(id, request);
      }
-     
-     
+
      //poter annullare un appuntamento esistente
      @PatientRoleAnnotation
      @PutMapping("/cancelAppointment")
@@ -56,19 +56,19 @@ public class PatientController {
      //poter visualizzare lo storico delle mie visite e i relativi referti ( REFERTI DA CONCEPIRE )
      @PatientRoleAnnotation
      @GetMapping("/myAppointments/{page}")
-     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentHistory(@RequestAttribute Integer patientID, @PathVariable int page, @RequestParam int size){
-          return service.getAppointmentHistoryByPatientId(patientID, page, size);
+     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentHistory(@RequestAttribute Integer id, @PathVariable int page, @RequestParam int size){
+          return service.getAppointmentHistoryByPatientId(id, page, size);
      }
      // poter visualizzare gli appuntamenti prenotati da svolgere
      @PatientRoleAnnotation
      @GetMapping("/myAppointmentsToDo/{page}")
-     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentToDo(@RequestAttribute Integer patientID, @PathVariable int page, @RequestParam int size){
-          return service.getAppointmentsToDoByPatientId(patientID, page, size);
+     public ResponseForLists<AppointmentResponseDTO> getMyAppointmentToDo(@RequestAttribute Integer id, @PathVariable int page, @RequestParam int size){
+          return service.getAppointmentsToDoByPatientId(id, page, size);
      }
      //poter caricare i miei referti
      @PatientRoleAnnotation
      @GetMapping("/myReferts/{page}")
-     public ResponseForLists<RefertResponseDTO> getHistoryOfMyReferts(@RequestParam Long id, @PathVariable int page, @RequestParam int size){
+     public ResponseForLists<RefertResponseDTO> getHistoryOfMyReferts(@RequestAttribute Long id, @PathVariable int page, @RequestParam int size){
           return service.getRefertHistoryByPatientId(id, page, size);
      }
 
@@ -84,7 +84,6 @@ public class PatientController {
      @PatientRoleAnnotation
      @GetMapping("/ById")
      public Response<Patient> getPatient(@RequestAttribute Long id){
-
           return service.getPatient(id);
      }
 

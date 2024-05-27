@@ -15,6 +15,12 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Query(value = "SELECT * FROM Appointment a where a.patient_patientid = ?1", nativeQuery = true )
     public Iterable<Appointment> getAllPatientAppointments(Integer patient_id);
 
+    @Query(value = "select * from patient p join user u " +
+            "on p.user_id = u.id " +
+            "where u.id = ?1", nativeQuery = true)
+    public Optional<Patient> findPatientByUserId(Long id);
+
+
 
     // MethodName queries
     Optional<Patient> findByPatientEmail(String patientEmail);
